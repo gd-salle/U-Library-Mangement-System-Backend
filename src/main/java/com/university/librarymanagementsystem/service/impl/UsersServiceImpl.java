@@ -43,4 +43,31 @@ public class UsersServiceImpl implements UsersService {
         return users.stream().map(UsersMapper::mapToUsersDto).collect(Collectors.toList());
     }
 
+    @Override
+    public UsersDto updateUser(Long userId, UsersDto updatedUser) {
+
+        Users user = userRepository.findById(userId).orElseThrow(
+            () -> new ResourceNotFoundException("Not found")
+        );
+
+        user.setLibraryCardNumber(updatedUser.getLibraryCardNumber());
+        user.setPassword(updatedUser.getPassword());
+        user.setSchoolId(updatedUser.getSchoolId());
+        user.setUserType(updatedUser.getUserType());
+
+        Users updatedUserObj = userRepository.save(user); 
+        return UsersMapper.mapToUsersDto(updatedUserObj); 
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+
+        Users user = userRepository.findById(userId).orElseThrow(
+                () -> new ResourceNotFoundException("Not found"));
+
+        userRepository.deleteById(userId);
+        
+        
+    }
+
 }

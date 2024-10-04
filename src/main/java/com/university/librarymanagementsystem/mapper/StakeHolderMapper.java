@@ -7,32 +7,30 @@ public class StakeHolderMapper {
 
     public static StakeholdersDto mapToStakeHoldersDto(StakeHolders stakeholders) {
         return new StakeholdersDto(
-            stakeholders.getId(),
-            stakeholders.getFirstName(),
-            stakeholders.getMiddleName(),
-            stakeholders.getLastName(),
-            stakeholders.getSuffix(), 
-            stakeholders.getDepartment(), 
-            stakeholders.getCourse(), 
-            stakeholders.getContactNum(), 
-            stakeholders.getEmailAdd(), 
-            stakeholders.getStatus()
-        ); 
+                stakeholders.getId(),
+                stakeholders.getFirstName(),
+                stakeholders.getMiddleName(),
+                stakeholders.getLastName(),
+                stakeholders.getSuffix(),
+                stakeholders.getDepartment(),
+                stakeholders.getCourse(),
+                stakeholders.getContactNum(),
+                stakeholders.getEmailAdd(),
+                stakeholders.getStatus());
     }
 
     public static StakeHolders mapToStakeHolderDto(StakeholdersDto stakeholdersDto) {
         return new StakeHolders(
-            stakeholdersDto.getId(), 
-            stakeholdersDto.getFirstName(),
-            stakeholdersDto.getMiddleName(),
-            stakeholdersDto.getLastName(),
-            stakeholdersDto.getSuffix(),
-            stakeholdersDto.getDepartment(),
-            stakeholdersDto.getCourse(),
-            stakeholdersDto.getContactNum(), 
-            stakeholdersDto.getEmailAdd(),
-            stakeholdersDto.getStatus()
-        );
+                stakeholdersDto.getId(),
+                stakeholdersDto.getFirstName(),
+                stakeholdersDto.getMiddleName(),
+                stakeholdersDto.getLastName(),
+                stakeholdersDto.getSuffix(),
+                stakeholdersDto.getDepartment(),
+                stakeholdersDto.getCourse(),
+                stakeholdersDto.getContactNum(),
+                stakeholdersDto.getEmailAdd(),
+                stakeholdersDto.getStatus());
     }
 
 }
