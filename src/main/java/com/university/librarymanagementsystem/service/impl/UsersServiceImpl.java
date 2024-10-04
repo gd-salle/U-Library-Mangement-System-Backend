@@ -1,5 +1,8 @@
 package com.university.librarymanagementsystem.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.university.librarymanagementsystem.dto.UsersDto;
@@ -31,6 +34,13 @@ public class UsersServiceImpl implements UsersService {
         Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User does not exist with given id: " + userId));
         return UsersMapper.mapToUsersDto(user);
+    }
+
+    @Override
+    public List<UsersDto> getAllUsers() {
+
+        List<Users> users = userRepository.findAll();
+        return users.stream().map(UsersMapper::mapToUsersDto).collect(Collectors.toList());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.university.librarymanagementsystem.controller;
 
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,6 +36,13 @@ public class UsersController {
     public ResponseEntity<UsersDto> getUser(@PathVariable("id") Long userId) {
         UsersDto userDto = usersService.getUserById(userId);
         return ResponseEntity.ok(userDto);
+    }
+
+    // Build Get All Users REST API
+    @GetMapping
+    public ResponseEntity<List<UsersDto>> getAllUsers() {
+        List<UsersDto> users = usersService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
 }
