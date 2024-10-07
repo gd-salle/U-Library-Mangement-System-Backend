@@ -10,6 +10,8 @@ public interface UsersService {
 
     UsersDto getUserById(Long userId);
 
+    boolean doesLibraryCardNumberExist(String libraryCardNumber);
+
     List<UsersDto> getAllUsers();
 
     UsersDto updateUser(Long userId, UsersDto updatedUser);

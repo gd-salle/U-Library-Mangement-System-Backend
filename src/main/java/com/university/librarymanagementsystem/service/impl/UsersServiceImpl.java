@@ -44,19 +44,23 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public boolean doesLibraryCardNumberExist(String libraryCardNumber) {
+        return userRepository.existsByLibraryCardNumber(libraryCardNumber);
+    }
+
+    @Override
     public UsersDto updateUser(Long userId, UsersDto updatedUser) {
 
         Users user = userRepository.findById(userId).orElseThrow(
-            () -> new ResourceNotFoundException("Not found")
-        );
+                () -> new ResourceNotFoundException("Not found"));
 
         user.setLibraryCardNumber(updatedUser.getLibraryCardNumber());
         user.setPassword(updatedUser.getPassword());
         user.setSchoolId(updatedUser.getSchoolId());
         user.setUserType(updatedUser.getUserType());
 
-        Users updatedUserObj = userRepository.save(user); 
-        return UsersMapper.mapToUsersDto(updatedUserObj); 
+        Users updatedUserObj = userRepository.save(user);
+        return UsersMapper.mapToUsersDto(updatedUserObj);
     }
 
     @Override
@@ -66,8 +70,7 @@ public class UsersServiceImpl implements UsersService {
                 () -> new ResourceNotFoundException("Not found"));
 
         userRepository.deleteById(userId);
-        
-        
+
     }
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.university.librarymanagementsystem.dto.UsersDto;
@@ -38,6 +39,13 @@ public class UsersController {
     public ResponseEntity<UsersDto> getUser(@PathVariable("id") Long userId) {
         UsersDto userDto = usersService.getUserById(userId);
         return ResponseEntity.ok(userDto);
+    }
+
+    // Build Check Library Card Number existence REST API
+    @GetMapping("/check-library-card")
+    public ResponseEntity<Boolean> checkLibraryCard(@RequestParam("libCardNum") String libraryCardNumber) {
+        boolean exists = usersService.doesLibraryCardNumberExist(libraryCardNumber);
+        return ResponseEntity.ok(exists);
     }
 
     // Build Get All Users REST API
