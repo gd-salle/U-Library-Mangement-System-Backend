@@ -3,6 +3,7 @@ package com.university.librarymanagementsystem.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.university.librarymanagementsystem.dto.UsersDto;
@@ -22,6 +23,9 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UsersDto createUsers(UsersDto usersDto) {
+
+        Argon2PasswordEncoder encoder = new Argon2PasswordEncoder(16, 32, 1, 1 << 12, 3);
+        usersDto.setPassword(encoder.encode(usersDto.getPassword()));
 
         Users user = UsersMapper.mapToUsersDto(usersDto);
         Users savedUser = userRepository.save(user);
@@ -66,11 +70,31 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void deleteUser(Long userId) {
 
+        @SuppressWarnings("unused")
         Users user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("Not found"));
 
         userRepository.deleteById(userId);
 
+    }
+
+    @Override
+    public UsersDto login(String libraryCardNumber, String password) {
+
+        // Fetch the user by libraryCardNumber
+        Users user = userRepository.findByLibraryCardNumber(libraryCardNumber).orElseThrow(
+                () -> new ResourceNotFoundException("User not found with library card number: " + libraryCardNumber));
+
+        // Create an instance of BCryptPasswordEncoder to compare the passwords
+        Argon2PasswordEncoder encoder = new Argon2PasswordEncoder(16, 32, 1, 1 << 12, 3);
+
+        // Check if the provided password matches the encoded password in the database
+        if (!encoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Invalid password");
+        }
+
+        // Return the user if the password matches
+        return UsersMapper.mapToUsersDto(user);
     }
 
 }

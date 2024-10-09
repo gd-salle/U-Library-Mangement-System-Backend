@@ -17,4 +17,6 @@ public interface UsersService {
     UsersDto updateUser(Long userId, UsersDto updatedUser);
 
     void deleteUser(Long userId);
+
+    UsersDto login(String libraryCardNumber, String password);
 }

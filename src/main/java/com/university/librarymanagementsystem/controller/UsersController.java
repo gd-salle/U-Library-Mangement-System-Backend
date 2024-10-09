@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.university.librarymanagementsystem.dto.LoginDto;
 import com.university.librarymanagementsystem.dto.UsersDto;
+import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.service.UsersService;
 
 import lombok.AllArgsConstructor;
@@ -71,4 +73,26 @@ public class UsersController {
         return ResponseEntity.ok("User Deleted Succesfuly");
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<UsersDto> loginUser(@RequestBody LoginDto loginDto) {
+
+        try {
+            UsersDto authenticatedUser = usersService.login(loginDto.getLibraryCardNumber(), loginDto.getPassword());
+            return new ResponseEntity<>(authenticatedUser, HttpStatus.OK);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED); // Invalid credentials
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // User not found
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UsersDto> registerUser(@RequestBody UsersDto usersDto) {
+        boolean exists = usersService.doesLibraryCardNumberExist(usersDto.getLibraryCardNumber());
+        if (exists) {
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT); // If library card number already exists
+        }
+        UsersDto registeredUser = usersService.createUsers(usersDto);
+        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+    }
 }
