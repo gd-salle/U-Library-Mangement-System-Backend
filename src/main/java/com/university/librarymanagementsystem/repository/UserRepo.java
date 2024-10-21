@@ -6,10 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.university.librarymanagementsystem.entity.Users;
 
-public interface UserRepository extends JpaRepository<Users, Long> {
-
-    boolean existsByLibraryCardNumber(String libraryCardNumber);
+public interface UserRepo extends JpaRepository<Users, Long> {
 
     Optional<Users> findByLibraryCardNumber(String libraryCardNumber);
-
+    
 }

@@ -11,7 +11,7 @@ public class UsersMapper {
                 users.getLibraryCardNumber(),
                 users.getPassword(),
                 users.getSchoolId(),
-                users.getUserType());
+                users.getRole());
     }
 
     public static Users mapToUsersDto(UsersDto usersDto) {
