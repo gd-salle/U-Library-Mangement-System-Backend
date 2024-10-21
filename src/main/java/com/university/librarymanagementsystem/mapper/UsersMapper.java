@@ -9,19 +9,18 @@ public class UsersMapper {
         return new UsersDto(
                 users.getUserId(),
                 users.getLibraryCardNumber(),
-                users.getSchoolId(),
                 users.getPassword(),
-                users.getUserType());
+                users.getSchoolId(),
+                users.getRole());
     }
-    
+
     public static Users mapToUsersDto(UsersDto usersDto) {
         return new Users(
-            usersDto.getUserId(), 
-            usersDto.getLibraryCardNumber(), 
-            usersDto.getSchoolId(), 
-            usersDto.getPassword(), 
-            usersDto.getUserType()
-        ); 
+                usersDto.getUserId(),
+                usersDto.getLibraryCardNumber(),
+                usersDto.getPassword(),
+                usersDto.getSchoolId(),
+                usersDto.getUserType());
     }
 
 }
