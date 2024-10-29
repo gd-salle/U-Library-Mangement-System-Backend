@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.university.librarymanagementsystem.service.JWTUtils;
-import com.university.librarymanagementsystem.service.MyUserDetailsService;
+import com.university.librarymanagementsystem.service.StakeHolderService;
+import com.university.librarymanagementsystem.service.impl.MyUserDetailsService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,11 +27,20 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     @Autowired
     private MyUserDetailsService ourUserDetailsService;
 
+
     @Override
     //
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        // List of paths to skip JWT authentication
+        String requestPath = request.getServletPath();
+        if (requestPath.startsWith("/verify/**")
+                || requestPath.startsWith("/public/")) {
+            // Skip JWT authentication for these paths
+            filterChain.doFilter(request, response);
+            return;
+        }
         final String authHeader = request.getHeader("Authorization");
         final String jwtToken;
         final String userEmail;
@@ -43,10 +53,6 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
         jwtToken = authHeader.substring(7); // Extract token
         userEmail = jwtUtils.extractUsername(jwtToken); // Extract user email from token
-
-        // Debugging: print JWT token, user email, and token validity
-        System.out.println("JWT Token: " + jwtToken);
-        System.out.println("User Email: " + userEmail);
 
         // If a user email was extracted and there's no authentication in the context,
         // proceed

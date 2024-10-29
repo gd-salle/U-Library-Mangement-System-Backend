@@ -4,18 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.university.librarymanagementsystem.dto.ReqRes;
+import com.university.librarymanagementsystem.dto.StakeholdersDto;
+import com.university.librarymanagementsystem.service.StakeHolderService;
 import com.university.librarymanagementsystem.service.UserManagementService;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -35,5 +41,6 @@ public class UserController {
     public ResponseEntity<ReqRes> refreshToken(@RequestBody ReqRes req) {
         return ResponseEntity.ok(usersManagementService.refreshToken(req));
     }
+
 
 }

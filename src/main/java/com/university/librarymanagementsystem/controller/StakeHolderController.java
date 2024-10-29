@@ -1,0 +1,66 @@
+package com.university.librarymanagementsystem.controller;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.university.librarymanagementsystem.dto.StakeholdersDto;
+import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
+import com.university.librarymanagementsystem.service.OTPService;
+import com.university.librarymanagementsystem.service.StakeHolderService;
+
+import lombok.AllArgsConstructor;
+
+@CrossOrigin("*")
+@AllArgsConstructor
+@RestController
+// @RequestMapping("/verify")
+public class StakeHolderController {
+
+    @Autowired
+    private StakeHolderService stakeHolderService;
+    @Autowired
+    public OTPService otpService;
+
+    // Build Get Stakeholder REST API
+    @GetMapping("/verify/{stakeHolderId}")
+    public ResponseEntity<StakeholdersDto> getStakeholderId(@PathVariable("stakeHolderId") String id) {
+        StakeholdersDto stakeholdersDto = stakeHolderService.getStakeholderById(id);
+
+        String otp = otpService.generateOTP();
+
+        // Store OTP with stakeholder email or phone number
+        otpService.storeOTP(stakeholdersDto.getEmailAdd(), otp);
+
+        // Send OTP via email and/or SMS
+        otpService.sendEmail(stakeholdersDto.getEmailAdd(), otp);
+
+        return ResponseEntity.ok(stakeholdersDto);
+    }
+
+    // Build API to verify OTP
+    @PostMapping("/verify/confirm-otp")
+    public ResponseEntity<String> confirmOtp(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        String otp = requestBody.get("otp");
+
+        boolean isVerified = otpService.verifyOTP(email, otp);
+
+        if (isVerified) {
+            return ResponseEntity.ok("OTP verified successfully!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired OTP!");
+        }
+    }
+
+}

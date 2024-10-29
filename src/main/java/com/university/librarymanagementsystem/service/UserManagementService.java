@@ -1,11 +1,9 @@
 package com.university.librarymanagementsystem.service;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -92,27 +90,6 @@ public class UserManagementService {
             response.setStatusCode(500);
             response.setMessage(e.getMessage());
             return response;
-        }
-    }
-
-    public ReqRes getAllUsers() {
-        ReqRes reqRes = new ReqRes();
-
-        try {
-            List<Users> result = userRepo.findAll();
-            if (!result.isEmpty()) {
-                reqRes.setUsersList(result);
-                reqRes.setStatusCode(200);
-                reqRes.setMessage("Successful");
-            } else {
-                reqRes.setStatusCode(404);
-                reqRes.setMessage("No users found");
-            }
-            return reqRes;
-        } catch (Exception e) {
-            reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred: " + e.getMessage());
-            return reqRes;
         }
     }
 }
