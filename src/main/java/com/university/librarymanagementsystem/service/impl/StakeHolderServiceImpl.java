@@ -25,4 +25,15 @@ public class StakeHolderServiceImpl implements StakeHolderService {
         return StakeHolderMapper.mapToStakeHoldersDto(stakeHolders);
     }
 
+    @Override
+    public StakeholdersDto getStudentWithDepartmentAndCourse(String studentId) {
+        StakeHolders stakeHolders = stakeHolderRepository.findStakeholderById(studentId);
+
+        if (stakeHolders == null) {
+            throw new ResourceNotFoundException("Not Found: " + studentId);
+        }
+
+        return StakeHolderMapper.mapToStakeHoldersDto(stakeHolders);
+    }
+
 }

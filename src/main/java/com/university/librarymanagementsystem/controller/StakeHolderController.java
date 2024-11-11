@@ -32,7 +32,8 @@ public class StakeHolderController {
     // Build Get Stakeholder REST API
     @GetMapping("/verify/{stakeHolderId}")
     public ResponseEntity<StakeholdersDto> getStakeholderId(@PathVariable("stakeHolderId") String id) {
-        StakeholdersDto stakeholdersDto = stakeHolderService.getStakeholderById(id);
+        
+        StakeholdersDto stakeholdersDto = stakeHolderService.getStudentWithDepartmentAndCourse(id);
 
         String otp = otpService.generateOTP();
 
@@ -63,5 +64,6 @@ public class StakeHolderController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
+
 
 }

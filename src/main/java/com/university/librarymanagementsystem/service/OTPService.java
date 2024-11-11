@@ -40,11 +40,9 @@ public class OTPService {
     public boolean verifyOTP(String key, String otp) {
         String storedOtp = otpStorage.get(key); // Retrieve the OTP associated with the key (email)
         if (storedOtp == null) {
-            System.out.println("No OTP stored for key: " + key);
             return false; // No OTP stored for this email
         }
         boolean result = otp.equals(storedOtp);
-        System.out.println("OTP match for key: " + key + " Result: " + result);
         return result;
     }
 

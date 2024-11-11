@@ -3,6 +3,8 @@ package com.university.librarymanagementsystem.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,11 +36,18 @@ public class StakeHolders {
     @Column(name = "suffix", nullable = true)
     private String suffix;
 
-    @Column(name = "department", nullable = false)
-    private int department;
+    @ManyToOne
+    @JoinColumn(name = "department")
+    private Department department;
 
-    @Column(name = "course", nullable = false)
-    private int course;
+    @ManyToOne
+    @JoinColumn(name = "course")
+    private Course course;
+    // @Column(name = "department", nullable = false)
+    // private String department;
+
+    // @Column(name = "course", nullable = false)
+    // private String course;
 
     @Column(name = "contact_num", nullable = false)
     private String contactNum;
