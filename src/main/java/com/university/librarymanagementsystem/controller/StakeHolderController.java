@@ -1,5 +1,6 @@
 package com.university.librarymanagementsystem.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.university.librarymanagementsystem.dto.StakeholdersDto;
-import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.service.OTPService;
 import com.university.librarymanagementsystem.service.StakeHolderService;
 
@@ -24,7 +22,6 @@ import lombok.AllArgsConstructor;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
-// @RequestMapping("/verify")
 public class StakeHolderController {
 
     @Autowired
@@ -50,16 +47,20 @@ public class StakeHolderController {
 
     // Build API to verify OTP
     @PostMapping("/verify/confirm-otp")
-    public ResponseEntity<String> confirmOtp(@RequestBody Map<String, String> requestBody) {
-        String email = requestBody.get("email");
+    public ResponseEntity<Map<String, String>> confirmOtp(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("emailAdd");
         String otp = requestBody.get("otp");
 
         boolean isVerified = otpService.verifyOTP(email, otp);
-
+        Map<String, String> response = new HashMap<>();
         if (isVerified) {
-            return ResponseEntity.ok("OTP verified successfully!");
+            response.put("success", "true");
+            response.put("message", "OTP verified successfully!");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired OTP!");
+            response.put("success", "false");
+            response.put("message", "Invalid or expired OTP!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
 
