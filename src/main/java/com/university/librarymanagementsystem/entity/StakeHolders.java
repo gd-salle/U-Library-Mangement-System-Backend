@@ -43,11 +43,6 @@ public class StakeHolders {
     @ManyToOne
     @JoinColumn(name = "course")
     private Course course;
-    // @Column(name = "department", nullable = false)
-    // private String department;
-
-    // @Column(name = "course", nullable = false)
-    // private String course;
 
     @Column(name = "contact_num", nullable = false)
     private String contactNum;

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.university.librarymanagementsystem.service.JWTUtils;
-import com.university.librarymanagementsystem.service.StakeHolderService;
 import com.university.librarymanagementsystem.service.impl.MyUserDetailsService;
 
 import jakarta.servlet.FilterChain;
@@ -24,51 +24,45 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
     @Autowired
     private JWTUtils jwtUtils;
-    @Autowired
-    private MyUserDetailsService ourUserDetailsService;
 
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
 
     @Override
-    //
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        // List of paths to skip JWT authentication
+        // Exclude specific paths from being filtered
         String requestPath = request.getServletPath();
-        if (requestPath.startsWith("/verify/**")
-                || requestPath.startsWith("/public/")) {
-            // Skip JWT authentication for these paths
+        if (requestPath.startsWith("/verify/") || requestPath.startsWith("/public/")) {
             filterChain.doFilter(request, response);
             return;
         }
+
         final String authHeader = request.getHeader("Authorization");
         final String jwtToken;
         final String userEmail;
 
-        // Check if Authorization header is missing or doesn't contain a token
-        if (authHeader == null || authHeader.isBlank() || !authHeader.startsWith("Bearer ")) {
+        // Check for valid Authorization header
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwtToken = authHeader.substring(7); // Extract token
+        jwtToken = authHeader.substring(7); // Remove "Bearer " prefix
         userEmail = jwtUtils.extractUsername(jwtToken); // Extract user email from token
 
-        // If a user email was extracted and there's no authentication in the context,
-        // proceed
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = ourUserDetailsService.loadUserByUsername(userEmail);
+            UserDetails userDetails = myUserDetailsService.loadUserByUsername(userEmail);
 
-            // Check if token is valid
-            boolean isValidToken = jwtUtils.isTokenValid(jwtToken, userDetails);
-            System.out.println("Is Token Valid: " + isValidToken); // Debugging token validity
-
-            if (isValidToken) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+            // Validate the token
+            if (jwtUtils.isTokenValid(jwtToken, userDetails)) {
+                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+                UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken); // Set the authentication in the
-                                                                                 // context
+                token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                securityContext.setAuthentication(token);
+                SecurityContextHolder.setContext(securityContext);
             }
         }
         filterChain.doFilter(request, response);

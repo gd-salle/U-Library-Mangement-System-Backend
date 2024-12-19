@@ -24,28 +24,6 @@ public class UserManagementService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // public ReqRes register(ReqRes registrationRequest) {
-    // ReqRes resp = new ReqRes();
-
-    // try {
-    // Users ourUser = new Users();
-    // ourUser.setLibraryCardNumber(registrationRequest.getLibraryCardNumber());
-    // ourUser.setSchoolId(registrationRequest.getSchoolId());
-    // ourUser.setRole(registrationRequest.getRole());
-    // ourUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-    // Users ourUsersResult = userRepo.save(ourUser);
-    // if (ourUsersResult.getUserId() > 0) {
-    // resp.setUsers((ourUsersResult));
-    // resp.setMessage("User Saved Successfully");
-    // resp.setStatusCode(200);
-    // }
-
-    // } catch (Exception e) {
-    // resp.setStatusCode(500);
-    // resp.setError(e.getMessage());
-    // }
-    // return resp;
-    // }
     public ReqRes register(ReqRes registrationRequest) {
         ReqRes resp = new ReqRes();
         try {
