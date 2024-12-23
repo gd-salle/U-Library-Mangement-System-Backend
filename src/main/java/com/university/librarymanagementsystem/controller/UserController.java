@@ -17,7 +17,6 @@ import lombok.AllArgsConstructor;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
-@RequestMapping("/user")
 public class UserController {
 
     @Autowired
