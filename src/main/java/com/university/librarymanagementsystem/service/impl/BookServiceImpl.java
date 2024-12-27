@@ -25,4 +25,10 @@ public class BookServiceImpl implements BookService {
         return books.stream().map(BookMapper::toDto).toList();
     }
 
+    @Override
+    public List<BookDto> getBooksByAuthorName(String authorName) {
+        List<Book> books = bookRepository.findBooksByAuthorName(authorName);
+        return books.stream().map(BookMapper::toDto).toList();
+    }
+
 }
