@@ -68,6 +68,7 @@ public class GoogleBooksService {
         // Convert DTO to Entity
         Book book = new Book();
         book.setTitle(bookDto.getTitle());
+        book.setAccessionNo(bookDto.getAccessionNo());
         book.setPublisher(bookDto.getPublisher());
         book.setPublishedDate(bookDto.getPublishedDate());
         book.setDescription(bookDto.getDescription());
@@ -85,7 +86,7 @@ public class GoogleBooksService {
         book.setCirculationType(bookDto.getCirculationType());
         book.setDateAcquired(bookDto.getDateAcquired());
         book.setNotes(bookDto.getNotes());
-        book.setSublocation(bookDto.getSublocation());
+        book.setLocation(bookDto.getLocation());
         book.setVendor(bookDto.getVendor());
         book.setFundingSource(bookDto.getFundingSource());
         book.setSubjects(bookDto.getSubjects() != null ? String.join(",", bookDto.getSubjects()) : null);

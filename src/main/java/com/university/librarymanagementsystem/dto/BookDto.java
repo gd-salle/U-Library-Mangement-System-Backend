@@ -14,8 +14,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BookDto {
 
-     private Long id;
+    private Long id;
     private String title;
+    private String accessionNo;
     private List<String> authors;
     private String publisher;
     private String publishedDate;
@@ -34,9 +35,9 @@ public class BookDto {
     private String circulationType;
     private LocalDate dateAcquired;
     private String notes;
-    private String sublocation;
+    private String location;
     private String vendor;
     private String fundingSource;
     private String subjects;
-    
+
 }
