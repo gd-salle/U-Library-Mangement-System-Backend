@@ -1,4 +1,4 @@
-package com.university.librarymanagementsystem.service;
+package com.university.librarymanagementsystem.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +10,7 @@ import com.university.librarymanagementsystem.repository.UserRepo;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
+    
     @Autowired
     private UserRepo userRepo;
 

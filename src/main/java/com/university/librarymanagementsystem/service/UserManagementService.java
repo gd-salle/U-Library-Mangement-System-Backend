@@ -1,11 +1,9 @@
 package com.university.librarymanagementsystem.service;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,21 +26,27 @@ public class UserManagementService {
 
     public ReqRes register(ReqRes registrationRequest) {
         ReqRes resp = new ReqRes();
-
         try {
+            System.out.println("Attempting to register user with data: " + registrationRequest); // Log the request
+                                                                                                 // details
+
             Users ourUser = new Users();
             ourUser.setLibraryCardNumber(registrationRequest.getLibraryCardNumber());
             ourUser.setSchoolId(registrationRequest.getSchoolId());
             ourUser.setRole(registrationRequest.getRole());
             ourUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            Users ourUsersResult = userRepo.save(ourUser);
-            if (ourUsersResult.getUserId() > 0) {
-                resp.setUsers((ourUsersResult));
+
+            Users savedUser = userRepo.save(ourUser); // Save to database
+            if (savedUser.getUserId() > 0) {
+                resp.setUsers(savedUser);
                 resp.setMessage("User Saved Successfully");
                 resp.setStatusCode(200);
+            } else {
+                resp.setMessage("User not saved");
+                resp.setStatusCode(500);
             }
-
         } catch (Exception e) {
+            System.err.println("Error while saving user: " + e.getMessage()); // Log error details
             resp.setStatusCode(500);
             resp.setError(e.getMessage());
         }
@@ -92,27 +96,6 @@ public class UserManagementService {
             response.setStatusCode(500);
             response.setMessage(e.getMessage());
             return response;
-        }
-    }
-
-    public ReqRes getAllUsers() {
-        ReqRes reqRes = new ReqRes();
-
-        try {
-            List<Users> result = userRepo.findAll();
-            if (!result.isEmpty()) {
-                reqRes.setUsersList(result);
-                reqRes.setStatusCode(200);
-                reqRes.setMessage("Successful");
-            } else {
-                reqRes.setStatusCode(404);
-                reqRes.setMessage("No users found");
-            }
-            return reqRes;
-        } catch (Exception e) {
-            reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred: " + e.getMessage());
-            return reqRes;
         }
     }
 }

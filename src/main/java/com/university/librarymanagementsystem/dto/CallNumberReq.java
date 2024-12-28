@@ -1,0 +1,19 @@
+package com.university.librarymanagementsystem.dto;
+
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class CallNumberReq {
+    private String title;
+    private String category;
+    private List<String> authors;
+    private String publishedDate;
+}

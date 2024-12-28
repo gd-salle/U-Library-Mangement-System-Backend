@@ -3,6 +3,7 @@ package com.university.librarymanagementsystem.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,8 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.university.librarymanagementsystem.service.MyUserDetailsService;
+import com.university.librarymanagementsystem.service.impl.MyUserDetailsService;
 
+@Order(1)
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -32,11 +34,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(request -> request.requestMatchers("/auth/**", "/public/**").permitAll()
-                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                        .requestMatchers("/user/**").hasAnyAuthority("USER")
-                        .requestMatchers("/adminuser/**").hasAnyAuthority("ADMIN", "USER")
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(
+                        request -> request
+                                .requestMatchers("/auth/**", "/verify/**", "/public/**",
+                                        "/adminuser/**")
+                                .permitAll()
+                                .requestMatchers("/admin/**", "/sru/**").hasAnyAuthority("LIBRARIAN")
+                                .requestMatchers("/user/**").hasAnyAuthority("STUDENT")
+                                .requestMatchers("/adminuser/**").hasAnyAuthority("LIBRARIAN", "STUDENT")
+                                .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
