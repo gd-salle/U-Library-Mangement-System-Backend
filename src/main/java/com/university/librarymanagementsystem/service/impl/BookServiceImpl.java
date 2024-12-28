@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService {
 
         // Extract the last accession number from the books
         int maxNumber = books.stream()
-                .map(book -> book.getAccessionNo())
+                .map(Book::getAccessionNo)
                 .map(accessionNo -> {
                     // Use regex to extract the numeric part before 'c.x'
                     String numericPart = accessionNo.split(" ")[0].replace(locationPrefix + "-", "");
