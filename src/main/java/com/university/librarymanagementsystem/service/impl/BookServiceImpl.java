@@ -31,4 +31,30 @@ public class BookServiceImpl implements BookService {
         return books.stream().map(BookMapper::toDto).toList();
     }
 
+    @Override
+    public String getLastAccessionNumber(String locationPrefix) {
+        List<Book> books = bookRepository.findBooksByAccessionNo(locationPrefix);
+        if (books.isEmpty()) {
+            return locationPrefix + "-000000";
+        }
+
+        // Extract the last accession number from the books
+        int maxNumber = books.stream()
+                .map(book -> book.getAccessionNo())
+                .map(accessionNo -> {
+                    // Use regex to extract the numeric part before 'c.x'
+                    String numericPart = accessionNo.split(" ")[0].replace(locationPrefix + "-", "");
+                    try {
+                        return Integer.parseInt(numericPart);
+                    } catch (NumberFormatException e) {
+                        return 0; // Fallback for invalid formats
+                    }
+                })
+                .max(Integer::compare)
+                .orElse(0);
+
+        // Format the new accession number
+        return String.format("%s-%06d", locationPrefix, maxNumber);
+    }
+
 }
