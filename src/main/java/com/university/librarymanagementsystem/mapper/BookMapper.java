@@ -12,6 +12,7 @@ public class BookMapper {
         return new BookDto(
                 book.getId(),
                 book.getTitle(),
+                book.getAccessionNo(),
                 book.getAuthors().stream().map(Author::getName).collect(Collectors.toList()),
                 book.getPublisher(),
                 book.getPublishedDate(),
@@ -30,7 +31,7 @@ public class BookMapper {
                 book.getCirculationType(),
                 book.getDateAcquired(),
                 book.getNotes(),
-                book.getSublocation(),
+                book.getLocation(),
                 book.getVendor(),
                 book.getFundingSource(),
                 book.getSubjects());

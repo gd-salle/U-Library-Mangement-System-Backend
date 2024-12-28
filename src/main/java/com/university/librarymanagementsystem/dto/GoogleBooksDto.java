@@ -15,6 +15,7 @@ import lombok.Setter;
 public class GoogleBooksDto {
 
     private String title;
+    private String accessionNo;
     private List<AuthorDto> authors;
     private String publisher;
     private String publishedDate;
@@ -34,7 +35,7 @@ public class GoogleBooksDto {
     private String circulationType;
     private LocalDate dateAcquired;
     private String notes;
-    private String sublocation;
+    private String location;
     private String vendor;
     private String fundingSource;
     private List<String> subjects;

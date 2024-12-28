@@ -33,6 +33,8 @@ public class Book {
 
     private String title;
 
+    private String accessionNo;
+
     @ManyToMany(mappedBy = "books", cascade = CascadeType.ALL)
     private List<Author> authors = new ArrayList<>();
 
@@ -55,7 +57,7 @@ public class Book {
     private String circulationType;
     private LocalDate dateAcquired;
     private String notes;
-    private String sublocation;
+    private String location;
     private String vendor;
     private String fundingSource;
     private String subjects;
