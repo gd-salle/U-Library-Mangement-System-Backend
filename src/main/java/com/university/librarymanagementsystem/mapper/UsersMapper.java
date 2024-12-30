@@ -20,7 +20,8 @@ public class UsersMapper {
                 usersDto.getLibraryCardNumber(),
                 usersDto.getPassword(),
                 usersDto.getSchoolId(),
-                usersDto.getUserType());
+                usersDto.getRole(),
+                null);
     }
 
 }

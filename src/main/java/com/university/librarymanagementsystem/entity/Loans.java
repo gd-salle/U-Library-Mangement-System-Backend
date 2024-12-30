@@ -38,5 +38,6 @@ public class Loans {
 
     private LocalDateTime borrowDate;
     private LocalDateTime returnDate;
+    private LocalDateTime dueDate;
     private String status;
 }

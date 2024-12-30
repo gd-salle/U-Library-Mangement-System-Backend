@@ -6,11 +6,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.university.librarymanagementsystem.dto.BorrowerDetailsDto;
+import com.university.librarymanagementsystem.entity.Users;
 import com.university.librarymanagementsystem.repository.UserRepo;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-    
+
     @Autowired
     private UserRepo userRepo;
 
@@ -18,5 +20,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String libraryCardNumber) throws UsernameNotFoundException {
         return userRepo.findByLibraryCardNumber(libraryCardNumber).orElseThrow();
     }
+
+    
 
 }

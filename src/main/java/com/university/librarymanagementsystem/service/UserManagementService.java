@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.university.librarymanagementsystem.dto.BorrowerDetailsDto;
 import com.university.librarymanagementsystem.dto.ReqRes;
 import com.university.librarymanagementsystem.entity.Users;
 import com.university.librarymanagementsystem.repository.UserRepo;
@@ -98,4 +99,5 @@ public class UserManagementService {
             return response;
         }
     }
+
 }

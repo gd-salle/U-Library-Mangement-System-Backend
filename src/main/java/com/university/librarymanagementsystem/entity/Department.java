@@ -19,6 +19,6 @@ import lombok.Setter;
 public class Department {
 
     @Id
-    private int id;
+    private Integer id;
     private String name;
 }

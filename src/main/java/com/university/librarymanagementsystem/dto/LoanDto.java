@@ -14,13 +14,14 @@ import lombok.Setter;
 public class LoanDto {
 
     private Long loanId;
+    private String accessionNo;
     private String title;
     private String callNumber;
     private String authorName;
-    private String borrowerFullName;
+    private String borrower;
     private String departmentName;
-    private String borrowerId;
     private LocalDateTime borrowDate;
     private LocalDateTime returnDate;
+    private LocalDateTime dueDate;
     private String status;
 }

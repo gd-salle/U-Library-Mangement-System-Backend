@@ -12,15 +12,16 @@ public class LoanMapper {
         // Assuming the result is ordered as per the query
         return new LoanDto(
                 (Long) result[0], // loanId
-                (String) result[1], // title
-                (String) result[2], // callNumber
-                (String) result[3], // authorName
-                (String) result[4], // borrowerFullName
-                (String) result[5], // departmentName
-                (String) result[6], // borrowerId
+                (String) result[1], // accessionNo
+                (String) result[2], // title
+                (String) result[3], // callNumber
+                (String) result[4], // authorName
+                (String) result[5], // borrowerLibraryCardNo
+                (String) result[6], // departmentName
                 convertTimestampToLocalDateTime(result[7]), // borrowDate
                 convertTimestampToLocalDateTime(result[8]), // returnDate
-                (String) result[9] // status
+                convertTimestampToLocalDateTime(result[9]), // due
+                (String) result[10] // status
         );
     }
 
