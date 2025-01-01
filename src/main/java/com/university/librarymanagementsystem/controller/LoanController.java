@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.university.librarymanagementsystem.dto.BorrowerDetailsDto;
 import com.university.librarymanagementsystem.dto.LoanDto;
 import com.university.librarymanagementsystem.service.LoanService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/admin/")
@@ -37,4 +39,16 @@ public class LoanController {
     public ResponseEntity<LoanDto> saveLoan(@RequestBody LoanDto loanDto) {
         return ResponseEntity.ok(loanService.saveLoan(loanDto));
     }
+
+    @GetMapping("/loans/barcode/{id}")
+    public ResponseEntity<List<LoanDto>> getLoanDetailById(@PathVariable("id") Long param) {
+        return ResponseEntity.ok(loanService.getLoansDetails(param));
+    }
+
+    @PutMapping("/update/{loanId}")
+    public ResponseEntity<LoanDto> updateLoan(@PathVariable Long loanId, @RequestBody LoanDto loanDto) {
+        LoanDto updatedLoan = loanService.updateLoanStatus(loanId, loanDto);
+        return ResponseEntity.ok(updatedLoan);
+    }
+
 }

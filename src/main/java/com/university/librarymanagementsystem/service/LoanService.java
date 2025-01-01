@@ -11,4 +11,8 @@ public interface LoanService {
     BorrowerDetailsDto getBorrowerDetails(String libraryCardNumber);
 
     LoanDto saveLoan(LoanDto loanDto);
+
+    List<LoanDto> getLoansDetails(Long loanId);
+
+    LoanDto updateLoanStatus(Long loanId, LoanDto loanDto);
 }

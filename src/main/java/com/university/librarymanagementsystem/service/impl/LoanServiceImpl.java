@@ -19,6 +19,8 @@ import com.university.librarymanagementsystem.repository.LoanRepository;
 import com.university.librarymanagementsystem.repository.UserRepo;
 import com.university.librarymanagementsystem.service.LoanService;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class LoanServiceImpl implements LoanService {
 
@@ -85,6 +87,51 @@ public class LoanServiceImpl implements LoanService {
         responseDto.setBorrowDate(savedLoan.getBorrowDate());
         responseDto.setDueDate(savedLoan.getDueDate());
         responseDto.setStatus(savedLoan.getStatus());
+
+        return responseDto;
+    }
+
+    @Override
+    public List<LoanDto> getLoansDetails(Long loanId) {
+        List<Object[]> rawResults = loanRepository.findLoanDetailById(loanId);
+        return rawResults.stream().map(LoanMapper::toLoanDto).toList();
+    }
+
+    @Override
+    public LoanDto updateLoanStatus(Long loanId, LoanDto loanDto) {
+        // Find the loan by loan ID
+        Loans loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new ResourceNotFoundException("Loan not found"));
+
+        // Find the associated book by the loaned book's accession number
+        Book book = loan.getBook();
+
+        // Check if the loan status is "Returned", and update the return date and book
+        // status
+        if ("Returned".equals(loanDto.getStatus())) {
+            // Update the return date to the current date
+            loan.setReturnDate(LocalDateTime.now());
+
+            // Update the book status to "Available"
+            book.setStatus("Available");
+            bookRepository.save(book);
+        }
+
+        // Update the loan status
+        loan.setStatus(loanDto.getStatus());
+
+        // Save the updated loan record
+        Loans updatedLoan = loanRepository.save(loan);
+
+        // Map the updated loan and book details to LoanDto
+        LoanDto responseDto = new LoanDto();
+        responseDto.setLoanId(updatedLoan.getLoanId());
+        responseDto.setAccessionNo(book.getAccessionNo());
+        responseDto.setTitle(book.getTitle());
+        responseDto.setBorrowDate(updatedLoan.getBorrowDate());
+        responseDto.setReturnDate(updatedLoan.getReturnDate());
+        responseDto.setDueDate(updatedLoan.getDueDate());
+        responseDto.setStatus(updatedLoan.getStatus());
 
         return responseDto;
     }
