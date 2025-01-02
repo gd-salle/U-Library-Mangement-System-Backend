@@ -1,5 +1,8 @@
 package com.university.librarymanagementsystem.entity;
 
+import com.university.librarymanagementsystem.entity.curriculum.Program;
+import com.university.librarymanagementsystem.entity.curriculum.Department;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -42,7 +45,7 @@ public class StakeHolders {
 
     @ManyToOne
     @JoinColumn(name = "course")
-    private Course course;
+    private Program course;
 
     @Column(name = "contact_num", nullable = false)
     private String contactNum;
