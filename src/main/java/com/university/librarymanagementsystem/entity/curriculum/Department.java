@@ -1,7 +1,9 @@
-package com.university.librarymanagementsystem.entity;
+package com.university.librarymanagementsystem.entity.curriculum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -15,15 +17,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "course")
+@Table(name = "department")
 @Data
-public class Course {
+public class Department {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name = "department_id", nullable = false)
-    private int departmentId;
-
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "status", nullable = false)
+    private int status;
 }
