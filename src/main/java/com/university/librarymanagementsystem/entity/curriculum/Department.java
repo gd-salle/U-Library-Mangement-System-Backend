@@ -1,6 +1,9 @@
-package com.university.librarymanagementsystem.entity;
+package com.university.librarymanagementsystem.entity.curriculum;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,6 +22,10 @@ import lombok.Setter;
 public class Department {
 
     @Id
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "status", nullable = false)
+    private int status;
 }

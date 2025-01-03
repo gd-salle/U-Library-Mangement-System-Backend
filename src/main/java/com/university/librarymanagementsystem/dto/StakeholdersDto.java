@@ -1,7 +1,7 @@
 package com.university.librarymanagementsystem.dto;
 
-import com.university.librarymanagementsystem.entity.Course;
-import com.university.librarymanagementsystem.entity.Department;
+import com.university.librarymanagementsystem.entity.curriculum.Program;
+import com.university.librarymanagementsystem.entity.curriculum.Department;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class StakeholdersDto {
     private String lastName;
     private String suffix;
     private Department department;
-    private Course course;
+    private Program course;
     private String contactNum;
     private String emailAdd;
     private String status;
