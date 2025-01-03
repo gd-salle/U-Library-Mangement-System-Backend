@@ -1,5 +1,7 @@
 package com.university.librarymanagementsystem.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +11,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsersDto {
+public class OverdueLoanDTO {
 
+    private Long loanId;
     private Long userId;
+    private Long bookId;
+    private LocalDateTime borrowDate;
+    private LocalDateTime dueDate;
+    private LocalDateTime returnDate;
+    private String status;
     private String libraryCardNumber;
-    private String password;
-    private String schoolId;
-    private String role;
 
 }
