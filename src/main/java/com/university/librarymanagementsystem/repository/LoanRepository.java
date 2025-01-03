@@ -1,5 +1,6 @@
 package com.university.librarymanagementsystem.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -57,5 +58,13 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
                         "JOIN department d ON s.department = d.id " +
                         "WHERE l.loan_id = :loanId", nativeQuery = true)
         List<Object[]> findLoanDetailById(Long loanId);
+
+        @Query(value = "SELECT * FROM loan l WHERE l.due_date < :currentDate", nativeQuery = true)
+        List<Loans> findOverdueLoans(@Param("currentDate") LocalDateTime currentDate);
+
+        List<Loans> findByBookBarcodeAndStatus(String barcode, String status);
+
+        @Query(value = "SELECT l FROM loan l WHERE l.return_date IS NULL AND l.due_date < :currentDate", nativeQuery = true)
+        List<Loans> findOverdueLoansList(LocalDateTime currentDate);
 
 }

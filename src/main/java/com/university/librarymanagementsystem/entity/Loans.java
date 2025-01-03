@@ -2,6 +2,9 @@ package com.university.librarymanagementsystem.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,14 +35,18 @@ public class Loans {
 
     @ManyToOne
     @JoinColumn(name = "book_id")
+    @JsonIgnore
     private Book book;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private Users user;
-
+    @JsonFormat(pattern = "MM/dd/yyyy, HH:mm:ss")
     private LocalDateTime borrowDate;
+    @JsonFormat(pattern = "MM/dd/yyyy, HH:mm:ss")
     private LocalDateTime returnDate;
+    @JsonFormat(pattern = "MM/dd/yyyy, HH:mm:ss")
     private LocalDateTime dueDate;
     private String status;
 }

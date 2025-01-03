@@ -11,14 +11,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FineDto {
+public class OverdueLoanDTO {
 
-    private Long fineId;
     private Long loanId;
     private Long userId;
+    private Long bookId;
     private LocalDateTime borrowDate;
     private LocalDateTime dueDate;
     private LocalDateTime returnDate;
-    private Double fineAmount;
-    private boolean paid;
+    private String status;
+    private String libraryCardNumber;
+
 }

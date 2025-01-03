@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.university.librarymanagementsystem.dto.BorrowerDetailsDto;
 import com.university.librarymanagementsystem.dto.LoanDto;
+import com.university.librarymanagementsystem.entity.Loans;
 
 public interface LoanService {
     List<LoanDto> getAllLoanDetails();
@@ -15,4 +16,9 @@ public interface LoanService {
     List<LoanDto> getLoansDetails(Long loanId);
 
     LoanDto updateLoanStatus(Long loanId, LoanDto loanDto);
+
+    List<Loans> getOverdueLoans();
+
+    boolean isBookLoanedByBarcode(String barcode);
+
 }

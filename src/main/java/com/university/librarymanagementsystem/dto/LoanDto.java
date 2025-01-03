@@ -2,6 +2,9 @@ package com.university.librarymanagementsystem.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +24,11 @@ public class LoanDto {
     private String authorName;
     private String borrower;
     private String departmentName;
+    @JsonFormat(pattern = "MM/dd/yyyy, HH:mm:ss")
     private LocalDateTime borrowDate;
+    @JsonFormat(pattern = "MM/dd/yyyy, HH:mm:ss")
     private LocalDateTime returnDate;
+    @JsonFormat(pattern = "MM/dd/yyyy, HH:mm:ss")
     private LocalDateTime dueDate;
     private String status;
 }

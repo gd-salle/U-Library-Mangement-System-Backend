@@ -2,12 +2,8 @@ package com.university.librarymanagementsystem.mapper;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.university.librarymanagementsystem.dto.LoanDto;
-import com.university.librarymanagementsystem.entity.Author;
-import com.university.librarymanagementsystem.entity.Loans;
 
 public class LoanMapper {
 
@@ -29,8 +25,6 @@ public class LoanMapper {
                 (String) result[11] // status
         );
     }
-
-    
 
     // Helper method to convert Timestamp to LocalDateTime
     private static LocalDateTime convertTimestampToLocalDateTime(Object timestampObj) {

@@ -1,6 +1,8 @@
 package com.university.librarymanagementsystem.service.impl;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,12 +11,15 @@ import org.springframework.stereotype.Service;
 
 import com.university.librarymanagementsystem.dto.BorrowerDetailsDto;
 import com.university.librarymanagementsystem.dto.LoanDto;
+import com.university.librarymanagementsystem.dto.OverdueLoanDTO;
 import com.university.librarymanagementsystem.entity.Book;
+import com.university.librarymanagementsystem.entity.Fine;
 import com.university.librarymanagementsystem.entity.Loans;
 import com.university.librarymanagementsystem.entity.Users;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.mapper.LoanMapper;
 import com.university.librarymanagementsystem.repository.BookRepository;
+import com.university.librarymanagementsystem.repository.FineRepository;
 import com.university.librarymanagementsystem.repository.LoanRepository;
 import com.university.librarymanagementsystem.repository.UserRepo;
 import com.university.librarymanagementsystem.service.LoanService;
@@ -32,6 +37,8 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private FineRepository fineRepository;
 
     @Override
     public List<LoanDto> getAllLoanDetails() {
@@ -72,14 +79,29 @@ public class LoanServiceImpl implements LoanService {
         Loans loan = new Loans();
         loan.setBook(book);
         loan.setUser(user); // Set the user reference
-        loan.setBorrowDate(loanDto.getBorrowDate() != null ? loanDto.getBorrowDate() : LocalDateTime.now());
-        loan.setDueDate(loanDto.getDueDate());
-        loan.setReturnDate(loanDto.getReturnDate());
+        System.out.println("Received borrowDate: " + loanDto.getBorrowDate());
+
+        // Set borrowDate to the current time in the Manila time zone (GMT+8)
+        loan.setBorrowDate(loanDto.getBorrowDate() != null
+                ? loanDto.getBorrowDate().atZone(ZoneId.of("Asia/Manila")).toLocalDateTime()
+                : LocalDateTime.now(ZoneId.of("Asia/Manila")));
+        System.out.println("Received borrowDate: " + loan.getBorrowDate());
+
+        // Ensure dueDate and returnDate are also adjusted to the Manila time zone if
+        // necessary
+        if (loanDto.getDueDate() != null) {
+            loan.setDueDate(loanDto.getDueDate().atZone(ZoneId.of("Asia/Manila")).toLocalDateTime());
+        }
+        if (loanDto.getReturnDate() != null) {
+            loan.setReturnDate(loanDto.getReturnDate().atZone(ZoneId.of("Asia/Manila")).toLocalDateTime());
+        }
+
         loan.setStatus("Borrowed");
 
         // Save the loan record
         Loans savedLoan = loanRepository.save(loan);
 
+        // Map savedLoan to LoanDto
         LoanDto responseDto = new LoanDto();
         responseDto.setLoanId(savedLoan.getLoanId());
         responseDto.setAccessionNo(book.getAccessionNo());
@@ -110,7 +132,7 @@ public class LoanServiceImpl implements LoanService {
         // status
         if ("Returned".equals(loanDto.getStatus())) {
             // Update the return date to the current date
-            loan.setReturnDate(LocalDateTime.now());
+            loan.setReturnDate(loanDto.getReturnDate() != null ? loanDto.getReturnDate() : LocalDateTime.now());
 
             // Update the book status to "Available"
             book.setStatus("Available");
@@ -134,6 +156,19 @@ public class LoanServiceImpl implements LoanService {
         responseDto.setStatus(updatedLoan.getStatus());
 
         return responseDto;
+    }
+
+    @Override
+    public List<Loans> getOverdueLoans() {
+        return loanRepository.findOverdueLoans(LocalDateTime.now());
+    }
+
+    @Override
+    public boolean isBookLoanedByBarcode(String barcode) {
+        // Assuming your Loan entity has a `bookBarcode` field where the barcode of the
+        // book is stored
+        List<Loans> activeLoans = loanRepository.findByBookBarcodeAndStatus(barcode, "Borrowed");
+        return !activeLoans.isEmpty(); // If there are active loans, the book is loaned out
     }
 
 }
