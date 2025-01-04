@@ -44,7 +44,7 @@ public class StakeHolders {
     private Department department;
 
     @ManyToOne
-    @JoinColumn(name = "course")
+    @JoinColumn(name = "program")
     private Program course;
 
     @Column(name = "contact_num", nullable = false)
