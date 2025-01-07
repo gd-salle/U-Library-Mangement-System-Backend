@@ -11,4 +11,6 @@ public interface BookService {
     List<BookDto> getBooksByAuthorName(String authorName);
 
     String getLastAccessionNumber(String locationPrefix);
+
+    BookDto getBookByBarcode(String barcode);
 }

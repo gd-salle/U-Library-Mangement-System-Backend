@@ -10,7 +10,7 @@ import com.university.librarymanagementsystem.repository.UserRepo;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-    
+
     @Autowired
     private UserRepo userRepo;
 
