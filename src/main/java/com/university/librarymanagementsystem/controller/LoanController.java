@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.university.librarymanagementsystem.dto.BorrowerDetailsDto;
 import com.university.librarymanagementsystem.dto.LoanDto;
-import com.university.librarymanagementsystem.dto.OverdueLoanDTO;
 import com.university.librarymanagementsystem.entity.Loans;
 import com.university.librarymanagementsystem.service.LoanService;
 
