@@ -1,6 +1,7 @@
 package com.university.librarymanagementsystem.entity;
 
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class Book {
     private String barcode;
     private String callNumber;
     private Double purchasePrice;
-    private String circulationType;
+    private String section;
     private LocalDate dateAcquired;
     private String notes;
     private String location;

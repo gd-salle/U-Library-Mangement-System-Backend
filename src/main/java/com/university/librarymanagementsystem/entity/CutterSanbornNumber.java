@@ -30,4 +30,3 @@ public class CutterSanbornNumber {
     @Column(name = "author_name", nullable = false)
     private String authorName;
 }
-

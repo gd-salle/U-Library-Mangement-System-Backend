@@ -28,7 +28,7 @@ public class BookMapper {
                 book.getBarcode(),
                 book.getCallNumber(),
                 book.getPurchasePrice(),
-                book.getCirculationType(),
+                book.getSection(),
                 book.getDateAcquired(),
                 book.getNotes(),
                 book.getLocation(),

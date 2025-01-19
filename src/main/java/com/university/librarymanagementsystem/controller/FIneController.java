@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.university.librarymanagementsystem.dto.FineDto;
 import com.university.librarymanagementsystem.entity.Fine;
 import com.university.librarymanagementsystem.service.FineService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/adminuser/")
-public class FineController {
+public class FIneController {
 
     @Autowired
     private FineService fineService;
