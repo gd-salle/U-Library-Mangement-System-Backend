@@ -10,7 +10,7 @@ import com.university.librarymanagementsystem.entity.StakeHolders;
 @Repository
 public interface StakeHolderRepository extends JpaRepository<StakeHolders, String> {
 
-    @Query("SELECT s FROM StakeHolders s INNER JOIN s.department d INNER JOIN s.course c WHERE s.id = :studentId")
+    @Query("SELECT s FROM StakeHolders s INNER JOIN s.department d INNER JOIN s.program c WHERE s.id = :studentId")
     StakeHolders findStakeholderById(@Param("studentId") String studentId);
 
 }

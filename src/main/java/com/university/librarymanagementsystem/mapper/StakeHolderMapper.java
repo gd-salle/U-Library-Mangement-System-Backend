@@ -13,7 +13,7 @@ public class StakeHolderMapper {
                 stakeholders.getLastName(),
                 stakeholders.getSuffix(),
                 stakeholders.getDepartment(),
-                stakeholders.getCourse(),
+                stakeholders.getProgram(),
                 stakeholders.getContactNum(),
                 stakeholders.getEmailAdd(),
                 stakeholders.getStatus());

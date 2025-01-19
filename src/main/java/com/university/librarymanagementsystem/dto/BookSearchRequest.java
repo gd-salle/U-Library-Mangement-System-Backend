@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 public class BookSearchRequest {
 
-    private String keyword; // General keyword for broad search
     private List<SearchCriterion> criteria; // Detailed field-based search criteria
     private String yearRange; // Filter for year range (e.g., "2010-2020")
     private String language; // Language of the book

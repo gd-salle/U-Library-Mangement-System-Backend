@@ -15,7 +15,6 @@ import com.university.librarymanagementsystem.entity.Users;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.mapper.LoanMapper;
 import com.university.librarymanagementsystem.repository.BookRepository;
-import com.university.librarymanagementsystem.repository.FineRepository;
 import com.university.librarymanagementsystem.repository.LoanRepository;
 import com.university.librarymanagementsystem.repository.UserRepo;
 import com.university.librarymanagementsystem.service.LoanService;
@@ -31,8 +30,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private BookRepository bookRepository;
-    @Autowired
-    private FineRepository fineRepository;
 
     @Override
     public List<LoanDto> getAllLoanDetails() {

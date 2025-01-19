@@ -81,26 +81,26 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        // Process criteria fields
-        String title = getValueForField(request.getCriteria(), "ti"); // 'ti' for title
-        String authorName = getValueForField(request.getCriteria(), "au"); // 'au' for author
+        String keyword = getValueForField(request.getCriteria(), "keyword");
+        String title = getValueForField(request.getCriteria(), "title");
+        String authorName = getValueForField(request.getCriteria(), "author");
         String publisher = getValueForField(request.getCriteria(), "publisher");
-        String isbn10 = getValueForField(request.getCriteria(), "isbn10");
-        String isbn13 = getValueForField(request.getCriteria(), "isbn13");
+        String isbn = getValueForField(request.getCriteria(), "isbn");
+        String subjects = getValueForField(request.getCriteria(), "subjects");
 
-        // Extract selected options (itemType, sections, and collection) from request
+        // Extract selected options (itemType, sections, and collection)
         List<String> itemType = request.getItemType();
         List<String> sections = request.getSections();
         List<String> collection = request.getCollection();
 
         // Call repository method with the extracted and parsed parameters
         List<Book> books = bookRepository.advancedSearchBooks(
-                request.getKeyword(),
+                keyword,
                 title,
                 authorName,
                 publisher,
-                isbn10,
-                isbn13,
+                isbn,
+                subjects,
                 collection,
                 sections,
                 itemType,
@@ -110,22 +110,6 @@ public class BookServiceImpl implements BookService {
                 request.getIsAvailableOnly(),
                 request.getIndividualLibrary(),
                 request.getSortOrder());
-
-        System.out.println("Keyword: " + request.getKeyword());
-        System.out.println("Title: " + title);
-        System.out.println("Author: " + authorName);
-        System.out.println("Publisher: " + publisher);
-        System.out.println("ISBN-10: " + isbn10);
-        System.out.println("ISBN-13: " + isbn13);
-        System.out.println("Collection: " + collection);
-        System.out.println("Sections: " + sections);
-        System.out.println("Item Type: " + itemType);
-        System.out.println("Language: " + request.getLanguage());
-        System.out.println("Start Date: " + startDate);
-        System.out.println("End Date: " + endDate);
-        System.out.println("Is Available Only: " + request.getIsAvailableOnly());
-        System.out.println("Individual Library: " + request.getIndividualLibrary());
-        System.out.println("Sort Order: " + request.getSortOrder());
 
         // Convert entities to DTOs
         return books.stream()
@@ -138,8 +122,8 @@ public class BookServiceImpl implements BookService {
      * list.
      * 
      * @param criteria List of search criteria from the request.
-     * @param idx      The index (field identifier) to look for, e.g., 'ti' for
-     *                 title or 'au' for author.
+     * @param idx      The index (field identifier) to look for, e.g., 'kw' for
+     *                 keyword or 'ti' for title.
      * @return The search term for the given field, or null if not present.
      */
     private String getValueForField(List<BookSearchRequest.SearchCriterion> criteria, String idx) {

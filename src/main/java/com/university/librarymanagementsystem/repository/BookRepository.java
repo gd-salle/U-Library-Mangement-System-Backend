@@ -41,8 +41,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                         "AND (:title IS NULL OR b.title LIKE CONCAT('%', :title, '%')) " +
                         "AND (:authorName IS NULL OR a.name LIKE CONCAT('%', :authorName, '%')) " +
                         "AND (:publisher IS NULL OR b.publisher LIKE CONCAT('%', :publisher, '%')) " +
-                        "AND (:isbn10 IS NULL OR b.isbn10 LIKE CONCAT('%', :isbn10, '%')) " +
-                        "AND (:isbn13 IS NULL OR b.isbn13 LIKE CONCAT('%', :isbn13, '%')) " +
+                        "AND (:isbn IS NULL OR b.isbn10 LIKE CONCAT('%', :isbn, '%') OR b.isbn13 LIKE CONCAT('%', :isbn, '%')) "
+                        +
+                        "AND (:subjects IS NULL OR b.subjects LIKE CONCAT('%', :subjects, '%')) " +
 
                         // Language filtering
                         "AND (:language IS NULL OR b.language = :language) " +
@@ -73,8 +74,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                         @Param("title") String title,
                         @Param("authorName") String authorName,
                         @Param("publisher") String publisher,
-                        @Param("isbn10") String isbn10,
-                        @Param("isbn13") String isbn13,
+                        @Param("isbn") String isbn,
+                        @Param("subjects") String subjects,
                         @Param("collection") List<String> collection,
                         @Param("sections") List<String> sections,
                         @Param("itemType") List<String> itemType,
