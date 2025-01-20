@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.university.librarymanagementsystem.service.impl.MyUserDetailsService;
+import com.university.librarymanagementsystem.service.impl.user.MyUserDetailsService;
 
 @Order(1)
 @Configuration
