@@ -81,12 +81,12 @@ public class BookServiceImpl implements BookService {
             }
         }
 
-        String keyword = getValueForField(request.getCriteria(), "keyword");
-        String title = getValueForField(request.getCriteria(), "title");
-        String authorName = getValueForField(request.getCriteria(), "author");
-        String publisher = getValueForField(request.getCriteria(), "publisher");
-        String isbn = getValueForField(request.getCriteria(), "isbn");
-        String subjects = getValueForField(request.getCriteria(), "subjects");
+        String keyword = getValueForField(request.getCriteria(), "q");
+        String title = getValueForField(request.getCriteria(), "intitle");
+        String authorName = getValueForField(request.getCriteria(), "inauthor");
+        String publisher = getValueForField(request.getCriteria(), "inpublisher");
+        String isbn = getValueForField(request.getCriteria(), "inisbn");
+        String subjects = getValueForField(request.getCriteria(), "insubjects");
 
         // Extract selected options (itemType, sections, and collection)
         List<String> itemType = request.getItemType();
@@ -133,5 +133,4 @@ public class BookServiceImpl implements BookService {
                 .findFirst()
                 .orElse(null);
     }
-
 }

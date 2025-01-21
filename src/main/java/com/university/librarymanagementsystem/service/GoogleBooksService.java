@@ -50,7 +50,7 @@ public class GoogleBooksService {
         URI uri = UriComponentsBuilder.fromHttpUrl(googleBooksProperties.getBaseUrl())
                 .queryParam("q", query)
                 .queryParam("key", googleBooksProperties.getKey())
-                .queryParam("maxResults", 10)
+                .queryParam("maxResults", 20)
                 .build()
                 .toUri();
 
