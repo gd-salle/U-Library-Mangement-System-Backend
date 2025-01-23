@@ -32,8 +32,11 @@ public class StakeHolderController {
     // Build Get Stakeholder REST API
     @GetMapping("/verify/{stakeHolderId}")
     public ResponseEntity<StakeholdersDto> getStakeholderId(@PathVariable("stakeHolderId") String id) {
-        
+        System.out.println("ID "+ id);
+
         StakeholdersDto stakeholdersDto = stakeHolderService.getStudentWithDepartmentAndCourse(id);
+
+        System.out.println(stakeholdersDto.getEmailAdd());
 
         String otp = otpService.generateOTP();
 

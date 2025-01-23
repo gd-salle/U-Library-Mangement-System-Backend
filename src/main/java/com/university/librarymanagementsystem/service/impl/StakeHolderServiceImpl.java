@@ -28,11 +28,11 @@ public class StakeHolderServiceImpl implements StakeHolderService {
     @Override
     public StakeholdersDto getStudentWithDepartmentAndCourse(String studentId) {
         StakeHolders stakeHolders = stakeHolderRepository.findStakeholderById(studentId);
-
+        
         if (stakeHolders == null) {
             throw new ResourceNotFoundException("Not Found: " + studentId);
         }
-
+        System.out.println(stakeHolders.getEmailAdd());
         return StakeHolderMapper.mapToStakeHoldersDto(stakeHolders);
     }
 
