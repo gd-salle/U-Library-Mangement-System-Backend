@@ -6,8 +6,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
+
+import java.util.Set;
 
 import org.apache.commons.text.similarity.JaroWinklerSimilarity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import com.university.librarymanagementsystem.entity.Author;
 import com.university.librarymanagementsystem.entity.Book;
 import com.university.librarymanagementsystem.entity.DdcClassification;
 import com.university.librarymanagementsystem.repository.AuthorRepository;
-import com.university.librarymanagementsystem.repository.BookRepository;
 import com.university.librarymanagementsystem.repository.DdcRepository;
 import com.university.librarymanagementsystem.repository.GoogleBooksRepository;
 
@@ -43,8 +43,6 @@ public class GoogleBooksService {
     private AuthorRepository authorRepository;
     @Autowired
     private DdcRepository ddcRepository;
-
-    private BookRepository bookRepository;
 
     private Map<String, String> cutterMap;
 
@@ -83,7 +81,7 @@ public class GoogleBooksService {
         book.setBarcode(bookDto.getBarcode());
         book.setCallNumber(bookDto.getCallNumber());
         book.setPurchasePrice(bookDto.getPurchasePrice());
-        book.setCirculationType(bookDto.getCirculationType());
+        book.setSection(bookDto.getCirculationType());
         book.setDateAcquired(bookDto.getDateAcquired());
         book.setNotes(bookDto.getNotes());
         book.setLocation(bookDto.getLocation());

@@ -2,18 +2,14 @@ package com.university.librarymanagementsystem.service.impl;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.university.librarymanagementsystem.dto.BorrowerDetailsDto;
 import com.university.librarymanagementsystem.dto.LoanDto;
-import com.university.librarymanagementsystem.dto.OverdueLoanDTO;
 import com.university.librarymanagementsystem.entity.Book;
-import com.university.librarymanagementsystem.entity.Fine;
 import com.university.librarymanagementsystem.entity.Loans;
 import com.university.librarymanagementsystem.entity.Users;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
@@ -23,8 +19,6 @@ import com.university.librarymanagementsystem.repository.FineRepository;
 import com.university.librarymanagementsystem.repository.LoanRepository;
 import com.university.librarymanagementsystem.repository.UserRepo;
 import com.university.librarymanagementsystem.service.LoanService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class LoanServiceImpl implements LoanService {

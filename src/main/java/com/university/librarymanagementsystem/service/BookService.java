@@ -1,8 +1,10 @@
 package com.university.librarymanagementsystem.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.university.librarymanagementsystem.dto.BookDto;
+import com.university.librarymanagementsystem.dto.BookSearchRequest;
 
 public interface BookService {
 
@@ -13,4 +15,6 @@ public interface BookService {
     String getLastAccessionNumber(String locationPrefix);
 
     BookDto getBookByBarcode(String barcode);
+
+    List<BookDto> advancedSearchBooks(BookSearchRequest request);
 }
