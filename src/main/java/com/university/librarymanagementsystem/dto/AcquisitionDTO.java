@@ -19,7 +19,7 @@ public class AcquisitionDTO {
     private float purchase_price;
     private String purchase_date;
     private String acquired_date;
-    private String vendor_name;
+    private String vendor;
     private String vendor_location;
     private String funding_source;
     private int status;
