@@ -11,8 +11,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.university.librarymanagementsystem.service.JWTUtils;
-import com.university.librarymanagementsystem.service.impl.MyUserDetailsService;
+import com.university.librarymanagementsystem.service.impl.user.MyUserDetailsService;
+import com.university.librarymanagementsystem.service.user.JWTUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
