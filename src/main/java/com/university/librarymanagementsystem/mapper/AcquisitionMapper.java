@@ -18,7 +18,7 @@ public class AcquisitionMapper {
                 acquisition.getPurchase_price(),
                 acquisition.getPurchase_date(),
                 acquisition.getAcquired_date(),
-                acquisition.getVendor_name(),
+                acquisition.getVendor(),
                 acquisition.getVendor_location(),
                 acquisition.getFunding_source(),
                 acquisition.getStatus());
@@ -36,7 +36,7 @@ public class AcquisitionMapper {
                 acquisitionDTO.getPurchase_price(),
                 acquisitionDTO.getPurchase_date(),
                 acquisitionDTO.getAcquired_date(),
-                acquisitionDTO.getVendor_name(),
+                acquisitionDTO.getVendor(),
                 acquisitionDTO.getVendor_location(),
                 acquisitionDTO.getFunding_source(),
                 acquisitionDTO.getStatus());

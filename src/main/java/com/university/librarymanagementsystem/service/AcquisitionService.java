@@ -8,4 +8,6 @@ public interface AcquisitionService {
     List<AcquisitionDTO> addRecords(List<AcquisitionDTO> acquisitionDTOs);
 
     List<AcquisitionDTO> getPendingCatalogRecords();
+
+    boolean updateStatus(Integer id);
 }

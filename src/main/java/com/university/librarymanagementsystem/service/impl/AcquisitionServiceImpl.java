@@ -10,6 +10,7 @@ import com.university.librarymanagementsystem.mapper.AcquisitionMapper;
 import com.university.librarymanagementsystem.repository.AcquisitionRepository;
 import com.university.librarymanagementsystem.service.AcquisitionService;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -51,4 +52,11 @@ public class AcquisitionServiceImpl implements AcquisitionService {
         return pendingRecords.stream().map((pendingRecord) -> AcquisitionMapper.mapToAcquisitionDTO(pendingRecord))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional // Ensures the update query runs within a transaction
+    public boolean updateStatus(Integer id) {
+        return acquisitionRepository.updatePendingStatus(id) > 0; // Ensure the update count is > 0 for success
+    }
+
 }

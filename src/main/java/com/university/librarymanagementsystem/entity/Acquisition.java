@@ -49,8 +49,8 @@ public class Acquisition {
     @Column(name = "acquired_date", nullable = false)
     private String acquired_date;
 
-    @Column(name = "vendor_name", nullable = false)
-    private String vendor_name;
+    @Column(name = "vendor", nullable = false)
+    private String vendor;
 
     @Column(name = "vendor_location", nullable = false)
     private String vendor_location;
