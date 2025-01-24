@@ -32,12 +32,13 @@ public class BookDto {
     private String barcode;
     private String callNumber;
     private Double purchasePrice;
-    private String circulationType;
+    private String section;
     private LocalDate dateAcquired;
     private String notes;
     private String location;
     private String vendor;
     private String fundingSource;
     private String subjects;
+    private String collectionType;
 
 }

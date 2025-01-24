@@ -35,7 +35,16 @@ public class GoogleBooksController {
     private MetadataService metadataService;
 
     @GetMapping("/googlebooks/search")
-    public ResponseEntity<String> searchBooks(@RequestParam("query") String query) {
+    public ResponseEntity<String> searchBooks(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "author", required = false) String author,
+            @RequestParam(value = "publisher", required = false) String publisher,
+            @RequestParam(value = "isbn", required = false) String isbn,
+            @RequestParam(value = "lccn", required = false) String lccn) {
+
+        String query = googleBooksService.buildQuery(keyword, title, author,
+                publisher, isbn, lccn);
         String response = googleBooksService.searchBooks(query);
         return ResponseEntity.ok(response);
     }

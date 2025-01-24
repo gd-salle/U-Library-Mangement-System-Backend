@@ -2,6 +2,7 @@ package com.university.librarymanagementsystem.service.impl.catalog;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,17 +35,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public String getLastAccessionNumber(String locationPrefix) {
+        // Fetch books by location prefix
         List<Book> books = bookRepository.findBooksByAccessionNo(locationPrefix);
+
         if (books.isEmpty()) {
-            return locationPrefix + "-000000";
+            // If no books exist with this location prefix, start from c.1
+            return locationPrefix + "-000001 c.1";
         }
 
-        // Extract the last accession number from the books
+        // Extract the highest number for base accession (without c.x)
         int maxNumber = books.stream()
                 .map(Book::getAccessionNo)
                 .map(accessionNo -> {
-                    // Use regex to extract the numeric part before 'c.x'
-                    String numericPart = accessionNo.split(" ")[0].replace(locationPrefix + "-", "");
+                    // Extract the numeric part before 'c.x'
+                    String[] parts = accessionNo.split(" c.");
+                    String numericPart = parts[0].replace(locationPrefix + "-", "");
                     try {
                         return Integer.parseInt(numericPart);
                     } catch (NumberFormatException e) {
@@ -54,8 +59,20 @@ public class BookServiceImpl implements BookService {
                 .max(Integer::compare)
                 .orElse(0);
 
-        // Format the new accession number
-        return String.format("%s-%06d", locationPrefix, maxNumber);
+        // Base number is ready for the next book, increment by 1 for a new base
+        // accession number
+        String newAccessionNumberBase = String.format("%s-%06d", locationPrefix, maxNumber + 1);
+
+        // Now, find the highest 'c.x' for the same base accession number
+        long maxCopyNumber = books.stream()
+                .map(Book::getAccessionNo)
+                .filter(accessionNo -> accessionNo.startsWith(newAccessionNumberBase))
+                .mapToInt(accessionNo -> Integer.parseInt(accessionNo.split(" c.")[1]))
+                .max()
+                .orElse(0);
+
+        // Generate the next available copy number 'c.x'
+        return newAccessionNumberBase + " c." + (maxCopyNumber + 1);
     }
 
     @Override
@@ -67,70 +84,67 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> advancedSearchBooks(BookSearchRequest request) {
-        // Parse year range into LocalDate
-        LocalDate startDate = null;
-        LocalDate endDate = null;
-        if (request.getYearRange() != null && !request.getYearRange().isEmpty()) {
-            String[] years = request.getYearRange().split("-");
-            try {
-                startDate = LocalDate.parse(years[0].trim() + "-01-01");
-                endDate = LocalDate.parse(years[1].trim() + "-12-31");
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Invalid year range format. Use YYYY-YYYY.");
+    public String getLatestAccessionNo(String title, String isbn10, String isbn13, String locationPrefix) {
+        // Check if the book with the provided details exists
+        if (bookRepository.existsByTitleAndIsbn10AndIsbn13(title, isbn10, isbn13)) {
+            // Fetch the book with the latest accession number for the provided details
+            Optional<Book> latestBook = bookRepository.findTopByTitleAndIsbn10AndIsbn13OrderByAccessionNoDesc(
+                    title, isbn10, isbn13);
+
+            if (latestBook.isPresent()) {
+                String baseAccessionNo = latestBook.get().getAccessionNo().split(" c.")[0];
+
+                // Fetch all books with the same base accession number
+                List<Book> booksWithSameBase = bookRepository.findBooksByAccessionNo(baseAccessionNo);
+
+                // Find the highest copy number for the base accession number
+                int maxCopyNumber = booksWithSameBase.stream()
+                        .map(Book::getAccessionNo)
+                        .mapToInt(accessionNo -> {
+                            try {
+                                return Integer.parseInt(accessionNo.split(" c.")[1]);
+                            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                                return 0; // Handle invalid formats gracefully
+                            }
+                        })
+                        .max()
+                        .orElse(0);
+
+                // Generate the next copy number
+                return baseAccessionNo + " c." + (maxCopyNumber);
             }
+        } else {
+            // If the book doesn't exist, fetch the latest accession number for the prefix
+            Optional<Book> latestBookByPrefix = bookRepository.findTopByAccessionNoStartingWithOrderByAccessionNoDesc(
+                    locationPrefix);
+
+            String baseAccessionNo;
+            if (latestBookByPrefix.isPresent()) {
+                // Extract the numeric part of the latest accession number
+                String latestAccessionNo = latestBookByPrefix.get().getAccessionNo();
+                String[] parts = latestAccessionNo.split(" c.");
+                String numericPart = parts[0].replace(locationPrefix + "-", "");
+
+                int maxNumber;
+                try {
+                    maxNumber = Integer.parseInt(numericPart);
+                } catch (NumberFormatException e) {
+                    maxNumber = 0; // Handle invalid numeric parts
+                }
+
+                // Increment the base number for the new accession
+                baseAccessionNo = String.format("%s-%06d", locationPrefix, maxNumber + 1);
+            } else {
+                // If no books exist with this prefix, start from "c.1"
+                baseAccessionNo = locationPrefix + "-000001";
+            }
+
+            // The first copy for the new base accession number
+            return baseAccessionNo + " c.1";
         }
 
-        String keyword = getValueForField(request.getCriteria(), "q");
-        String title = getValueForField(request.getCriteria(), "intitle");
-        String authorName = getValueForField(request.getCriteria(), "inauthor");
-        String publisher = getValueForField(request.getCriteria(), "inpublisher");
-        String isbn = getValueForField(request.getCriteria(), "inisbn");
-        String subjects = getValueForField(request.getCriteria(), "insubjects");
-
-        // Extract selected options (itemType, sections, and collection)
-        List<String> itemType = request.getItemType();
-        List<String> sections = request.getSections();
-        List<String> collection = request.getCollection();
-
-        // Call repository method with the extracted and parsed parameters
-        List<Book> books = bookRepository.advancedSearchBooks(
-                keyword,
-                title,
-                authorName,
-                publisher,
-                isbn,
-                subjects,
-                collection,
-                sections,
-                itemType,
-                request.getLanguage(),
-                startDate,
-                endDate,
-                request.getIsAvailableOnly(),
-                request.getIndividualLibrary(),
-                request.getSortOrder());
-
-        // Convert entities to DTOs
-        return books.stream()
-                .map(BookMapper::toDto)
-                .toList();
+        // If no conditions match, return "NOTFOUND"
+        return "NOTFOUND";
     }
 
-    /**
-     * Utility method to extract search term for a specific field from the criteria
-     * list.
-     * 
-     * @param criteria List of search criteria from the request.
-     * @param idx      The index (field identifier) to look for, e.g., 'kw' for
-     *                 keyword or 'ti' for title.
-     * @return The search term for the given field, or null if not present.
-     */
-    private String getValueForField(List<BookSearchRequest.SearchCriterion> criteria, String idx) {
-        return criteria.stream()
-                .filter(criterion -> criterion.getIdx().equalsIgnoreCase(idx))
-                .map(BookSearchRequest.SearchCriterion::getSearchTerm)
-                .findFirst()
-                .orElse(null);
-    }
 }

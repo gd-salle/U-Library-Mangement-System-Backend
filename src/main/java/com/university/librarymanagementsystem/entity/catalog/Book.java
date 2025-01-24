@@ -18,13 +18,16 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.persistence.Index;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "books")
+@Table(name = "books", indexes = {
+        @Index(name = "idx_book_unique_fields", columnList = "title, isbn10, isbn13")
+})
 @Data
 public class Book {
 
@@ -62,5 +65,6 @@ public class Book {
     private String vendor;
     private String fundingSource;
     private String subjects;
+    private String collectionType;
 
 }

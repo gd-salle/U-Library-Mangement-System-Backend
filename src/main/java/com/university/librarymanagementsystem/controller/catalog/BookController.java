@@ -6,7 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
 import com.university.librarymanagementsystem.dto.catalog.BookSearchRequest;
+import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
+import com.university.librarymanagementsystem.mapper.catalog.BookMapper;
+import com.university.librarymanagementsystem.repository.catalog.BookRepository;
+import com.university.librarymanagementsystem.repository.catalog.BookRepositoryCustom;
 import com.university.librarymanagementsystem.service.catalog.BookService;
 
 import java.util.List;
@@ -25,6 +29,8 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+    @Autowired
+    private BookRepository bookRepository;
 
     @GetMapping("/all-books")
     public ResponseEntity<List<BookDto>> getAllBooks() {
@@ -47,6 +53,29 @@ public class BookController {
         }
     }
 
+    @GetMapping("/latest-accession")
+    public ResponseEntity<String> getLatestAccession(
+            @RequestParam String title,
+            @RequestParam String isbn10,
+            @RequestParam String isbn13,
+            @RequestParam String locationPrefix) {
+        try {
+            // Fetch the latest accession number using the service
+            String accessionNo = bookService.getLatestAccessionNo(title, isbn10, isbn13, locationPrefix);
+
+            if ("NOTFOUND".equals(accessionNo)) {
+                // Return 404 if no book matches the query
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOTFOUND");
+            }
+
+            return ResponseEntity.ok(accessionNo);
+        } catch (Exception e) {
+            // Return 500 if an error occurs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error occurred while fetching the latest accession number.");
+        }
+    }
+
     @GetMapping("/barcode/{barcode}")
     public ResponseEntity<BookDto> getBookByBarcode(@PathVariable String barcode) {
         try {
@@ -58,8 +87,8 @@ public class BookController {
     }
 
     @PostMapping("/advance-search")
-    public ResponseEntity<List<BookDto>> advancedSearch(@RequestBody BookSearchRequest request) {
-        List<BookDto> books = bookService.advancedSearchBooks(request);
-        return ResponseEntity.ok(books);
+    public List<BookDto> advancedSearchBooks(@RequestBody BookSearchRequest request) {
+        List<Book> books = bookRepository.advancedSearchBooks(request);
+        return books.stream().map(BookMapper::toDto).toList();
     }
 }
