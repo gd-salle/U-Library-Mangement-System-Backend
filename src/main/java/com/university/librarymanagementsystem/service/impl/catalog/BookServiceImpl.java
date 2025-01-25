@@ -1,6 +1,5 @@
 package com.university.librarymanagementsystem.service.impl.catalog;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
-import com.university.librarymanagementsystem.dto.catalog.BookSearchRequest;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.mapper.catalog.BookMapper;
