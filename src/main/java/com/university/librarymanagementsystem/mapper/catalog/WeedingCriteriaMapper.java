@@ -13,7 +13,8 @@ public class WeedingCriteriaMapper {
                 weedingCriteria.getConditionThreshold(),
                 weedingCriteria.getUsageThreshold(),
                 weedingCriteria.getLanguage(),
-                weedingCriteria.getDuplicationCheck());
+                weedingCriteria.getDuplicationCheck(),
+                weedingCriteria.getCriteriaStatus());
     }
 
     public static WeedingCriteria mapToWeedingCriteriaEntity(WeedingCriteriaDTO weedingCriteriaDTO) {
@@ -24,6 +25,7 @@ public class WeedingCriteriaMapper {
                 weedingCriteriaDTO.getConditionThreshold(),
                 weedingCriteriaDTO.getUsageThreshold(),
                 weedingCriteriaDTO.getLanguage(),
-                weedingCriteriaDTO.getDuplicationCheck());
+                weedingCriteriaDTO.getDuplicationCheck(),
+                weedingCriteriaDTO.getCriteriaStatus());
     }
 }

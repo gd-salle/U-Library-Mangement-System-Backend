@@ -18,5 +18,6 @@ public class WeedingCriteriaDTO {
     private Integer usageThreshold;
     private String language;
     private Boolean duplicationCheck;
+    private Boolean criteriaStatus;
 
 }

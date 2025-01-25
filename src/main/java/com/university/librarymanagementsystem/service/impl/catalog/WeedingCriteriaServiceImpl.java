@@ -38,6 +38,7 @@ public class WeedingCriteriaServiceImpl implements WeedingCriteriaService {
         existingCriteria.setUsageThreshold(weedingCriteriaDTO.getUsageThreshold());
         existingCriteria.setLanguage(weedingCriteriaDTO.getLanguage());
         existingCriteria.setDuplicationCheck(weedingCriteriaDTO.getDuplicationCheck());
+        existingCriteria.setCriteriaStatus(weedingCriteriaDTO.getCriteriaStatus());
 
         WeedingCriteria updatedCriteria = weedingCriteriaRepository.save(existingCriteria);
         return WeedingCriteriaMapper.mapToWeedingCriteriaDto(updatedCriteria);

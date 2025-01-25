@@ -41,4 +41,7 @@ public class WeedingCriteria {
     @Column(name = "duplication_check", nullable = false)
     private Boolean duplicationCheck = false;
 
+    @Column(name = "criteria_status", nullable = false)
+    private Boolean criteriaStatus = true;
+
 }
