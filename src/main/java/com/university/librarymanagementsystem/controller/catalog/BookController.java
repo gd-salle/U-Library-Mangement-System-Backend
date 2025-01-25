@@ -91,4 +91,18 @@ public class BookController {
         List<Book> books = bookRepository.advancedSearchBooks(request);
         return books.stream().map(BookMapper::toDto).toList();
     }
+
+    @GetMapping("/last-added-accession")
+    public ResponseEntity<String> getLastAddedBookAccessionNumber() {
+        try {
+            String lastAccessionNumber = bookService.fetchLastAccessionNumber();
+            return ResponseEntity.ok(lastAccessionNumber);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error occurred while fetching the last added book's accession number.");
+        }
+    }
+
 }

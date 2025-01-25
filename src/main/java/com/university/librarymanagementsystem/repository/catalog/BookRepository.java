@@ -31,4 +31,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, BookRepositor
 
         Optional<Book> findTopByAccessionNoStartingWithOrderByAccessionNoDesc(String prefix);
 
+        @Query(value = "SELECT accession_no FROM books ORDER BY id DESC LIMIT 1", nativeQuery = true)
+        Optional<String> findLastAddedBookAccessionNumber();
+
 }

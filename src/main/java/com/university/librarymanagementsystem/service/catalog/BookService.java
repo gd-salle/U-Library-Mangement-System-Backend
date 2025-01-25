@@ -16,4 +16,6 @@ public interface BookService {
 
     String getLatestAccessionNo(String title, String isbn10, String isbn13, String locationPrefix);
 
+    String fetchLastAccessionNumber();
+
 }
