@@ -46,14 +46,43 @@ public class GoogleBooksService {
 
     private Map<String, String> cutterMap;
 
+    public String buildQuery(String keyword, String title, String author, String publisher, String isbn, String lccn) {
+        StringBuilder queryBuilder = new StringBuilder();
+
+        if (keyword != null && !keyword.isBlank()) {
+            queryBuilder.append(keyword).append("+");
+        }
+        if (title != null && !title.isBlank()) {
+            queryBuilder.append("intitle:").append(title).append("+");
+        }
+        if (author != null && !author.isBlank()) {
+            queryBuilder.append("inauthor:").append(author).append("+");
+        }
+        if (publisher != null && !publisher.isBlank()) {
+            queryBuilder.append("inpublisher:").append(publisher).append("+");
+        }
+        if (isbn != null && !isbn.isBlank()) {
+            queryBuilder.append("isbn:").append(isbn).append("+");
+        }
+        if (lccn != null && !lccn.isBlank()) {
+            queryBuilder.append("lccn:").append(lccn).append("+");
+        }
+
+        // Remove trailing "+"
+        if (queryBuilder.length() > 0) {
+            queryBuilder.setLength(queryBuilder.length() - 1);
+        }
+        return queryBuilder.toString();
+
+    }
+
     public String searchBooks(String query) {
         URI uri = UriComponentsBuilder.fromHttpUrl(googleBooksProperties.getBaseUrl())
                 .queryParam("q", query)
                 .queryParam("key", googleBooksProperties.getKey())
-                .queryParam("maxResults", 10)
+                .queryParam("maxResults", 20)
                 .build()
                 .toUri();
-
         return restTemplate.getForObject(uri, String.class);
     }
 
@@ -81,7 +110,7 @@ public class GoogleBooksService {
         book.setBarcode(bookDto.getBarcode());
         book.setCallNumber(bookDto.getCallNumber());
         book.setPurchasePrice(bookDto.getPurchasePrice());
-        book.setSection(bookDto.getCirculationType());
+        book.setSection(bookDto.getSection());
         book.setDateAcquired(bookDto.getDateAcquired());
         book.setNotes(bookDto.getNotes());
         book.setLocation(bookDto.getLocation());
