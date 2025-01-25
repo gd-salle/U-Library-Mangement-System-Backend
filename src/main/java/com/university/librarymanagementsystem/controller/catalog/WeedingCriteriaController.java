@@ -17,7 +17,7 @@ import com.university.librarymanagementsystem.dto.catalog.WeedingCriteriaDTO;
 import com.university.librarymanagementsystem.service.catalog.WeedingCriteriaService;
 
 @RestController
-@RequestMapping("/public/weeding-criteria")
+@RequestMapping("/admin/weeding-criteria")
 public class WeedingCriteriaController {
 
     @Autowired
