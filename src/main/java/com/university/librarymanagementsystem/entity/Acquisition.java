@@ -37,8 +37,8 @@ public class Acquisition {
     @Column(name = "edition")
     private String edition;
 
-    @Column(name = "series")
-    private String series;
+    @Column(name = "published_date")
+    private String published_date;
 
     @Column(name = "purchase_price", nullable = false)
     private float purchase_price;
@@ -49,10 +49,10 @@ public class Acquisition {
     @Column(name = "acquired_date", nullable = false)
     private String acquired_date;
 
-    @Column(name = "vendor", nullable = false)
+    @Column(name = "vendor")
     private String vendor;
 
-    @Column(name = "vendor_location", nullable = false)
+    @Column(name = "vendor_location")
     private String vendor_location;
 
     @Column(name = "funding_source")

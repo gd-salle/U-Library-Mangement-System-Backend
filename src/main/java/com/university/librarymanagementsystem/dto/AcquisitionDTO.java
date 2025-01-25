@@ -15,7 +15,7 @@ public class AcquisitionDTO {
     private String isbn;
     private String publisher;
     private String edition;
-    private String series;
+    private String published_date;
     private float purchase_price;
     private String purchase_date;
     private String acquired_date;
