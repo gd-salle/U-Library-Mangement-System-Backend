@@ -8,7 +8,7 @@ public interface WeedingCriteriaService {
 
     WeedingCriteriaDTO createWeedingCriteria(WeedingCriteriaDTO weedingCriteriaDTO);
 
-    WeedingCriteriaDTO updateWeedingCriteria(Integer id, WeedingCriteriaDTO weedingCriteriaDTO);
+    WeedingCriteriaDTO updateWeedingCriteria(WeedingCriteriaDTO weedingCriteriaDTO);
 
     void deleteWeedingCriteria(Integer id);
 

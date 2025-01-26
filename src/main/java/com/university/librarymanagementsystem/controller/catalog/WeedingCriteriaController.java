@@ -30,11 +30,11 @@ public class WeedingCriteriaController {
                 weedingCriteriaService.createWeedingCriteria(weedingCriteriaDTO));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<WeedingCriteriaDTO> updateWeedingCriteria(@PathVariable Integer id,
+    @PutMapping("/update-criteria")
+    public ResponseEntity<WeedingCriteriaDTO> updateWeedingCriteria(
             @RequestBody WeedingCriteriaDTO weedingCriteriaDTO) {
         return ResponseEntity.ok(weedingCriteriaService
-                .updateWeedingCriteria(id, weedingCriteriaDTO));
+                .updateWeedingCriteria(weedingCriteriaDTO));
     }
 
     @DeleteMapping("/{id}")
