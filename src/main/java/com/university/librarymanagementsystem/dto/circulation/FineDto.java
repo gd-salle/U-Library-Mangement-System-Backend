@@ -16,6 +16,9 @@ public class FineDto {
     private Long fineId;
     private Long loanId;
     private Long userId;
+    private String stakeholder_id;
+    private String first_name;
+    private String last_name;
     private LocalDateTime borrowDate;
     private LocalDateTime dueDate;
     private LocalDateTime returnDate;

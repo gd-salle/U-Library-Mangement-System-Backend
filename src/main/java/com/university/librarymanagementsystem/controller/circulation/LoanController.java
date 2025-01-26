@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.university.librarymanagementsystem.dto.circulation.BorrowerDetailsDto;
 import com.university.librarymanagementsystem.dto.circulation.LoanDto;
 import com.university.librarymanagementsystem.entity.circulation.Loans;
-import com.university.librarymanagementsystem.service.curriculum.LoanService;
+import com.university.librarymanagementsystem.service.circulation.LoanService;
 
 @RestController
 @RequestMapping("/admin/")
@@ -29,6 +29,11 @@ public class LoanController {
     @GetMapping("all-loans")
     public ResponseEntity<List<LoanDto>> getAllLoans() {
         return ResponseEntity.ok(loanService.getAllLoanDetails());
+    }
+
+    @GetMapping("borrowed-loans")
+    public ResponseEntity<List<LoanDto>> getBorrowedLoans() {
+        return ResponseEntity.ok(loanService.getAllLoanWithBorrowedStatus());
     }
 
     @GetMapping("borrower-details/{cardNum}")

@@ -18,7 +18,7 @@ import com.university.librarymanagementsystem.repository.catalog.BookRepository;
 import com.university.librarymanagementsystem.repository.circulation.FineRepository;
 import com.university.librarymanagementsystem.repository.circulation.LoanRepository;
 import com.university.librarymanagementsystem.repository.user.UserRepo;
-import com.university.librarymanagementsystem.service.curriculum.LoanService;
+import com.university.librarymanagementsystem.service.circulation.LoanService;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -38,6 +38,12 @@ public class LoanServiceImpl implements LoanService {
     public List<LoanDto> getAllLoanDetails() {
         List<Object[]> rawResults = loanRepository.findAllLoanDetails();
         return rawResults.stream().map(LoanMapper::toLoanDto).toList(); // Map raw data to LoanDto
+    }
+
+    @Override
+    public List<LoanDto> getAllLoanWithBorrowedStatus() {
+        List<Object[]> result = loanRepository.findAllBorrowedLoans();
+        return result.stream().map(LoanMapper::toLoanDto).toList();
     }
 
     @Override
