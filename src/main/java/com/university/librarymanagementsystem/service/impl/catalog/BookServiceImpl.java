@@ -145,4 +145,9 @@ public class BookServiceImpl implements BookService {
         return "NOTFOUND";
     }
 
+    @Override
+    public String fetchLastAccessionNumber() {
+        Optional<String> accessionNumber = bookRepository.findLastAddedBookAccessionNumber();
+        return accessionNumber.orElseThrow(() -> new ResourceNotFoundException("No books found in the database."));
+    }
 }
