@@ -1,4 +1,4 @@
-package com.university.librarymanagementsystem.entity.catalog;
+package com.university.librarymanagementsystem.enums;
 
 public enum WeedStatus {
     FLAGGED,

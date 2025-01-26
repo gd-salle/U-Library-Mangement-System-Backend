@@ -2,7 +2,7 @@ package com.university.librarymanagementsystem.mapper.catalog;
 
 import com.university.librarymanagementsystem.dto.catalog.BookWeedingStatusDTO;
 import com.university.librarymanagementsystem.entity.catalog.BookWeedingStatus;
-import com.university.librarymanagementsystem.entity.catalog.WeedStatus;
+import com.university.librarymanagementsystem.enums.WeedStatus;
 
 public class BookWeedingStatusMapper {
 

@@ -67,4 +67,8 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
         @Query(value = "SELECT l FROM loan l WHERE l.return_date IS NULL AND l.due_date < :currentDate", nativeQuery = true)
         List<Loans> findOverdueLoansList(LocalDateTime currentDate);
 
+        @Query("SELECT COUNT(l) FROM Loans l WHERE l.book.id = :bookId AND l.borrowDate >= :startDate")
+        long countLoansByBookIdWithinLastYear(@Param("bookId") Long bookId,
+                        @Param("startDate") LocalDateTime startDate);
+
 }
