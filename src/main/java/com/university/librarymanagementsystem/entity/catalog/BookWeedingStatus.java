@@ -1,6 +1,6 @@
 package com.university.librarymanagementsystem.entity.catalog;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,16 +42,9 @@ public class BookWeedingStatus {
     private WeedStatus weedStatus;
 
     @Column(name = "review_date")
-    private Date reviewDate;
+    private LocalDate reviewDate;
 
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
-}
-
-enum WeedStatus {
-    FLAGGED,
-    REVIEWED,
-    KEPT,
-    WEEDED
 }

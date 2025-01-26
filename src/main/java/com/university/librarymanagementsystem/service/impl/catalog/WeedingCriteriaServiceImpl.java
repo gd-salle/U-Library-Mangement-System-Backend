@@ -26,19 +26,35 @@ public class WeedingCriteriaServiceImpl implements WeedingCriteriaService {
     }
 
     @Override
-    public WeedingCriteriaDTO updateWeedingCriteria(Integer id, WeedingCriteriaDTO weedingCriteriaDTO) {
-        WeedingCriteria existingCriteria = weedingCriteriaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Weeding Criteria not found for id: " + id));
+    public WeedingCriteriaDTO updateWeedingCriteria(WeedingCriteriaDTO weedingCriteriaDTO) {
+        WeedingCriteria existingCriteria = weedingCriteriaRepository.findById(
+                weedingCriteriaDTO.getId())
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Weeding Criteria not found for id: " + weedingCriteriaDTO
+                                .getId()));
 
-        // Update existing criteria manually since we don't have a specific update
-        // method in mapper
-        existingCriteria.setDdc(weedingCriteriaDTO.getDdc());
-        existingCriteria.setMinYearsOld(weedingCriteriaDTO.getMinYearsOld());
-        existingCriteria.setConditionThreshold(weedingCriteriaDTO.getConditionThreshold());
-        existingCriteria.setUsageThreshold(weedingCriteriaDTO.getUsageThreshold());
-        existingCriteria.setLanguage(weedingCriteriaDTO.getLanguage());
-        existingCriteria.setDuplicationCheck(weedingCriteriaDTO.getDuplicationCheck());
-        existingCriteria.setCriteriaStatus(weedingCriteriaDTO.getCriteriaStatus());
+        // Only update the fields that are not null in the request
+        if (weedingCriteriaDTO.getDdc() != null) {
+            existingCriteria.setDdc(weedingCriteriaDTO.getDdc());
+        }
+        if (weedingCriteriaDTO.getMinYearsOld() != null) {
+            existingCriteria.setMinYearsOld(weedingCriteriaDTO.getMinYearsOld());
+        }
+        if (weedingCriteriaDTO.getConditionThreshold() != null) {
+            existingCriteria.setConditionThreshold(weedingCriteriaDTO.getConditionThreshold());
+        }
+        if (weedingCriteriaDTO.getUsageThreshold() != null) {
+            existingCriteria.setUsageThreshold(weedingCriteriaDTO.getUsageThreshold());
+        }
+        if (weedingCriteriaDTO.getLanguage() != null) {
+            existingCriteria.setLanguage(weedingCriteriaDTO.getLanguage());
+        }
+        if (weedingCriteriaDTO.getDuplicationCheck() != null) {
+            existingCriteria.setDuplicationCheck(weedingCriteriaDTO.getDuplicationCheck());
+        }
+        if (weedingCriteriaDTO.getCriteriaStatus() != null) {
+            existingCriteria.setCriteriaStatus(weedingCriteriaDTO.getCriteriaStatus());
+        }
 
         WeedingCriteria updatedCriteria = weedingCriteriaRepository.save(existingCriteria);
         return WeedingCriteriaMapper.mapToWeedingCriteriaDto(updatedCriteria);

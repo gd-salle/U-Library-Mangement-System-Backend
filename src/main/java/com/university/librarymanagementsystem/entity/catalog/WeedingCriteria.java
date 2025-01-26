@@ -23,25 +23,25 @@ public class WeedingCriteria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "ddc", nullable = false, length = 3)
+    @Column(name = "ddc", length = 3)
     private String ddc; // Dewey Decimal Classification
 
-    @Column(name = "min_years_old", nullable = false)
+    @Column(name = "min_years_old")
     private Integer minYearsOld; // Minimum number of years old for weeding consideration
 
-    @Column(name = "condition_threshold", nullable = false, length = 20)
+    @Column(name = "condition_threshold", length = 20)
     private String conditionThreshold; // e.g., 'poor', 'fair' for physical condition
 
-    @Column(name = "usage_threshold", nullable = false)
+    @Column(name = "usage_threshold")
     private Integer usageThreshold; // Number of times borrowed in the last 'n' years
 
     @Column(name = "language", length = 50)
     private String language; // Language criteria for weeding
 
-    @Column(name = "duplication_check", nullable = false)
-    private Boolean duplicationCheck = false;
+    @Column(name = "duplication_check")
+    private Boolean duplicationCheck = true;
 
-    @Column(name = "criteria_status", nullable = false)
+    @Column(name = "criteria_status")
     private Boolean criteriaStatus = true;
 
 }
