@@ -45,6 +45,32 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public List<SubjectDTO> addSubjects(List<SubjectDTO> subjectDTOs) {
+        List<Subject> subjects = subjectDTOs.stream()
+                .map(subjectDTO -> {
+                    Program program = programRepository.findByName(subjectDTO.getProgram_name())
+                            .orElseThrow(() -> new ResourceNotFoundException(
+                                    "Program with ID " + subjectDTO.getProgram_id() + " not found!"));
+                    Subject subject = SubjectMapper.maptoSubject(subjectDTO);
+                    subject.setProgram(program);
+                    subject.setDepartment_id(program.getDepartment().getId());
+                    return subject;
+                })
+                .filter(subject -> !subjectRepository.existsByNameAndProgram(subject.getName(), subject.getProgram()))
+                .collect(Collectors.toList());
+
+        if (subjects.isEmpty()) {
+            throw new DuplicateEntryException("All provided subjects already exist.");
+        }
+
+        List<Subject> savedSubjects = subjectRepository.saveAll(subjects);
+
+        return savedSubjects.stream()
+                .map(SubjectMapper::mapToSubjectDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public SubjectDTO getSubjectByID(Integer subjectID) {
         Subject subject = subjectRepository.findById(subjectID)
                 .orElseThrow(() -> new ResourceNotFoundException("ID not existing:" + subjectID));
