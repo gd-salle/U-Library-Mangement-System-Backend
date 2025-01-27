@@ -17,7 +17,7 @@ public interface LoanService {
 
     List<LoanDto> getLoansDetails(Long loanId);
 
-    LoanDto updateLoanStatus(Long loanId, LoanDto loanDto);
+    LoanDto updateLoanStatus(Long loanId, LoanDto loanDto, String action);
 
     List<Loans> getOverdueLoans();
 
