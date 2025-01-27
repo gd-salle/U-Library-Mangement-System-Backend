@@ -32,6 +32,13 @@ public class DepartmentController {
         return new ResponseEntity<>(savedDepartment, HttpStatus.CREATED);
     }
 
+    // ADDING MULTIPLE DEPARTMENTS
+    @PostMapping("/bulk")
+    public ResponseEntity<List<DepartmentDTO>> addDepartments(@RequestBody List<DepartmentDTO> departmentDTOs) {
+        List<DepartmentDTO> savedDepartments = departmentService.addDepartments(departmentDTOs);
+        return new ResponseEntity<>(savedDepartments, HttpStatus.CREATED);
+    }
+
     // FETCHING OF DEPARTMENT BY ID
     @GetMapping("{id}")
     public ResponseEntity<DepartmentDTO> getDepartmentByID(@PathVariable("id") Integer departmentID) {

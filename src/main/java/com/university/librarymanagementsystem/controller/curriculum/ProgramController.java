@@ -32,6 +32,13 @@ public class ProgramController {
         return new ResponseEntity<>(savedProgram, HttpStatus.CREATED);
     }
 
+    // ADDING MULTIPLE PROGRAMS
+    @PostMapping("/bulk")
+    public ResponseEntity<List<ProgramDTO>> addPrograms(@RequestBody List<ProgramDTO> programDTOs) {
+        List<ProgramDTO> savedPrograms = programService.addPrograms(programDTOs);
+        return new ResponseEntity<>(savedPrograms, HttpStatus.CREATED);
+    }
+
     // FETCHING PROGRAM BY ID
     @GetMapping("{id}")
     public ResponseEntity<ProgramDTO> getProgramByID(@PathVariable("id") Integer programID) {
