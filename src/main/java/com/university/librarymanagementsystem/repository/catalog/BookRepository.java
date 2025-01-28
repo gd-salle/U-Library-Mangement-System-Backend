@@ -34,4 +34,24 @@ public interface BookRepository extends JpaRepository<Book, Long>, BookRepositor
         @Query(value = "SELECT accession_no FROM books ORDER BY id DESC LIMIT 1", nativeQuery = true)
         Optional<String> findLastAddedBookAccessionNumber();
 
+        @Query("SELECT b FROM Book b " +
+                        "WHERE (CAST(SUBSTRING(b.callNumber, 1, 3) AS integer) BETWEEN :ddcStart AND :ddcEnd) " +
+                        "AND b.language = :language")
+        List<Book> findByDdcAndLanguage(
+                        @Param("ddcStart") int ddcStart,
+                        @Param("ddcEnd") int ddcEnd,
+                        @Param("language") String language);
+
+        @Query("SELECT COALESCE(COUNT(b) - 1, 0) " +
+                        "FROM Book b " +
+                        "WHERE b.title = :title AND b.isbn10 = :isbn10 AND b.isbn13 = :isbn13 " +
+                        "GROUP BY b.title, b.isbn10, b.isbn13 " +
+                        "HAVING COUNT(b) > 1")
+        Long getTotalDuplicatedBooks(@Param("title") String title,
+                        @Param("isbn10") String isbn10,
+                        @Param("isbn13") String isbn13);
+
+        @Query(value = "SELECT bc.condition FROM book_condition bc WHERE bc.book_id = :bookId", nativeQuery = true)
+        Optional<String> getBookConditionByBookId(@Param("bookId") Long bookId);
+
 }

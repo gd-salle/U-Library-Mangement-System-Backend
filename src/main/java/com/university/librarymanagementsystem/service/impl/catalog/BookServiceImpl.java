@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
+import com.university.librarymanagementsystem.dto.catalog.WeedInfoDTO;
 import com.university.librarymanagementsystem.entity.catalog.Book;
+import com.university.librarymanagementsystem.enums.WeedStatus;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.mapper.catalog.BookMapper;
 import com.university.librarymanagementsystem.repository.catalog.BookRepository;
@@ -149,5 +151,18 @@ public class BookServiceImpl implements BookService {
     public String fetchLastAccessionNumber() {
         Optional<String> accessionNumber = bookRepository.findLastAddedBookAccessionNumber();
         return accessionNumber.orElseThrow(() -> new ResourceNotFoundException("No books found in the database."));
+    }
+
+    @Override
+    public void weedBook(WeedInfoDTO weedInfoDTO) {
+        Optional<Book> bookOptional = bookRepository.findById(weedInfoDTO.getBookId());
+        if (bookOptional.isEmpty()) {
+            throw new IllegalArgumentException("Book not found with ID: " + weedInfoDTO.getBookId());
+        }
+
+        Book book = bookOptional
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found with ID: " + weedInfoDTO.getBookId()));
+        book.setStatus(weedInfoDTO.getWeedStatus().toString());
+        bookRepository.save(book);
     }
 }
