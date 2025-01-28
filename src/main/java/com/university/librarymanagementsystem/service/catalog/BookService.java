@@ -3,6 +3,7 @@ package com.university.librarymanagementsystem.service.catalog;
 import java.util.List;
 
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
+import com.university.librarymanagementsystem.dto.catalog.WeedInfoDTO;
 
 public interface BookService {
 
@@ -17,5 +18,7 @@ public interface BookService {
     String getLatestAccessionNo(String title, String isbn10, String isbn13, String locationPrefix);
 
     String fetchLastAccessionNumber();
+
+    void weedBook(WeedInfoDTO weedInfoDTO);
 
 }

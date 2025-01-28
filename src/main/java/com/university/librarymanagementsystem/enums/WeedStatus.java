@@ -4,5 +4,6 @@ public enum WeedStatus {
     FLAGGED,
     REVIEWED,
     KEPT,
-    WEEDED
+    WEEDED,
+    ARCHIVED
 }

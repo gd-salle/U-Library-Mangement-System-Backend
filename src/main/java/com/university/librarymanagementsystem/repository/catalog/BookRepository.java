@@ -51,4 +51,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, BookRepositor
                         @Param("isbn10") String isbn10,
                         @Param("isbn13") String isbn13);
 
+        @Query(value = "SELECT bc.condition FROM book_condition bc WHERE bc.book_id = :bookId", nativeQuery = true)
+        Optional<String> getBookConditionByBookId(@Param("bookId") Long bookId);
+
 }

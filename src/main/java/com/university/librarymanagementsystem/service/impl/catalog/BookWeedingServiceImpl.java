@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.university.librarymanagementsystem.dto.catalog.BookWeedingDTO;
+import com.university.librarymanagementsystem.dto.catalog.WeedInfoDTO;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.entity.catalog.BookWeeding;
 import com.university.librarymanagementsystem.entity.catalog.BookWeedingStatus;
@@ -17,12 +19,15 @@ import com.university.librarymanagementsystem.entity.catalog.WeedingCriteria;
 import com.university.librarymanagementsystem.enums.ProcessStatus;
 import com.university.librarymanagementsystem.enums.WeedStatus;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
+import com.university.librarymanagementsystem.mapper.catalog.BookWeedingMapper;
 import com.university.librarymanagementsystem.repository.catalog.BookRepository;
 import com.university.librarymanagementsystem.repository.catalog.BookWeedingRepository;
 import com.university.librarymanagementsystem.repository.catalog.BookWeedingStatusRepository;
 import com.university.librarymanagementsystem.repository.catalog.WeedingCriteriaRepository;
 import com.university.librarymanagementsystem.repository.circulation.LoanRepository;
 import com.university.librarymanagementsystem.service.catalog.BookWeedingService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class BookWeedingServiceImpl implements BookWeedingService {
@@ -44,11 +49,13 @@ public class BookWeedingServiceImpl implements BookWeedingService {
 
     @Override
     @Scheduled(cron = "0 0 0 1 1 ?")
+    @Transactional
     public void annualWeedingFlagging() {
         initiateWeedingProcess("System");
     }
 
     @Override
+    @Transactional
     public void manualWeedingFlagging() {
         initiateWeedingProcess("Manual");
     }
@@ -60,9 +67,13 @@ public class BookWeedingServiceImpl implements BookWeedingService {
         weed.setInitiator(initiator);
         BookWeeding savedWeed = bookWeedingRepository.save(weed);
         flagBooksForWeeding(savedWeed.getId());
+        // Update the process status to IN_PROGRESS after flagging books
+        savedWeed.setStatus(ProcessStatus.IN_PROGRESS);
+        bookWeedingRepository.save(savedWeed);
     }
 
     @Override
+    @Transactional
     public void flagBooksForWeeding(Long processId) {
         BookWeeding weed = bookWeedingRepository.findById(processId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book Weeding not found with id: " + processId));
@@ -75,6 +86,16 @@ public class BookWeedingServiceImpl implements BookWeedingService {
             List<Book> books = bookRepository.findByDdcAndLanguage(ddcStart, ddcEnd, criteria.getLanguage());
 
             for (Book book : books) {
+                // Check if the book has already been weeded
+                Optional<BookWeedingStatus> existingWeedingStatus = bookWeedingStatusRepository
+                        .findByBookId(book.getId());
+                if (existingWeedingStatus.isPresent()
+                        &&
+                        (book.getStatus().equals(WeedStatus.WEEDED.toString())
+                                || book.getStatus().equals(WeedStatus.ARCHIVED.toString()))) {
+                    continue; // Skip this book if it's already weeded or archived
+                }
+
                 if (shouldBeWeeded(book, criteria)) {
                     flagBook(book, criteria, weed);
                 }
@@ -85,7 +106,6 @@ public class BookWeedingServiceImpl implements BookWeedingService {
     private boolean shouldBeWeeded(Book book, WeedingCriteria criteria) {
 
         int bookAge = 0;
-
         try {
             // Assuming the book's published date is in "yyyy-MM-dd" format
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -98,8 +118,8 @@ public class BookWeedingServiceImpl implements BookWeedingService {
             e.printStackTrace();
             // Handle parsing or calculation errors here (e.g., invalid date format)
         }
-
-        boolean conditionCheck = book.getStatus().toLowerCase()
+        Optional<String> bookCondition = bookRepository.getBookConditionByBookId(book.getId());
+        boolean conditionCheck = bookCondition.isPresent() && bookCondition.get().toLowerCase()
                 .contains(criteria.getConditionThreshold().toLowerCase());
         LocalDateTime oneYearAgo = LocalDateTime.now().minusYears(1);
         long borrowCount = loanRepository.countLoansByBookIdWithinLastYear(book.getId(), oneYearAgo);
@@ -118,27 +138,42 @@ public class BookWeedingServiceImpl implements BookWeedingService {
     public void flagBook(Book book, WeedingCriteria weedingCriteria, BookWeeding bookWeeding) {
         Optional<BookWeedingStatus> existingBookWeedingStatus = bookWeedingStatusRepository.findByBookId(book.getId());
 
+        BookWeedingStatus bookWeedingStatus;
         if (existingBookWeedingStatus.isPresent()) {
-            BookWeedingStatus weedingStatus = existingBookWeedingStatus.get();
-            if (weedingStatus.getWeedStatus() != WeedStatus.FLAGGED) {
+            bookWeedingStatus = existingBookWeedingStatus.get();
+            if (bookWeedingStatus.getWeedStatus() != WeedStatus.FLAGGED) {
                 // Update existing status if not already flagged
-                weedingStatus.setWeedStatus(WeedStatus.FLAGGED);
-                weedingStatus.setReviewDate(LocalDate.now());
-                weedingStatus.setWeedingCriteria(weedingCriteria);
-                weedingStatus.setBookWeeding(bookWeeding);
-                bookWeedingStatusRepository.save(weedingStatus);
+                bookWeedingStatus.setWeedStatus(WeedStatus.FLAGGED);
+                bookWeedingStatus.setReviewDate(LocalDate.now());
+                bookWeedingStatus.setWeedingCriteria(weedingCriteria);
+                bookWeedingStatus.setBookWeeding(bookWeeding);
             }
-            // If the book is already flagged, we do nothing here
         } else {
             // If no existing weeding status, create a new one
-            BookWeedingStatus newStatus = new BookWeedingStatus();
-            newStatus.setBook(book);
-            newStatus.setWeedingCriteria(weedingCriteria);
-            newStatus.setWeedStatus(WeedStatus.FLAGGED);
-            newStatus.setReviewDate(LocalDate.now());
-            newStatus.setBookWeeding(bookWeeding);
-            bookWeedingStatusRepository.save(newStatus);
+            bookWeedingStatus = new BookWeedingStatus();
+            bookWeedingStatus.setBook(book);
+            bookWeedingStatus.setWeedingCriteria(weedingCriteria);
+            bookWeedingStatus.setWeedStatus(WeedStatus.FLAGGED);
+            bookWeedingStatus.setReviewDate(LocalDate.now());
+            bookWeedingStatus.setBookWeeding(bookWeeding);
         }
+        bookWeedingStatusRepository.save(bookWeedingStatus);
+    }
+
+    @Override
+    @Transactional
+    public void updateBookWeeding(WeedInfoDTO weedInfoDTO) {
+        BookWeeding bookWeedToUpdate = bookWeedingRepository.findById(
+                weedInfoDTO.getWeedProcessId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Book Weeding not found with id: " + weedInfoDTO.getWeedProcessId()));
+
+        bookWeedToUpdate.setEndDate(weedInfoDTO.getProcessEndDate());
+        bookWeedToUpdate.setNotes(weedInfoDTO.getProcessNotes());
+        bookWeedToUpdate.setStatus(weedInfoDTO.getProcessStatus());
+
+        bookWeedingRepository.save(bookWeedToUpdate);
+
     }
 
 }
