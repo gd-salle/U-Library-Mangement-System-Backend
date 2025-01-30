@@ -184,7 +184,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public boolean isBookLoanedByBarcode(String accessionNo) {
+    public boolean isBookLoanedByAccessionNo(String accessionNo) {
 
         List<Loans> activeLoans = loanRepository.findByBookAccessionNoAndStatus(accessionNo, "Borrowed");
         return !activeLoans.isEmpty(); // If there are active loans, the book is loaned out

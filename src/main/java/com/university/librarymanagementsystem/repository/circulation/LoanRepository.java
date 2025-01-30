@@ -16,7 +16,6 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
         @Query(value = "SELECT " +
                         "l.loan_id AS loanId, " +
                         "b.accession_no AS accessionNo, " +
-                        "b.barcode AS barcode, " +
                         "b.title AS title, " +
                         "b.call_number AS callNumber, " +
                         "a.name AS authorName, " +
@@ -39,7 +38,6 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
         @Query(value = "SELECT " +
                         "l.loan_id AS loanId, " +
                         "b.accession_no AS accessionNo, " +
-                        "b.barcode AS barcode, " +
                         "b.title AS title, " +
                         "b.call_number AS callNumber, " +
                         "a.name AS authorName, " +
@@ -62,7 +60,6 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
         @Query(value = "SELECT " +
                         "l.loan_id AS loanId, " +
                         "b.accession_no AS accessionNo, " +
-                        "b.barcode AS barcode, " +
                         "b.title AS title, " +
                         "b.call_number AS callNumber, " +
                         "a.name AS authorName, " +

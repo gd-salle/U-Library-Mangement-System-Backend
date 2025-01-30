@@ -47,7 +47,7 @@ public class LoanController {
         return ResponseEntity.ok(loanService.saveLoan(loanDto));
     }
 
-    @GetMapping("loans/barcode/{id}")
+    @GetMapping("loans/accessionNo/{id}")
     public ResponseEntity<List<LoanDto>> getLoanDetailById(@PathVariable("id") Long param) {
         return ResponseEntity.ok(loanService.getLoansDetails(param));
     }
@@ -61,7 +61,7 @@ public class LoanController {
 
     @GetMapping("check-book-loan-status/accessionNo/{accessionNo}")
     public ResponseEntity<Map<String, Boolean>> checkBookLoanStatus(@PathVariable String accessionNo) {
-        boolean isLoaned = loanService.isBookLoanedByBarcode(accessionNo);
+        boolean isLoaned = loanService.isBookLoanedByAccessionNo(accessionNo);
         Map<String, Boolean> response = new HashMap<>();
         response.put("isLoaned", isLoaned);
         return ResponseEntity.ok(response);

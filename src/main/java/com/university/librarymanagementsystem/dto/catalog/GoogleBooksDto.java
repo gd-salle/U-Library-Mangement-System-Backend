@@ -29,7 +29,6 @@ public class GoogleBooksDto {
     private String printType;
 
     private String status;
-    private String barcode;
     private String callNumber;
     private Double purchasePrice;
     private String section;

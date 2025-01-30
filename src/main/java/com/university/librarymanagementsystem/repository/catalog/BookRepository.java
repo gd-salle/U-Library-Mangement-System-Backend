@@ -20,8 +20,6 @@ public interface BookRepository extends JpaRepository<Book, Long>, BookRepositor
         @Query("SELECT b FROM Book b WHERE b.accessionNo LIKE ?1%")
         List<Book> findBooksByAccessionNo(String locationPrefix);
 
-        // Optional<Book> findByBarcode(String barcode);
-
         Optional<Book> findByAccessionNo(String accessionNo);
 
         boolean existsByTitleAndIsbn10AndIsbn13(String title, String isbn10, String isbn13);

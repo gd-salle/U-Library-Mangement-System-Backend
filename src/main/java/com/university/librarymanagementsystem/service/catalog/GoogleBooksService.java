@@ -107,7 +107,6 @@ public class GoogleBooksService {
         book.setThumbnail(bookDto.getThumbnail());
         book.setPrintType(bookDto.getPrintType());
         book.setStatus(bookDto.getStatus());
-        book.setBarcode(bookDto.getBarcode());
         book.setCallNumber(bookDto.getCallNumber());
         book.setPurchasePrice(bookDto.getPurchasePrice());
         book.setSection(bookDto.getSection());

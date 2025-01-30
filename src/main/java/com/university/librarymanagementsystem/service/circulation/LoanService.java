@@ -21,6 +21,6 @@ public interface LoanService {
 
     List<Loans> getOverdueLoans();
 
-    boolean isBookLoanedByBarcode(String barcode);
+    boolean isBookLoanedByAccessionNo(String accessionNo);
 
 }
