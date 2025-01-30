@@ -18,7 +18,7 @@ import com.university.librarymanagementsystem.repository.catalog.BookRepository;
 import com.university.librarymanagementsystem.repository.circulation.FineRepository;
 import com.university.librarymanagementsystem.repository.circulation.LoanRepository;
 import com.university.librarymanagementsystem.repository.user.UserRepo;
-import com.university.librarymanagementsystem.service.curriculum.LoanService;
+import com.university.librarymanagementsystem.service.circulation.LoanService;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -38,6 +38,12 @@ public class LoanServiceImpl implements LoanService {
     public List<LoanDto> getAllLoanDetails() {
         List<Object[]> rawResults = loanRepository.findAllLoanDetails();
         return rawResults.stream().map(LoanMapper::toLoanDto).toList(); // Map raw data to LoanDto
+    }
+
+    @Override
+    public List<LoanDto> getAllLoanWithBorrowedStatus() {
+        List<Object[]> result = loanRepository.findAllBorrowedLoans();
+        return result.stream().map(LoanMapper::toLoanDto).toList();
     }
 
     @Override
@@ -114,26 +120,44 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public LoanDto updateLoanStatus(Long loanId, LoanDto loanDto) {
+    public LoanDto updateLoanStatus(Long loanId, LoanDto loanDto, String action) {
         // Find the loan by loan ID
         Loans loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new ResourceNotFoundException("Loan not found"));
 
         // Find the associated book by the loaned book's accession number
         Book book = loan.getBook();
-
-        // Check if the loan status is "Returned", and update the return date and book
-        // status
+        System.out.println("STATUS:" + action);
+        // Handle "Returned" status updates
         if ("Returned".equals(loanDto.getStatus())) {
-            // Update the return date to the current date
+            // Update the return date to the current date if not provided
             loan.setReturnDate(loanDto.getReturnDate() != null ? loanDto.getReturnDate() : LocalDateTime.now());
 
             // Update the book status to "Available"
             book.setStatus("Available");
-            bookRepository.save(book);
+            bookRepository.save(book); // Save the updated book
+        }
+        // Handle "Renewed" status updates
+        if ("Renewed".equals(action)) {
+            // Update borrow date to the current date/time if not provided
+            LocalDateTime newBorrowDate = loanDto.getBorrowDate() != null
+                    ? loanDto.getBorrowDate().atZone(ZoneId.of("Asia/Manila")).toLocalDateTime()
+                    : LocalDateTime.now(ZoneId.of("Asia/Manila"));
+
+            loan.setBorrowDate(newBorrowDate);
+
+            // Update the due date to one day after the new borrow date
+            loan.setDueDate(newBorrowDate.plusDays(1));
+
+            // Set the loan status to "Borrowed"
+            loan.setStatus("Borrowed");
+
+            // Update the book's status to "Loaned Out"
+            book.setStatus("Loaned Out");
+            bookRepository.save(book); // Save the updated book
         }
 
-        // Update the loan status
+        // Update the loan status in all cases
         loan.setStatus(loanDto.getStatus());
 
         // Save the updated loan record
@@ -149,6 +173,8 @@ public class LoanServiceImpl implements LoanService {
         responseDto.setDueDate(updatedLoan.getDueDate());
         responseDto.setStatus(updatedLoan.getStatus());
 
+        System.out.println("Updating loan status: {}" + loanDto.getStatus());
+        System.out.println("New borrow date: {}" + updatedLoan.getBorrowDate());
         return responseDto;
     }
 

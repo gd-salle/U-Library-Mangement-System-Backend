@@ -41,6 +41,19 @@ public class SubjectController {
         }
     }
 
+    @PostMapping("/bulk")
+    public ResponseEntity<Object> addSubjects(@RequestBody List<SubjectDTO> subjectDTOs) {
+        try {
+            List<SubjectDTO> savedSubjects = subjectService.addSubjects(subjectDTOs);
+            return new ResponseEntity<>(savedSubjects, HttpStatus.CREATED);
+        } catch (DuplicateEntryException e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse("Duplicate subjects: " + e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("An unexpected error occurred: " + e.getMessage()));
+        }
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<SubjectDTO> getSubjectByID(@PathVariable("id") Integer subjectID) {
         SubjectDTO subjectDTO = subjectService.getSubjectByID(subjectID);

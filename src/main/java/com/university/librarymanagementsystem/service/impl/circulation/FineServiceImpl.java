@@ -11,9 +11,10 @@ import org.springframework.stereotype.Service;
 import com.university.librarymanagementsystem.dto.circulation.FineDto;
 import com.university.librarymanagementsystem.entity.circulation.Fine;
 import com.university.librarymanagementsystem.entity.circulation.Loans;
+import com.university.librarymanagementsystem.mapper.circulation.FineMapper;
 import com.university.librarymanagementsystem.repository.circulation.FineRepository;
 import com.university.librarymanagementsystem.repository.circulation.LoanRepository;
-import com.university.librarymanagementsystem.service.curriculum.FineService;
+import com.university.librarymanagementsystem.service.circulation.FineService;
 
 @Service
 public class FineServiceImpl implements FineService {
@@ -133,11 +134,18 @@ public class FineServiceImpl implements FineService {
                         fine.getFineId(),
                         fine.getLoan().getLoanId(),
                         fine.getUser().getUserId(),
+                        null, null, null,
                         fine.getBorrowDate(),
                         fine.getDueDate(),
                         fine.getReturnDate(),
                         fine.getFineAmount(),
                         fine.isPaid()))
                 .toList();
+    }
+
+    @Override
+    public List<FineDto> getAllFinesDetails() {
+        List<Object[]> result = fineRepository.findAllFineDetails();
+        return result.stream().map(FineMapper::toFineDto).toList();
     }
 }

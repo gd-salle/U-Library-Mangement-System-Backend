@@ -7,6 +7,8 @@ import com.university.librarymanagementsystem.dto.curriculum.SubjectDTO;
 public interface SubjectService {
     SubjectDTO addSubject(SubjectDTO subjectDTO);
 
+    List<SubjectDTO> addSubjects(List<SubjectDTO> subjectDTOs);
+
     SubjectDTO getSubjectByID(Integer subjectID);
 
     List<SubjectDTO> getAllSubjects();

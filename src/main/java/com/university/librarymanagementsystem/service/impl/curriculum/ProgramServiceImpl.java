@@ -45,6 +45,31 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     @Override
+    public List<ProgramDTO> addPrograms(List<ProgramDTO> programDTOs) {
+        List<Program> programs = programDTOs.stream()
+                .map(programDTO -> {
+                    Department department = departmentRepository.findByName(programDTO.getDepartment_name())
+                            .orElseThrow(() -> new ResourceNotFoundException(
+                                    "Department with ID " + programDTO.getDepartment_id() + " not found!"));
+                    Program program = ProgramMapper.mapToProgram(programDTO);
+                    program.setDepartment(department);
+                    return program;
+                })
+                .filter(program -> !programRepository.existsByName(program.getName()))
+                .collect(Collectors.toList());
+
+        if (programs.isEmpty()) {
+            throw new DuplicateEntryException("All provided programs already exist.");
+        }
+
+        List<Program> savedPrograms = programRepository.saveAll(programs);
+
+        return savedPrograms.stream()
+                .map(ProgramMapper::mapToProgramDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ProgramDTO getProgramByID(Integer programID) {
         Program program = programRepository.findById(programID)
                 .orElseThrow(() -> new ResourceNotFoundException("not existing" + programID));

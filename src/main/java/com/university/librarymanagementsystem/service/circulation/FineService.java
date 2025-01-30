@@ -1,4 +1,4 @@
-package com.university.librarymanagementsystem.service.curriculum;
+package com.university.librarymanagementsystem.service.circulation;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,4 +11,6 @@ public interface FineService {
     List<Fine> calculateAndSaveFines();
 
     List<FineDto> getAllFines();
+
+    List<FineDto> getAllFinesDetails();
 }

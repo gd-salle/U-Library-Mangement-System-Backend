@@ -35,6 +35,28 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    public List<DepartmentDTO> addDepartments(List<DepartmentDTO> departmentDTOs) {
+        List<Department> departments = departmentDTOs.stream()
+                .map(DepartmentMapper::mapToDepartment)
+                .collect(Collectors.toList());
+
+        // Filter out duplicates before saving
+        List<Department> nonDuplicateDepartments = departments.stream()
+                .filter(department -> !departmentRepository.existsByName(department.getName()))
+                .collect(Collectors.toList());
+
+        if (nonDuplicateDepartments.isEmpty()) {
+            throw new DuplicateEntryException("All provided departments already exist.");
+        }
+
+        List<Department> savedDepartments = departmentRepository.saveAll(nonDuplicateDepartments);
+
+        return savedDepartments.stream()
+                .map(DepartmentMapper::mapToDepartmentDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public DepartmentDTO getDepartmentById(Integer departmentID) {
         Department department = departmentRepository.findById(departmentID)
                 .orElseThrow(() -> new ResourceNotFoundException("not exisiting" + departmentID));

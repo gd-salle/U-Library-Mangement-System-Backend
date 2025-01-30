@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.university.librarymanagementsystem.dto.circulation.FineDto;
 import com.university.librarymanagementsystem.entity.circulation.Fine;
-import com.university.librarymanagementsystem.service.curriculum.FineService;
+import com.university.librarymanagementsystem.service.circulation.FineService;
 
 @RestController
 @RequestMapping("/adminuser/")
@@ -31,4 +31,8 @@ public class FIneController {
         return ResponseEntity.ok(fineService.getAllFines());
     }
 
+    @GetMapping("get-all-fine-details")
+    public ResponseEntity<List<FineDto>> getAllFineDetails() {
+        return ResponseEntity.ok(fineService.getAllFinesDetails());
+    }
 }
