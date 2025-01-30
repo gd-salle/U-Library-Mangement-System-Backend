@@ -33,7 +33,7 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
                         "JOIN authors a ON ba.author_id = a.id " +
                         "JOIN users u ON l.user_id = u.user_id " +
                         "JOIN stakeholders s ON u.school_id = s.id " +
-                        "JOIN department d ON s.department = d.id", nativeQuery = true)
+                        "JOIN departments d ON s.departments = d.id", nativeQuery = true)
         List<Object[]> findAllLoanDetails();
 
         @Query(value = "SELECT " +
@@ -55,7 +55,7 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
                         "JOIN authors a ON ba.author_id = a.id " +
                         "JOIN users u ON l.user_id = u.user_id " +
                         "JOIN stakeholders s ON u.school_id = s.id " +
-                        "JOIN department d ON s.department = d.id " +
+                        "JOIN departments d ON s.departments = d.id " +
                         "WHERE l.status = 'Borrowed'", nativeQuery = true)
         List<Object[]> findAllBorrowedLoans();
 
@@ -78,7 +78,7 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
                         "JOIN authors a ON ba.author_id = a.id " +
                         "JOIN users u ON l.user_id = u.user_id " +
                         "JOIN stakeholders s ON u.school_id = s.id " +
-                        "JOIN department d ON s.department = d.id " +
+                        "JOIN departments d ON s.departments = d.id " +
                         "WHERE l.loan_id = :loanId", nativeQuery = true)
         List<Object[]> findLoanDetailById(Long loanId);
 

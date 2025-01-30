@@ -32,36 +32,42 @@ public class DepartmentController {
         return new ResponseEntity<>(savedDepartment, HttpStatus.CREATED);
     }
 
-    // ADDING MULTIPLE DEPARTMENTS
-    @PostMapping("/bulk")
-    public ResponseEntity<List<DepartmentDTO>> addDepartments(@RequestBody List<DepartmentDTO> departmentDTOs) {
-        List<DepartmentDTO> savedDepartments = departmentService.addDepartments(departmentDTOs);
-        return new ResponseEntity<>(savedDepartments, HttpStatus.CREATED);
-    }
+    // // ADDING MULTIPLE DEPARTMENTS
+    // @PostMapping("/bulk")
+    // public ResponseEntity<List<DepartmentDTO>> addDepartments(@RequestBody
+    // List<DepartmentDTO> departmentDTOs) {
+    // List<DepartmentDTO> savedDepartments =
+    // departmentService.addDepartments(departmentDTOs);
+    // return new ResponseEntity<>(savedDepartments, HttpStatus.CREATED);
+    // }
 
-    // FETCHING OF DEPARTMENT BY ID
-    @GetMapping("{id}")
-    public ResponseEntity<DepartmentDTO> getDepartmentByID(@PathVariable("id") Integer departmentID) {
-        DepartmentDTO departmentDTO = departmentService.getDepartmentById(departmentID);
+    // // FETCHING OF DEPARTMENT BY ID
+    // @GetMapping("{id}")
+    // public ResponseEntity<DepartmentDTO> getDepartmentByID(@PathVariable("id")
+    // Integer departmentID) {
+    // DepartmentDTO departmentDTO =
+    // departmentService.getDepartmentById(departmentID);
 
-        return ResponseEntity.ok(departmentDTO);
-    }
+    // return ResponseEntity.ok(departmentDTO);
+    // }
 
-    // FETCHING ALL DEPARTMENTS
-    @GetMapping
-    public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
-        List<DepartmentDTO> departments = departmentService.getAllDepartments();
+    // // FETCHING ALL DEPARTMENTS
+    // @GetMapping
+    // public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
+    // List<DepartmentDTO> departments = departmentService.getAllDepartments();
 
-        return ResponseEntity.ok(departments);
-    }
+    // return ResponseEntity.ok(departments);
+    // }
 
-    // UPDATING DEPARTMENT
-    @PutMapping("{id}")
-    public ResponseEntity<DepartmentDTO> updateDepartment(@PathVariable("id") Integer departmentID,
-            @RequestBody DepartmentDTO updatedDepartment) {
+    // // UPDATING DEPARTMENT
+    // @PutMapping("{id}")
+    // public ResponseEntity<DepartmentDTO> updateDepartment(@PathVariable("id")
+    // Integer departmentID,
+    // @RequestBody DepartmentDTO updatedDepartment) {
 
-        DepartmentDTO departmentDTO = departmentService.updateDepartment(departmentID, updatedDepartment);
+    // DepartmentDTO departmentDTO =
+    // departmentService.updateDepartment(departmentID, updatedDepartment);
 
-        return ResponseEntity.ok(departmentDTO);
-    }
+    // return ResponseEntity.ok(departmentDTO);
+    // }
 }

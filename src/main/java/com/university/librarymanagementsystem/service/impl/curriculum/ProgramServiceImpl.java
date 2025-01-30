@@ -31,11 +31,13 @@ public class ProgramServiceImpl implements ProgramService {
 
         Program program = ProgramMapper.mapToProgram(programDTO);
 
-        boolean isExisting = programRepository.existsByName(programDTO.getName());
+        // boolean isExisting =
+        // programRepository.existsByName(programDTO.getDescription());
 
-        if (isExisting) {
-            throw new DuplicateEntryException("A program with the same name is already existed!");
-        }
+        // if (isExisting) {
+        // throw new DuplicateEntryException("A program with the same name is already
+        // existed!");
+        // }
 
         program.setDepartment(department);
 
@@ -44,70 +46,78 @@ public class ProgramServiceImpl implements ProgramService {
         return ProgramMapper.mapToProgramDTO(savedProgram);
     }
 
-    @Override
-    public List<ProgramDTO> addPrograms(List<ProgramDTO> programDTOs) {
-        List<Program> programs = programDTOs.stream()
-                .map(programDTO -> {
-                    Department department = departmentRepository.findByName(programDTO.getDepartment_name())
-                            .orElseThrow(() -> new ResourceNotFoundException(
-                                    "Department with ID " + programDTO.getDepartment_id() + " not found!"));
-                    Program program = ProgramMapper.mapToProgram(programDTO);
-                    program.setDepartment(department);
-                    return program;
-                })
-                .filter(program -> !programRepository.existsByName(program.getName()))
-                .collect(Collectors.toList());
+    // @Override
+    // public List<ProgramDTO> addPrograms(List<ProgramDTO> programDTOs) {
+    // List<Program> programs = programDTOs.stream()
+    // .map(programDTO -> {
+    // Department department =
+    // departmentRepository.findByName(programDTO.getDepartment_name())
+    // .orElseThrow(() -> new ResourceNotFoundException(
+    // "Department with ID " + programDTO.getDepartment_id() + " not found!"));
+    // Program program = ProgramMapper.mapToProgram(programDTO);
+    // program.setDepartment(department);
+    // return program;
+    // })
+    // .filter(program -> !programRepository.existsByName(program.getDescription()))
+    // .collect(Collectors.toList());
 
-        if (programs.isEmpty()) {
-            throw new DuplicateEntryException("All provided programs already exist.");
-        }
+    // if (programs.isEmpty()) {
+    // throw new DuplicateEntryException("All provided programs already exist.");
+    // }
 
-        List<Program> savedPrograms = programRepository.saveAll(programs);
+    // List<Program> savedPrograms = programRepository.saveAll(programs);
 
-        return savedPrograms.stream()
-                .map(ProgramMapper::mapToProgramDTO)
-                .collect(Collectors.toList());
-    }
+    // return savedPrograms.stream()
+    // .map(ProgramMapper::mapToProgramDTO)
+    // .collect(Collectors.toList());
+    // }
 
-    @Override
-    public ProgramDTO getProgramByID(Integer programID) {
-        Program program = programRepository.findById(programID)
-                .orElseThrow(() -> new ResourceNotFoundException("not existing" + programID));
+    // @Override
+    // public ProgramDTO getProgramByID(Integer programID) {
+    // Program program = programRepository.findById(programID)
+    // .orElseThrow(() -> new ResourceNotFoundException("not existing" +
+    // programID));
 
-        return ProgramMapper.mapToProgramDTO(program);
-    }
+    // return ProgramMapper.mapToProgramDTO(program);
+    // }
 
-    @Override
-    public List<ProgramDTO> getAllPrograms() {
-        List<Program> programs = programRepository.findAll();
+    // @Override
+    // public List<ProgramDTO> getAllPrograms() {
+    // List<Program> programs = programRepository.findAll();
 
-        return programs.stream().map((program) -> ProgramMapper.mapToProgramDTO(program))
-                .collect(Collectors.toList());
-    }
+    // return programs.stream().map((program) ->
+    // ProgramMapper.mapToProgramDTO(program))
+    // .collect(Collectors.toList());
+    // }
 
-    @Override
-    public List<ProgramDTO> getAllProgramsByDepartment(Integer departmentID) {
-        List<Program> programs = programRepository.findByDepartmentId(departmentID);
+    // @Override
+    // public List<ProgramDTO> getAllProgramsByDepartment(Integer departmentID) {
+    // List<Program> programs = programRepository.findByDepartmentId(departmentID);
 
-        return programs.stream().map((program) -> ProgramMapper.mapToProgramDTO(program))
-                .collect(Collectors.toList());
-    }
+    // return programs.stream().map((program) ->
+    // ProgramMapper.mapToProgramDTO(program))
+    // .collect(Collectors.toList());
+    // }
 
-    @Override
-    public ProgramDTO updateDepartment(Integer programID, ProgramDTO updatedProgram) {
-        Program program = programRepository.findById(programID)
-                .orElseThrow(() -> new ResourceNotFoundException("Program not existing with given ID" + programID));
+    // @Override
+    // public ProgramDTO updateDepartment(Integer programID, ProgramDTO
+    // updatedProgram) {
+    // Program program = programRepository.findById(programID)
+    // .orElseThrow(() -> new ResourceNotFoundException("Program not existing with
+    // given ID" + programID));
 
-        Department department = departmentRepository.findById(updatedProgram.getDepartment_id())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Department not existing with the given ID" + updatedProgram.getDepartment_id()));
-        program.setName(updatedProgram.getName());
-        program.setDepartment(department);
-        program.setStatus(updatedProgram.getStatus());
+    // Department department =
+    // departmentRepository.findById(updatedProgram.getDepartment_id())
+    // .orElseThrow(() -> new ResourceNotFoundException(
+    // "Department not existing with the given ID" +
+    // updatedProgram.getDepartment_id()));
+    // program.setDescription(updatedProgram.getDescription());
+    // program.setDepartment(department);
+    // program.setStatus(updatedProgram.getStatus());
 
-        Program updatedEntity = programRepository.save(program);
+    // Program updatedEntity = programRepository.save(program);
 
-        return ProgramMapper.mapToProgramDTO(updatedEntity);
-    }
+    // return ProgramMapper.mapToProgramDTO(updatedEntity);
+    // }
 
 }

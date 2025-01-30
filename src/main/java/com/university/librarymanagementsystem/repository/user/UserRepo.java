@@ -19,7 +19,7 @@ public interface UserRepo extends JpaRepository<Users, Long> {
                    d.name AS departmentName
             FROM users u
             INNER JOIN stakeholders s ON u.school_id = s.id
-            INNER JOIN department d ON s.department = d.id
+            INNER JOIN departments d ON s.department = d.id
             WHERE u.library_card_number = :libraryCardNumber
             """, nativeQuery = true)
     List<Object[]> findByLibraryCardNumberWithDepartment(String libraryCardNumber);

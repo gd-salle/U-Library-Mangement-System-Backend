@@ -7,13 +7,13 @@ import com.university.librarymanagementsystem.dto.curriculum.ProgramDTO;
 public interface ProgramService {
     ProgramDTO addProgram(ProgramDTO programDTO);
 
-    List<ProgramDTO> addPrograms(List<ProgramDTO> programDTOs);
+    // List<ProgramDTO> addPrograms(List<ProgramDTO> programDTOs);
 
-    ProgramDTO getProgramByID(Integer programID);
+    // ProgramDTO getProgramByID(Integer programID);
 
-    List<ProgramDTO> getAllPrograms();
+    // List<ProgramDTO> getAllPrograms();
 
-    List<ProgramDTO> getAllProgramsByDepartment(Integer departmentID);
+    // List<ProgramDTO> getAllProgramsByDepartment(Integer departmentID);
 
-    ProgramDTO updateDepartment(Integer programID, ProgramDTO updatedProgram);
+    // ProgramDTO updateDepartment(Integer programID, ProgramDTO updatedProgram);
 }

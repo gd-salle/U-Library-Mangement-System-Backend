@@ -40,7 +40,7 @@ public class StakeHolders {
     private String suffix;
 
     @ManyToOne
-    @JoinColumn(name = "department", referencedColumnName = "id")
+    @JoinColumn(name = "department", referencedColumnName = "dept_id")
     private Department department;
 
     @ManyToOne
