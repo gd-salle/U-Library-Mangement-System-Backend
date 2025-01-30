@@ -62,7 +62,7 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
         @Query(value = "SELECT * FROM loan l WHERE l.due_date < :currentDate", nativeQuery = true)
         List<Loans> findOverdueLoans(@Param("currentDate") LocalDateTime currentDate);
 
-        List<Loans> findByBookBarcodeAndStatus(String barcode, String status);
+        List<Loans> findByBookAccessionNoAndStatus(String accessionNo, String status);
 
         @Query(value = "SELECT l FROM loan l WHERE l.return_date IS NULL AND l.due_date < :currentDate", nativeQuery = true)
         List<Loans> findOverdueLoansList(LocalDateTime currentDate);

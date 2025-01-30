@@ -52,9 +52,9 @@ public class LoanController {
         return ResponseEntity.ok(updatedLoan);
     }
 
-    @GetMapping("check-book-loan-status/barcode/{barcode}")
-    public ResponseEntity<Map<String, Boolean>> checkBookLoanStatus(@PathVariable String barcode) {
-        boolean isLoaned = loanService.isBookLoanedByBarcode(barcode);
+    @GetMapping("check-book-loan-status/accessionNo/{accessionNo}")
+    public ResponseEntity<Map<String, Boolean>> checkBookLoanStatus(@PathVariable String accessionNo) {
+        boolean isLoaned = loanService.isBookLoanedByBarcode(accessionNo);
         Map<String, Boolean> response = new HashMap<>();
         response.put("isLoaned", isLoaned);
         return ResponseEntity.ok(response);
