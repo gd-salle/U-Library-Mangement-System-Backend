@@ -13,7 +13,7 @@ public interface BookService {
 
     String getLastAccessionNumber(String locationPrefix);
 
-    BookDto getBookByBarcode(String barcode);
+    BookDto getBookByAccessionNo(String accessionNo);
 
     String getLatestAccessionNo(String title, String isbn10, String isbn13, String locationPrefix);
 

@@ -13,16 +13,15 @@ public class LoanMapper {
         return new LoanDto(
                 (Long) result[0], // loanId
                 (String) result[1], // accessionNo
-                (String) result[2], // barcode
-                (String) result[3], // title
-                (String) result[4], // callNumber
-                (String) result[5], // authorName
-                (String) result[6], // borrowerLibraryCardNo
-                (String) result[7], // departmentName
-                convertTimestampToLocalDateTime(result[8]), // borrowDate
-                convertTimestampToLocalDateTime(result[9]), // returnDate
-                convertTimestampToLocalDateTime(result[10]), // due
-                (String) result[11] // status
+                (String) result[2], // title
+                (String) result[3], // callNumber
+                (String) result[4], // authorName
+                (String) result[5], // borrowerLibraryCardNo
+                (String) result[6], // departmentName
+                convertTimestampToLocalDateTime(result[7]), // borrowDate
+                convertTimestampToLocalDateTime(result[8]), // returnDate
+                convertTimestampToLocalDateTime(result[9]), // due
+                (String) result[10] // status
         );
     }
 

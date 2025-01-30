@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
 import com.university.librarymanagementsystem.dto.catalog.WeedInfoDTO;
 import com.university.librarymanagementsystem.entity.catalog.Book;
-import com.university.librarymanagementsystem.enums.WeedStatus;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.mapper.catalog.BookMapper;
 import com.university.librarymanagementsystem.repository.catalog.BookRepository;
@@ -76,9 +75,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto getBookByBarcode(String barcode) {
-        Book book = bookRepository.findByBarcode(barcode)
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found: " + barcode));
+    public BookDto getBookByAccessionNo(String accessionNo) {
+        Book book = bookRepository.findByAccessionNo(accessionNo)
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found: " + accessionNo));
 
         return BookMapper.toDto(book);
     }

@@ -184,10 +184,9 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public boolean isBookLoanedByBarcode(String barcode) {
-        // Assuming your Loan entity has a `bookBarcode` field where the barcode of the
-        // book is stored
-        List<Loans> activeLoans = loanRepository.findByBookBarcodeAndStatus(barcode, "Borrowed");
+    public boolean isBookLoanedByAccessionNo(String accessionNo) {
+
+        List<Loans> activeLoans = loanRepository.findByBookAccessionNoAndStatus(accessionNo, "Borrowed");
         return !activeLoans.isEmpty(); // If there are active loans, the book is loaned out
     }
 

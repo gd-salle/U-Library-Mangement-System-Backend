@@ -76,10 +76,10 @@ public class BookController {
         }
     }
 
-    @GetMapping("/barcode/{barcode}")
-    public ResponseEntity<BookDto> getBookByBarcode(@PathVariable String barcode) {
+    @GetMapping("/accessionNo/{accessionNo}")
+    public ResponseEntity<BookDto> getBookByAccessionNo(@PathVariable String accessionNo) {
         try {
-            BookDto book = bookService.getBookByBarcode(barcode);
+            BookDto book = bookService.getBookByAccessionNo(accessionNo);
             return ResponseEntity.ok(book);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
