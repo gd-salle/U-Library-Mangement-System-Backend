@@ -34,7 +34,9 @@ public class BookMapper {
                 book.getVendor(),
                 book.getFundingSource(),
                 book.getSubjects(),
-                book.getCollectionType());
+                book.getCollectionType(),
+                book.getBookCondition());
+
     }
 
 }

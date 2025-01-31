@@ -39,5 +39,6 @@ public class BookDto {
     private String fundingSource;
     private String subjects;
     private String collectionType;
+    private String bookCondition;
 
 }
