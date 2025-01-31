@@ -32,32 +32,29 @@ public class DepartmentController {
         return new ResponseEntity<>(savedDepartment, HttpStatus.CREATED);
     }
 
-    // // ADDING MULTIPLE DEPARTMENTS
-    // @PostMapping("/bulk")
-    // public ResponseEntity<List<DepartmentDTO>> addDepartments(@RequestBody
-    // List<DepartmentDTO> departmentDTOs) {
-    // List<DepartmentDTO> savedDepartments =
-    // departmentService.addDepartments(departmentDTOs);
-    // return new ResponseEntity<>(savedDepartments, HttpStatus.CREATED);
-    // }
+    // ADDING OF DEPARTMENTS VIA UPLOAD
+    @PostMapping("/upload")
+    public ResponseEntity<List<DepartmentDTO>> uploadDepartments(@RequestBody List<DepartmentDTO> deptDTO) {
+        List<DepartmentDTO> uploadedDepartments = departmentService.uploadDepartments(deptDTO);
 
-    // // FETCHING OF DEPARTMENT BY ID
-    // @GetMapping("{id}")
-    // public ResponseEntity<DepartmentDTO> getDepartmentByID(@PathVariable("id")
-    // Integer departmentID) {
-    // DepartmentDTO departmentDTO =
-    // departmentService.getDepartmentById(departmentID);
+        return new ResponseEntity<>(uploadedDepartments, HttpStatus.CREATED);
+    }
 
-    // return ResponseEntity.ok(departmentDTO);
-    // }
+    // FETCHING OF DEPARTMENT BY ID
+    @GetMapping("{id}")
+    public ResponseEntity<DepartmentDTO> getDepartmentByID(@PathVariable("id") String departmentID) {
+        DepartmentDTO departmentDTO = departmentService.getDepartmentById(departmentID);
 
-    // // FETCHING ALL DEPARTMENTS
-    // @GetMapping
-    // public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
-    // List<DepartmentDTO> departments = departmentService.getAllDepartments();
+        return ResponseEntity.ok(departmentDTO);
+    }
 
-    // return ResponseEntity.ok(departments);
-    // }
+    // FETCHING ALL DEPARTMENTS
+    @GetMapping
+    public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
+        List<DepartmentDTO> departments = departmentService.getAllDepartments();
+
+        return ResponseEntity.ok(departments);
+    }
 
     // // UPDATING DEPARTMENT
     // @PutMapping("{id}")
