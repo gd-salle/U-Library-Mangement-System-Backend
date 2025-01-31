@@ -38,4 +38,6 @@ public class GoogleBooksDto {
     private String vendor;
     private String fundingSource;
     private List<String> subjects;
+    private String collectionType;
+    private String bookCondition;
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -52,4 +53,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, BookRepositor
         @Query(value = "SELECT bc.condition FROM book_condition bc WHERE bc.book_id = :bookId", nativeQuery = true)
         Optional<String> getBookConditionByBookId(@Param("bookId") Long bookId);
 
+        @Modifying
+        @Query(value = "INSERT INTO book_condition (book_id, `condition`) VALUES (:bookId, :condition)", nativeQuery = true)
+        void saveBookCondition(@Param("bookId") Long bookId, @Param("condition") String condition);
 }

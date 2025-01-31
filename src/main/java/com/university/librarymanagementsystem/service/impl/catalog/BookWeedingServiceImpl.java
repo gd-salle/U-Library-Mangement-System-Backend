@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.university.librarymanagementsystem.dto.catalog.BookWeedingDTO;
 import com.university.librarymanagementsystem.dto.catalog.WeedInfoDTO;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.entity.catalog.BookWeeding;
@@ -19,7 +18,6 @@ import com.university.librarymanagementsystem.entity.catalog.WeedingCriteria;
 import com.university.librarymanagementsystem.enums.ProcessStatus;
 import com.university.librarymanagementsystem.enums.WeedStatus;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
-import com.university.librarymanagementsystem.mapper.catalog.BookWeedingMapper;
 import com.university.librarymanagementsystem.repository.catalog.BookRepository;
 import com.university.librarymanagementsystem.repository.catalog.BookWeedingRepository;
 import com.university.librarymanagementsystem.repository.catalog.BookWeedingStatusRepository;
