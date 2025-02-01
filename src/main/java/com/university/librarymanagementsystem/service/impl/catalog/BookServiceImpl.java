@@ -2,12 +2,15 @@ package com.university.librarymanagementsystem.service.impl.catalog;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.university.librarymanagementsystem.dto.catalog.AccessionDTO;
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
 import com.university.librarymanagementsystem.dto.catalog.WeedInfoDTO;
+import com.university.librarymanagementsystem.dto.circulation.BookLoanDetails;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.mapper.catalog.BookMapper;
@@ -74,12 +77,23 @@ public class BookServiceImpl implements BookService {
         return newAccessionNumberBase + " c." + (maxCopyNumber + 1);
     }
 
+    // Book borrowing
     @Override
-    public BookDto getBookByAccessionNo(String accessionNo) {
+    public BookLoanDetails getBookByAccessionNo(String accessionNo) {
+        // Retrieve the book by accession number
         Book book = bookRepository.findByAccessionNo(accessionNo)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found: " + accessionNo));
 
-        return BookMapper.toDto(book);
+        // Check if the book status is ARCHIVED, WEEDED, or LOST
+        if ("ARCHIVED".equalsIgnoreCase(book.getStatus()) ||
+                "WEEDED".equalsIgnoreCase(book.getStatus()) ||
+                "LOST".equalsIgnoreCase(book.getStatus())) {
+            throw new ResourceNotFoundException("The book is not available for borrowing. Status: " + book.getStatus());
+        }
+
+        // Proceed with mapping to BookLoanDetails if the book is available for
+        // borrowing
+        return BookMapper.mapToBookLoanDetails(book);
     }
 
     @Override
@@ -164,4 +178,13 @@ public class BookServiceImpl implements BookService {
         book.setStatus(weedInfoDTO.getWeedStatus().toString());
         bookRepository.save(book);
     }
+
+    @Override
+    public List<AccessionDTO> getAllAccessionNumbers() {
+        List<Book> books = bookRepository.findAllAccessionsWithSections();
+        return books.stream()
+                .map(BookMapper::mapToAccessionDTO)
+                .toList();
+    }
+
 }
