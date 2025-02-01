@@ -21,7 +21,7 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
                         "a.name AS authorName, " +
                         "u.library_card_number AS borrower, "
                         +
-                        "d.name AS departmentName, " +
+                        "d.dept_name AS departmentName, " +
                         "l.borrow_date AS borrowDate, " +
                         "l.return_date AS returnDate, " +
                         "l.due_date AS dueDate, " +
@@ -32,7 +32,7 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
                         "JOIN authors a ON ba.author_id = a.id " +
                         "JOIN users u ON l.user_id = u.user_id " +
                         "JOIN stakeholders s ON u.school_id = s.id " +
-                        "JOIN departments d ON s.departments = d.id", nativeQuery = true)
+                        "JOIN departments d ON s.department = d.dept_id", nativeQuery = true)
         List<Object[]> findAllLoanDetails();
 
         @Query(value = "SELECT " +
@@ -42,7 +42,7 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
                         "b.call_number AS callNumber, " +
                         "a.name AS authorName, " +
                         "u.library_card_number AS borrower, " +
-                        "d.name AS departmentName, " +
+                        "d.dept_name AS departmentName, " +
                         "l.borrow_date AS borrowDate, " +
                         "l.return_date AS returnDate, " +
                         "l.due_date AS dueDate, " +
@@ -53,7 +53,7 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
                         "JOIN authors a ON ba.author_id = a.id " +
                         "JOIN users u ON l.user_id = u.user_id " +
                         "JOIN stakeholders s ON u.school_id = s.id " +
-                        "JOIN departments d ON s.departments = d.id " +
+                        "JOIN departments d ON s.department = d.dept_id " +
                         "WHERE l.status = 'Borrowed'", nativeQuery = true)
         List<Object[]> findAllBorrowedLoans();
 
@@ -64,7 +64,7 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
                         "b.call_number AS callNumber, " +
                         "a.name AS authorName, " +
                         "u.library_card_number AS borrower, " +
-                        "d.name AS departmentName, " +
+                        "d.dept_name AS departmentName, " +
                         "l.borrow_date AS borrowDate, " +
                         "l.return_date AS returnDate, " +
                         "l.due_date AS dueDate, " +
@@ -75,7 +75,7 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
                         "JOIN authors a ON ba.author_id = a.id " +
                         "JOIN users u ON l.user_id = u.user_id " +
                         "JOIN stakeholders s ON u.school_id = s.id " +
-                        "JOIN departments d ON s.departments = d.id " +
+                        "JOIN departments d ON s.department = d.dept_id " +
                         "WHERE l.loan_id = :loanId", nativeQuery = true)
         List<Object[]> findLoanDetailById(Long loanId);
 

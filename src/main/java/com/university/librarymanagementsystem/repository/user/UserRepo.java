@@ -16,10 +16,10 @@ public interface UserRepo extends JpaRepository<Users, Long> {
 
     @Query(value = """
             SELECT u.library_card_number AS libraryCardNumber,
-                   d.name AS departmentName
+                   d.dept_name AS departmentName
             FROM users u
             INNER JOIN stakeholders s ON u.school_id = s.id
-            INNER JOIN departments d ON s.department = d.id
+            INNER JOIN departments d ON s.department = d.dept_id
             WHERE u.library_card_number = :libraryCardNumber
             """, nativeQuery = true)
     List<Object[]> findByLibraryCardNumberWithDepartment(String libraryCardNumber);
