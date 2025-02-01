@@ -94,22 +94,6 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .collect(Collectors.toList());
     }
 
-    // @Override
-    // public DepartmentDTO updateDepartment(String departmentID, DepartmentDTO
-    // updatedDepartment) {
-
-    // Department department =
-    // departmentRepository.findById(departmentID).orElseThrow(
-    // () -> new ResourceNotFoundException("Employee is not existing with given ID:"
-    // + departmentID));
-
-    // department.setName(updatedDepartment.getName());
-
-    // Department updatedDepartmentObj = departmentRepository.save(department);
-
-    // return DepartmentMapper.mapToDepartmentDTO(updatedDepartmentObj);
-    // }
-
     @Override
     public void updateMultipleDepartments(List<Department> departments) {
         for (Department department : departments) {

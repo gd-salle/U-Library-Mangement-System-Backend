@@ -27,18 +27,19 @@ public class ProgramController {
     // ADDING OF PROGRAMS
     @PostMapping
     public ResponseEntity<ProgramDTO> addProgram(@RequestBody ProgramDTO programDTO) {
-        System.out.println("Received Department ID:" + programDTO.getDepartment_id());
+        // System.out.println("Received Department ID:" +
+        // programDTO.getDepartment_id());
+        System.out.println("Received Department ID:" + programDTO.getDescription());
         ProgramDTO savedProgram = programService.addProgram(programDTO);
         return new ResponseEntity<>(savedProgram, HttpStatus.CREATED);
     }
 
-    // // ADDING MULTIPLE PROGRAMS
-    // @PostMapping("/bulk")
-    // public ResponseEntity<List<ProgramDTO>> addPrograms(@RequestBody
-    // List<ProgramDTO> programDTOs) {
-    // List<ProgramDTO> savedPrograms = programService.addPrograms(programDTOs);
-    // return new ResponseEntity<>(savedPrograms, HttpStatus.CREATED);
-    // }
+    // ADDING MULTIPLE PROGRAMS
+    @PostMapping("/upload")
+    public ResponseEntity<List<ProgramDTO>> uploadPrograms(@RequestBody List<ProgramDTO> programDTOs) {
+        List<ProgramDTO> savedPrograms = programService.uploadPrograms(programDTOs);
+        return new ResponseEntity<>(savedPrograms, HttpStatus.CREATED);
+    }
 
     // // FETCHING PROGRAM BY ID
     // @GetMapping("{id}")
@@ -49,23 +50,21 @@ public class ProgramController {
     // return ResponseEntity.ok(programDTO);
     // }
 
-    // // FETCHING ALL PROGRAMS
-    // @GetMapping
-    // public ResponseEntity<List<ProgramDTO>> getAllPrograms() {
-    // List<ProgramDTO> programs = programService.getAllPrograms();
+    // FETCHING ALL PROGRAMS
+    @GetMapping
+    public ResponseEntity<List<ProgramDTO>> getAllPrograms() {
+        List<ProgramDTO> programs = programService.getAllPrograms();
 
-    // return ResponseEntity.ok(programs);
-    // }
+        return ResponseEntity.ok(programs);
+    }
 
-    // // FETCHING ALL PROGRAMS BY DEPARTMENT ID
-    // @GetMapping("/department/{id}")
-    // public ResponseEntity<List<ProgramDTO>>
-    // getAllProgramsByDepartment(@PathVariable("id") Integer departmentID) {
-    // List<ProgramDTO> programs =
-    // programService.getAllProgramsByDepartment(departmentID);
+    // FETCHING ALL PROGRAMS BY DEPARTMENT ID
+    @GetMapping("/department/{id}")
+    public ResponseEntity<List<ProgramDTO>> getAllProgramsByDepartment(@PathVariable("id") String departmentID) {
+        List<ProgramDTO> programs = programService.getAllProgramsByDepartment(departmentID);
 
-    // return ResponseEntity.ok(programs);
-    // }
+        return ResponseEntity.ok(programs);
+    }
 
     // // UPDATING PROGRAM
     // @PutMapping("{id}")
