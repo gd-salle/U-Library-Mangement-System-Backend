@@ -4,8 +4,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.university.librarymanagementsystem.dto.catalog.AccessionDTO;
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
 import com.university.librarymanagementsystem.dto.catalog.BookSearchRequest;
+import com.university.librarymanagementsystem.dto.circulation.BookLoanDetails;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.mapper.catalog.BookMapper;
@@ -77,9 +79,9 @@ public class BookController {
     }
 
     @GetMapping("/accessionNo/{accessionNo}")
-    public ResponseEntity<BookDto> getBookByAccessionNo(@PathVariable String accessionNo) {
+    public ResponseEntity<BookLoanDetails> getBookByAccessionNo(@PathVariable String accessionNo) {
         try {
-            BookDto book = bookService.getBookByAccessionNo(accessionNo);
+            BookLoanDetails book = bookService.getBookByAccessionNo(accessionNo);
             return ResponseEntity.ok(book);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -103,6 +105,11 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error occurred while fetching the last added book's accession number.");
         }
+    }
+
+    @GetMapping("/all-accession-number")
+    public ResponseEntity<List<AccessionDTO>> getAllAccessionNumber() {
+        return ResponseEntity.ok(bookService.getAllAccessionNumbers());
     }
 
 }

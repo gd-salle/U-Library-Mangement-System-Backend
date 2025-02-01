@@ -37,9 +37,9 @@ public class LoanController {
         return ResponseEntity.ok(loanService.getAllLoanWithBorrowedStatus());
     }
 
-    @GetMapping("borrower-details/{cardNum}")
-    public BorrowerDetailsDto getBorrowerDetails(@PathVariable("cardNum") String libraryCardNumber) {
-        return loanService.getBorrowerDetails(libraryCardNumber);
+    @GetMapping("borrower-details/{idNumber}")
+    public BorrowerDetailsDto getBorrowerDetails(@PathVariable("idNumber") String idNumber) {
+        return loanService.getBorrowerDetails(idNumber);
     }
 
     @PostMapping("save-loan")

@@ -11,14 +11,18 @@ import com.university.librarymanagementsystem.dto.circulation.BorrowerDetailsDto
 import com.university.librarymanagementsystem.dto.circulation.LoanDto;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.entity.circulation.Loans;
+import com.university.librarymanagementsystem.entity.user.StakeHolders;
 import com.university.librarymanagementsystem.entity.user.Users;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.mapper.circulation.LoanMapper;
+import com.university.librarymanagementsystem.mapper.user.StakeHolderMapper;
 import com.university.librarymanagementsystem.repository.catalog.BookRepository;
 import com.university.librarymanagementsystem.repository.circulation.FineRepository;
 import com.university.librarymanagementsystem.repository.circulation.LoanRepository;
+import com.university.librarymanagementsystem.repository.user.StakeHolderRepository;
 import com.university.librarymanagementsystem.repository.user.UserRepo;
 import com.university.librarymanagementsystem.service.circulation.LoanService;
+import com.university.librarymanagementsystem.service.impl.user.StakeHolderServiceImpl;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -34,6 +38,9 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private FineRepository fineRepository;
 
+    @Autowired
+    private StakeHolderRepository stakeHolderRepository;
+
     @Override
     public List<LoanDto> getAllLoanDetails() {
         List<Object[]> rawResults = loanRepository.findAllLoanDetails();
@@ -47,13 +54,23 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BorrowerDetailsDto getBorrowerDetails(String libraryCardNumber) {
-        List<Object[]> result = userRepo.findByLibraryCardNumberWithDepartment(libraryCardNumber);
-        if (result.isEmpty()) {
-            throw new RuntimeException("Borrower not found for the provided library card number.");
-        }
-        Object[] row = result.get(0);
-        return new BorrowerDetailsDto((String) row[0], (String) row[1]);
+    public BorrowerDetailsDto getBorrowerDetails(String id) {
+        Users user = userRepo.findBySchoolId(id);
+
+        boolean isActivated = user != null;
+
+        StakeHolders stakeHolder = stakeHolderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Borrower not found: " + id));
+
+        boolean hasCurrentBorrowedBook = loanRepository.findAll().stream()
+                .anyMatch(loan -> loan.getUser().getSchoolId().equals(stakeHolder.getId()) &&
+                        "borrowed".equalsIgnoreCase(loan.getStatus()));
+
+        BorrowerDetailsDto borrowerDetailsDto = StakeHolderMapper.mapToBorrowerDetailsDto(stakeHolder);
+        borrowerDetailsDto.setHasCurrentBorrowedBook(hasCurrentBorrowedBook);
+        borrowerDetailsDto.setRegistered(isActivated);
+
+        return borrowerDetailsDto;
     }
 
     @Override
@@ -68,8 +85,7 @@ public class LoanServiceImpl implements LoanService {
         }
 
         // Find the user by borrower ID (library card number)
-        Users user = userRepo.findByLibraryCardNumber(loanDto.getBorrower())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Users user = userRepo.findBySchoolId(loanDto.getBorrower());
 
         // Update book status to Loaned Out
         book.setStatus("Loaned Out");
@@ -78,14 +94,12 @@ public class LoanServiceImpl implements LoanService {
         // Map LoanDto to Loan entity
         Loans loan = new Loans();
         loan.setBook(book);
-        loan.setUser(user); // Set the user reference
-        System.out.println("Received borrowDate: " + loanDto.getBorrowDate());
+        loan.setUser(user);
 
         // Set borrowDate to the current time in the Manila time zone (GMT+8)
         loan.setBorrowDate(loanDto.getBorrowDate() != null
                 ? loanDto.getBorrowDate().atZone(ZoneId.of("Asia/Manila")).toLocalDateTime()
                 : LocalDateTime.now(ZoneId.of("Asia/Manila")));
-        System.out.println("Received borrowDate: " + loan.getBorrowDate());
 
         // Ensure dueDate and returnDate are also adjusted to the Manila time zone if
         // necessary

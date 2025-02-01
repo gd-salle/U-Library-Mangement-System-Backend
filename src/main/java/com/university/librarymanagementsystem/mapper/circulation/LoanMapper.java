@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import com.university.librarymanagementsystem.dto.circulation.LoanDto;
+import com.university.librarymanagementsystem.entity.circulation.Loans;
 
 public class LoanMapper {
 
@@ -38,4 +39,5 @@ public class LoanMapper {
 
         return null; // Return null if the object is not a Timestamp (fallback)
     }
+
 }

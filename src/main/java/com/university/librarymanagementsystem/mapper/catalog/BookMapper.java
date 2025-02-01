@@ -1,8 +1,11 @@
 package com.university.librarymanagementsystem.mapper.catalog;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
+import com.university.librarymanagementsystem.dto.catalog.AccessionDTO;
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
+import com.university.librarymanagementsystem.dto.circulation.BookLoanDetails;
 import com.university.librarymanagementsystem.entity.catalog.Author;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 
@@ -39,4 +42,24 @@ public class BookMapper {
 
     }
 
+    public static AccessionDTO mapToAccessionDTO(Book book) {
+        AccessionDTO accessionDTO = new AccessionDTO();
+        accessionDTO.setAccessionNo(book.getAccessionNo());
+        accessionDTO.setSection(book.getSection());
+        return accessionDTO;
+    }
+
+    public static BookLoanDetails mapToBookLoanDetails(Book book) {
+        BookLoanDetails bookLoanDetails = new BookLoanDetails();
+        bookLoanDetails.setTitle(book.getTitle());
+
+        List<String> authorsList = book.getAuthors().stream()
+                .map(Author::getName)
+                .toList();
+
+        bookLoanDetails.setAuthors(authorsList);
+        bookLoanDetails.setCallNumber(book.getCallNumber());
+        bookLoanDetails.setBookStatus(book.getStatus());
+        return bookLoanDetails;
+    }
 }

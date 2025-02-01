@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.university.librarymanagementsystem.dto.catalog.AccessionDTO;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 
 @Repository
@@ -56,4 +57,8 @@ public interface BookRepository extends JpaRepository<Book, Long>, BookRepositor
         @Modifying
         @Query(value = "INSERT INTO book_condition (book_id, `condition`) VALUES (:bookId, :condition)", nativeQuery = true)
         void saveBookCondition(@Param("bookId") Long bookId, @Param("condition") String condition);
+
+        @Query("SELECT b FROM Book b WHERE b.accessionNo IS NOT NULL AND b.section IS NOT NULL")
+        List<Book> findAllAccessionsWithSections();
+
 }

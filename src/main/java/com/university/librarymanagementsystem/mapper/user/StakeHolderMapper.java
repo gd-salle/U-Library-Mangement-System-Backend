@@ -1,5 +1,6 @@
 package com.university.librarymanagementsystem.mapper.user;
 
+import com.university.librarymanagementsystem.dto.circulation.BorrowerDetailsDto;
 import com.university.librarymanagementsystem.dto.user.StakeholdersDto;
 import com.university.librarymanagementsystem.entity.user.StakeHolders;
 
@@ -31,6 +32,14 @@ public class StakeHolderMapper {
                 stakeholdersDto.getContactNum(),
                 stakeholdersDto.getEmailAdd(),
                 stakeholdersDto.getStatus());
+    }
+
+    public static BorrowerDetailsDto mapToBorrowerDetailsDto(StakeHolders stakeHolders) {
+        BorrowerDetailsDto borrower = new BorrowerDetailsDto();
+        borrower.setIdNumber(stakeHolders.getId());
+        borrower.setDepartment(stakeHolders.getDepartment().getName());
+
+        return borrower;
     }
 
 }
