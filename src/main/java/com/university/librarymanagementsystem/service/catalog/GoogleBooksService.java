@@ -25,10 +25,12 @@ import com.university.librarymanagementsystem.entity.catalog.Author;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.entity.catalog.DdcClassification;
 import com.university.librarymanagementsystem.repository.catalog.AuthorRepository;
+import com.university.librarymanagementsystem.repository.catalog.BookRepository;
 import com.university.librarymanagementsystem.repository.catalog.DdcRepository;
 import com.university.librarymanagementsystem.repository.catalog.GoogleBooksRepository;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 
 @Service
 public class GoogleBooksService {
@@ -39,6 +41,8 @@ public class GoogleBooksService {
     private GoogleBooksProperties googleBooksProperties;
     @Autowired
     private GoogleBooksRepository googleBooksRepository;
+    @Autowired
+    private BookRepository bookRepository;
     @Autowired
     private AuthorRepository authorRepository;
     @Autowired
@@ -86,6 +90,7 @@ public class GoogleBooksService {
         return restTemplate.getForObject(uri, String.class);
     }
 
+    @Transactional
     public Book saveBook(GoogleBooksDto bookDto) {
 
         if (bookDto == null) {
@@ -107,7 +112,6 @@ public class GoogleBooksService {
         book.setThumbnail(bookDto.getThumbnail());
         book.setPrintType(bookDto.getPrintType());
         book.setStatus(bookDto.getStatus());
-        book.setBarcode(bookDto.getBarcode());
         book.setCallNumber(bookDto.getCallNumber());
         book.setPurchasePrice(bookDto.getPurchasePrice());
         book.setSection(bookDto.getSection());
@@ -117,6 +121,7 @@ public class GoogleBooksService {
         book.setVendor(bookDto.getVendor());
         book.setFundingSource(bookDto.getFundingSource());
         book.setSubjects(bookDto.getSubjects() != null ? String.join(",", bookDto.getSubjects()) : null);
+        book.setCollectionType(bookDto.getCollectionType());
 
         // Print book data before saving
 
@@ -133,11 +138,16 @@ public class GoogleBooksService {
                             });
                     author.getBooks().add(book);
                     return author;
-                }).collect(Collectors.toList());
+                }).toList();
         book.setAuthors(authors);
+        Book savedBook = googleBooksRepository.save(book);
 
-        // Save to database
-        return googleBooksRepository.save(book);
+        // Save book condition if provided
+        if (bookDto.getBookCondition() != null) {
+            bookRepository.saveBookCondition(savedBook.getId(), bookDto.getBookCondition());
+        }
+
+        return savedBook;
     }
 
     @SuppressWarnings("unchecked")

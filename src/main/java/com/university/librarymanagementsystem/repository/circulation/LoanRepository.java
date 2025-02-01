@@ -16,7 +16,6 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
         @Query(value = "SELECT " +
                         "l.loan_id AS loanId, " +
                         "b.accession_no AS accessionNo, " +
-                        "b.barcode AS barcode, " +
                         "b.title AS title, " +
                         "b.call_number AS callNumber, " +
                         "a.name AS authorName, " +
@@ -39,7 +38,6 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
         @Query(value = "SELECT " +
                         "l.loan_id AS loanId, " +
                         "b.accession_no AS accessionNo, " +
-                        "b.barcode AS barcode, " +
                         "b.title AS title, " +
                         "b.call_number AS callNumber, " +
                         "a.name AS authorName, " +
@@ -62,7 +60,6 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
         @Query(value = "SELECT " +
                         "l.loan_id AS loanId, " +
                         "b.accession_no AS accessionNo, " +
-                        "b.barcode AS barcode, " +
                         "b.title AS title, " +
                         "b.call_number AS callNumber, " +
                         "a.name AS authorName, " +
@@ -85,9 +82,13 @@ public interface LoanRepository extends JpaRepository<Loans, Long> {
         @Query(value = "SELECT * FROM loan l WHERE l.due_date < :currentDate", nativeQuery = true)
         List<Loans> findOverdueLoans(@Param("currentDate") LocalDateTime currentDate);
 
-        List<Loans> findByBookBarcodeAndStatus(String barcode, String status);
+        List<Loans> findByBookAccessionNoAndStatus(String accessionNo, String status);
 
         @Query(value = "SELECT l FROM loan l WHERE l.return_date IS NULL AND l.due_date < :currentDate", nativeQuery = true)
         List<Loans> findOverdueLoansList(LocalDateTime currentDate);
+
+        @Query("SELECT COUNT(l) FROM Loans l WHERE l.book.id = :bookId AND l.borrowDate >= :startDate")
+        long countLoansByBookIdWithinLastYear(@Param("bookId") Long bookId,
+                        @Param("startDate") LocalDateTime startDate);
 
 }

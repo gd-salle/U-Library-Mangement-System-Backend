@@ -17,7 +17,6 @@ public class LoanDto {
 
     private Long loanId;
     private String accessionNo;
-    private String barcode;
     private String title;
     private String callNumber;
     private String authorName;

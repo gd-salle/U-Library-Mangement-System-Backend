@@ -25,7 +25,6 @@ public class BookMapper {
                 book.getThumbnail(),
                 book.getPrintType(),
                 book.getStatus(),
-                book.getBarcode(),
                 book.getCallNumber(),
                 book.getPurchasePrice(),
                 book.getSection(),
@@ -35,7 +34,9 @@ public class BookMapper {
                 book.getVendor(),
                 book.getFundingSource(),
                 book.getSubjects(),
-                book.getCollectionType());
+                book.getCollectionType(),
+                book.getBookCondition());
+
     }
 
 }
