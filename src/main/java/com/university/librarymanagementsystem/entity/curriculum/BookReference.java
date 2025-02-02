@@ -31,9 +31,9 @@ public class BookReference {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_id", nullable = false)
+    @JoinColumn(name = "course_id", nullable = false)
     @JsonIgnore
-    private Subject subject;
+    private Course course;
 
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "books_id", nullable = false)

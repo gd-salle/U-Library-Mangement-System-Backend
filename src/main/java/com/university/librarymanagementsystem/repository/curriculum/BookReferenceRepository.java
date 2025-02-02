@@ -12,6 +12,7 @@ import com.university.librarymanagementsystem.entity.curriculum.BookReference;
 @Repository
 public interface BookReferenceRepository extends JpaRepository<BookReference, Integer> {
 
-    @Query("SELECT b FROM BookReference b WHERE b.subject.id = :subjectId")
-    List<BookReference> findAllBookReferenceBySubject(@Param("subjectId") Integer subjectId);
+    // @Query("SELECT b FROM BookReference b WHERE b.subject.id = :subjectId")
+    // List<BookReference> findAllBookReferenceBySubject(@Param("subjectId") Integer
+    // subjectId);
 }

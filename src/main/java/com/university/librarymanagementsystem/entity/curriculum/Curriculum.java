@@ -2,8 +2,6 @@ package com.university.librarymanagementsystem.entity.curriculum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,22 +17,26 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "programs")
+@Table(name = "curriculum")
 @Data
-public class Program {
-
+public class Curriculum {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int program_id;
+    @Column(name = "curr_id", length = 2, nullable = false)
+    private String id;
 
     @ManyToOne
-    @JoinColumn(name = "dept_id", nullable = false)
-    private Department department;
+    @JoinColumn(name = "program_id", nullable = false)
+    private Program program;
 
-    @Column(name = "prog_code", nullable = false)
-    private String code;
-    @Column(name = "prog_desc", nullable = false)
-    private String description;
+    @Column(name = "revision_no", nullable = false)
+    private int revision_no;
+
+    @Column(name = "effectivity_sem", nullable = false)
+    private int effectivity_sem;
+
+    @Column(name = "effectivity_sy", length = 4)
+    private String effectivity_sy;
+
     @Column(name = "status", nullable = false)
     private byte status;
 }

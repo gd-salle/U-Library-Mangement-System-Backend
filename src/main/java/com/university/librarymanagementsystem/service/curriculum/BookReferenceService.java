@@ -7,9 +7,10 @@ import com.university.librarymanagementsystem.dto.curriculum.BookReferenceDTO;
 public interface BookReferenceService {
     BookReferenceDTO addBookReference(BookReferenceDTO bookRefDTO);
 
-    List<BookReferenceDTO> getAllBookReference();
+    // List<BookReferenceDTO> getAllBookReference();
 
-    List<BookReferenceDTO> getAllBookRefBySubject(Integer subjectId);
+    // List<BookReferenceDTO> getAllBookRefBySubject(Integer subjectId);
 
-    BookReferenceDTO updateBookRef(Integer bookRefId, BookReferenceDTO updatedBookRef);
+    // BookReferenceDTO updateBookRef(Integer bookRefId, BookReferenceDTO
+    // updatedBookRef);
 }
