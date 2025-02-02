@@ -16,5 +16,5 @@ public interface StakeHolderRepository extends JpaRepository<StakeHolders, Strin
     @Query("SELECT s FROM StakeHolders s INNER JOIN s.department d INNER JOIN s.program c WHERE s.id = :studentId")
     StakeHolders findStakeholderById(@Param("studentId") String studentId);
 
-    // Optional<StakeHolders> findById(String id);
+    Optional<StakeHolders> findById(String id);
 }

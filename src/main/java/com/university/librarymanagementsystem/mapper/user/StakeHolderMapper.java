@@ -2,6 +2,7 @@ package com.university.librarymanagementsystem.mapper.user;
 
 import com.university.librarymanagementsystem.dto.circulation.BorrowerDetailsDto;
 import com.university.librarymanagementsystem.dto.user.StakeholdersDto;
+import com.university.librarymanagementsystem.dto.user.UserDetailsDto;
 import com.university.librarymanagementsystem.entity.user.StakeHolders;
 
 public class StakeHolderMapper {
@@ -40,6 +41,29 @@ public class StakeHolderMapper {
         borrower.setDepartment(stakeHolders.getDepartment().getName());
 
         return borrower;
+    }
+
+    public static UserDetailsDto mapToUserDetailsDto(StakeHolders stakeholder) {
+        UserDetailsDto userDetails = new UserDetailsDto();
+        userDetails.setId(stakeholder.getId());
+        userDetails.setFullName(fullName(stakeholder.getFirstName(), stakeholder.getMiddleName(),
+                stakeholder.getLastName(), stakeholder.getSuffix()));
+        userDetails.setDepartmentId(stakeholder.getDepartment().getId());
+        userDetails.setDepartmentName(stakeholder.getDepartment().getName());
+        userDetails.setProgramId(stakeholder.getProgram().getId());
+        userDetails.setProgramName(stakeholder.getProgram().getName());
+        userDetails.setEmailAdd(stakeholder.getEmailAdd());
+        userDetails.setContactNum(stakeholder.getContactNum());
+        return userDetails;
+
+    }
+
+    private static String fullName(String firstName, String middleName, String lastName, String suffix) {
+        return String.format("%s %s %s %s",
+                firstName,
+                middleName != null && !middleName.isEmpty() ? middleName : "",
+                lastName,
+                suffix != null && !suffix.isEmpty() ? suffix : "").trim();
     }
 
 }

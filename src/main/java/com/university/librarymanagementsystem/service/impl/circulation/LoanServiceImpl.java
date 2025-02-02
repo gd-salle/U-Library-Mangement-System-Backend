@@ -3,6 +3,7 @@ package com.university.librarymanagementsystem.service.impl.circulation;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,9 +56,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public BorrowerDetailsDto getBorrowerDetails(String id) {
-        Users user = userRepo.findBySchoolId(id);
+        Optional<Users> user = userRepo.findBySchoolId(id);
 
-        boolean isActivated = user != null;
+        boolean isActivated = user.isPresent();
 
         StakeHolders stakeHolder = stakeHolderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrower not found: " + id));
@@ -85,7 +86,8 @@ public class LoanServiceImpl implements LoanService {
         }
 
         // Find the user by borrower ID (library card number)
-        Users user = userRepo.findBySchoolId(loanDto.getBorrower());
+        Users user = userRepo.findBySchoolId(loanDto.getBorrower())
+                .orElseThrow(() -> new ResourceNotFoundException("No user found with Id: " + loanDto.getBorrower()));
 
         // Update book status to Loaned Out
         book.setStatus("Loaned Out");

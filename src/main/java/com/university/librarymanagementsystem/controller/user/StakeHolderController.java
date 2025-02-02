@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.university.librarymanagementsystem.dto.user.StakeholdersDto;
+import com.university.librarymanagementsystem.dto.user.UserDetailsDto;
 import com.university.librarymanagementsystem.service.user.OTPService;
 import com.university.librarymanagementsystem.service.user.StakeHolderService;
 
@@ -63,6 +64,13 @@ public class StakeHolderController {
             response.put("message", "Invalid or expired OTP!");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+    }
+
+    // User details
+    @GetMapping("/adminuser/{id}")
+    public ResponseEntity<UserDetailsDto> getUserDetails(@PathVariable("id") String id) {
+        UserDetailsDto userDetailsDto = stakeHolderService.getUserDetails(id);
+        return ResponseEntity.ok(userDetailsDto);
     }
 
 }
