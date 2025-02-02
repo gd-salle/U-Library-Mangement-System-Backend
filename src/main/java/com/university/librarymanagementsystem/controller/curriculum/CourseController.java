@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,16 +19,16 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/public/subjects")
+@RequestMapping("/public/courses")
 public class CourseController {
 
-    private CourseService subjectService;
+    private CourseService courseService;
 
     @PostMapping
     public ResponseEntity<Object> addSubject(@RequestBody CourseDTO subjectDTO) {
         try {
             System.out.println("Received Program ID: " + subjectDTO.getProgram_id());
-            CourseDTO savedSubject = subjectService.addCourse(subjectDTO);
+            CourseDTO savedSubject = courseService.addCourse(subjectDTO);
             return new ResponseEntity<>(savedSubject, HttpStatus.CREATED);
         } catch (DuplicateEntryException e) {
             // Return a custom error response for duplicate subjects
@@ -41,21 +40,12 @@ public class CourseController {
         }
     }
 
-    // @PostMapping("/bulk")
-    // public ResponseEntity<Object> addSubjects(@RequestBody List<CourseDTO>
-    // subjectDTOs) {
-    // try {
-    // List<CourseDTO> savedSubjects = subjectService.addSubjects(subjectDTOs);
-    // return new ResponseEntity<>(savedSubjects, HttpStatus.CREATED);
-    // } catch (DuplicateEntryException e) {
-    // return ResponseEntity.badRequest().body(new ErrorResponse("Duplicate
-    // subjects: " + e.getMessage()));
-    // } catch (Exception e) {
-    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-    // .body(new ErrorResponse("An unexpected error occurred: " + e.getMessage()));
-    // }
-    // }
+    @PostMapping("/upload")
+    public ResponseEntity<List<CourseDTO>> uploadCourse(@RequestBody List<CourseDTO> courseDTO) {
+        List<CourseDTO> courses = courseService.uploadCourses(courseDTO);
 
+        return new ResponseEntity<>(courses, HttpStatus.CREATED);
+    }
     // @GetMapping("{id}")
     // public ResponseEntity<CourseDTO> getSubjectByID(@PathVariable("id") Integer
     // subjectID) {
@@ -64,12 +54,12 @@ public class CourseController {
     // return ResponseEntity.ok(subjectDTO);
     // }
 
-    // @GetMapping
-    // public ResponseEntity<List<CourseDTO>> getAllPrograms() {
-    // List<CourseDTO> subjects = subjectService.getAllSubjects();
+    @GetMapping
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
+        List<CourseDTO> courses = courseService.getAllCourses();
 
-    // return ResponseEntity.ok(subjects);
-    // }
+        return ResponseEntity.ok(courses);
+    }
 
     // @GetMapping("/program/{id}")
     // public ResponseEntity<List<CourseDTO>>

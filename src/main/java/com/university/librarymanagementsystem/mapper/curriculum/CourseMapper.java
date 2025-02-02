@@ -24,7 +24,7 @@ public class CourseMapper {
 
     }
 
-    public static Course maptoSubject(CourseDTO courseDTO) {
+    public static Course maptoCourse(CourseDTO courseDTO) {
 
         Curriculum curr = new Curriculum();
         curr.setId(courseDTO.getCurr_id());
