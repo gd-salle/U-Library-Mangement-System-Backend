@@ -57,12 +57,6 @@ public class CourseServiceImpl implements CourseService {
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Curriculum with ID: " + courseDTO.getCurr_id() + " not found!"));
 
-            // Program program =
-            // programRepository.findById(curriculum.getProgram().getProgram_id())
-            // .orElseThrow(() -> new ResourceNotFoundException(
-            // "Program with ID " + curriculum.getProgram().getProgram_id() + " not
-            // found!"));
-
             Course course = CourseMapper.maptoCourse(courseDTO);
 
             course.setCurriculum(curriculum);
@@ -112,5 +106,19 @@ public class CourseServiceImpl implements CourseService {
         List<Course> courses = courseRepository.findAll();
 
         return courses.stream().map((course) -> CourseMapper.mapToCourseDTO(course)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CourseDTO> getAllCourseByProgram(Integer programId) {
+        List<Course> course = courseRepository.findByProgramId(programId);
+
+        return course.stream().map((courses) -> CourseMapper.mapToCourseDTO(courses)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CourseDTO> getAllCourseByRevision(Integer revisionNo) {
+        List<Course> course = courseRepository.findByRevisionNo(revisionNo);
+
+        return course.stream().map((courses) -> CourseMapper.mapToCourseDTO(courses)).collect(Collectors.toList());
     }
 }

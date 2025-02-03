@@ -46,13 +46,6 @@ public class CourseController {
 
         return new ResponseEntity<>(courses, HttpStatus.CREATED);
     }
-    // @GetMapping("{id}")
-    // public ResponseEntity<CourseDTO> getSubjectByID(@PathVariable("id") Integer
-    // subjectID) {
-    // CourseDTO subjectDTO = subjectService.getSubjectByID(subjectID);
-
-    // return ResponseEntity.ok(subjectDTO);
-    // }
 
     @GetMapping
     public ResponseEntity<List<CourseDTO>> getAllCourses() {
@@ -61,23 +54,19 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
 
-    // @GetMapping("/program/{id}")
-    // public ResponseEntity<List<CourseDTO>>
-    // getAllSubjectsByProgram(@PathVariable("id") Integer programId) {
-    // List<CourseDTO> subjects = subjectService.getAllSubjectsByProgram(programId);
+    @GetMapping("/program/{id}")
+    public ResponseEntity<List<CourseDTO>> gettAllCourseByProgram(@PathVariable("id") Integer programId) {
+        List<CourseDTO> courses = courseService.getAllCourseByProgram(programId);
 
-    // return ResponseEntity.ok(subjects);
-    // }
+        return ResponseEntity.ok(courses);
+    }
 
-    // @PutMapping("{id}")
-    // public ResponseEntity<CourseDTO> updateSubject(@PathVariable("id") Integer
-    // subjectID,
-    // @RequestBody CourseDTO updatedSubject) {
-    // CourseDTO subjectDTO = subjectService.updateSubject(subjectID,
-    // updatedSubject);
+    @GetMapping("/program/curriculum/rev/{id}")
+    public ResponseEntity<List<CourseDTO>> gettAllCourseByRevision(@PathVariable("id") Integer revisionNo) {
+        List<CourseDTO> courses = courseService.getAllCourseByRevision(revisionNo);
 
-    // return ResponseEntity.ok(subjectDTO);
-    // }
+        return ResponseEntity.ok(courses);
+    }
 
     static class ErrorResponse {
         private String message;
