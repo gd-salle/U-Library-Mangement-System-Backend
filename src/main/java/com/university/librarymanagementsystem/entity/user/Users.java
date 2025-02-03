@@ -34,8 +34,8 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "library_card_number", nullable = false, unique = true)
-    private String libraryCardNumber;
+    // @Column(name = "library_card_number", nullable = false, unique = true)
+    // private String libraryCardNumber;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -47,8 +47,8 @@ public class Users implements UserDetails {
     private String role;
 
     @ManyToOne
-    @JoinColumn(name = "school_id", referencedColumnName = "id")
-    private transient StakeHolders stakeholder;
+    @JoinColumn(name = "stakeholders", referencedColumnName = "id")
+    private StakeHolders stakeholder;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -57,7 +57,7 @@ public class Users implements UserDetails {
 
     @Override
     public String getUsername() {
-        return libraryCardNumber;
+        return schoolId;
     }
 
     @Override

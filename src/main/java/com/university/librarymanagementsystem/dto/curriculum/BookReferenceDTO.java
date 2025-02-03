@@ -15,9 +15,9 @@ import lombok.Setter;
 public class BookReferenceDTO {
     private int id;
 
-    @JsonProperty("subject_id")
-    private int subject_id;
-    private String subject_name;
+    @JsonProperty("course_id")
+    private int course_id;
+    private String course_name;
 
     // @JsonProperty("books_id")
     // private Long book_id;

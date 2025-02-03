@@ -36,33 +36,38 @@ public class BookReferenceController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<BookReferenceDTO>> getAllBookReference() {
-        List<BookReferenceDTO> bookReferences = bookReferenceService.getAllBookReference();
+    // @GetMapping
+    // public ResponseEntity<List<BookReferenceDTO>> getAllBookReference() {
+    // List<BookReferenceDTO> bookReferences =
+    // bookReferenceService.getAllBookReference();
 
-        return ResponseEntity.ok(bookReferences);
-    }
+    // return ResponseEntity.ok(bookReferences);
+    // }
 
-    @GetMapping("/subject/{id}")
-    public ResponseEntity<List<BookReferenceDTO>> getAllBookReferenceBySubject(@PathVariable("id") Integer subjectId) {
-        List<BookReferenceDTO> bookReferences = bookReferenceService.getAllBookRefBySubject(subjectId);
+    // @GetMapping("/subject/{id}")
+    // public ResponseEntity<List<BookReferenceDTO>>
+    // getAllBookReferenceBySubject(@PathVariable("id") Integer subjectId) {
+    // List<BookReferenceDTO> bookReferences =
+    // bookReferenceService.getAllBookRefBySubject(subjectId);
 
-        return ResponseEntity.ok(bookReferences);
-    }
+    // return ResponseEntity.ok(bookReferences);
+    // }
 
-    @PutMapping("{id}")
-    public ResponseEntity<BookReferenceDTO> updateBookReference(@PathVariable("id") Integer bookRefId,
-            @RequestBody BookReferenceDTO updatedBookRef) {
+    // @PutMapping("{id}")
+    // public ResponseEntity<BookReferenceDTO>
+    // updateBookReference(@PathVariable("id") Integer bookRefId,
+    // @RequestBody BookReferenceDTO updatedBookRef) {
 
-        try {
-            BookReferenceDTO bookRefDTO = bookReferenceService.updateBookRef(bookRefId, updatedBookRef);
+    // try {
+    // BookReferenceDTO bookRefDTO = bookReferenceService.updateBookRef(bookRefId,
+    // updatedBookRef);
 
-            return ResponseEntity.ok(bookRefDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    // return ResponseEntity.ok(bookRefDTO);
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // return null;
+    // }
+    // }
 
     static class ErrorResponse {
         private String message;

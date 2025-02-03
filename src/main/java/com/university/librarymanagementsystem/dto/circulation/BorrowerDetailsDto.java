@@ -14,6 +14,7 @@ public class BorrowerDetailsDto {
     private String idNumber;
     private String department;
     private boolean hasCurrentBorrowedBook;
+    private int reservationCount;
     private boolean registered;
 
 }

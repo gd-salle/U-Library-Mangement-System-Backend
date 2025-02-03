@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.university.librarymanagementsystem.dto.catalog.AccessionDTO;
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
 import com.university.librarymanagementsystem.dto.catalog.WeedInfoDTO;
-import com.university.librarymanagementsystem.dto.circulation.BookLoanDetails;
+import com.university.librarymanagementsystem.dto.circulation.BookLoanDetailsDTO;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.mapper.catalog.BookMapper;
@@ -79,7 +79,7 @@ public class BookServiceImpl implements BookService {
 
     // Book borrowing
     @Override
-    public BookLoanDetails getBookByAccessionNo(String accessionNo) {
+    public BookLoanDetailsDTO getBookByAccessionNo(String accessionNo) {
         // Retrieve the book by accession number
         Book book = bookRepository.findByAccessionNo(accessionNo)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found: " + accessionNo));
