@@ -9,11 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsersDto {
+public class OtpVerificationDTO {
 
-    private Long userId;
-    private String password;
-    private String schoolId;
-    private String role;
-
+    private String emailAdd;
+    private String otp;
 }

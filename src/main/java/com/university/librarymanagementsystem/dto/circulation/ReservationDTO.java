@@ -11,14 +11,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoanDto {
+public class ReservationDTO {
 
-    private Long loanId;
+    private Long reservationId;
     private Long bookId;
     private Long userId;
-    private LocalDateTime borrowDate;
-    private LocalDateTime returnDate;
-    private LocalDateTime dueDate;
-    private String status;
-
+    private LocalDateTime reservationDate;
+    private LocalDateTime expirationDate;
+    private String reservationStatus;
 }

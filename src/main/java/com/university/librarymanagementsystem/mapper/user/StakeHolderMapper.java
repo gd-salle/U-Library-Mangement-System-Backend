@@ -50,8 +50,8 @@ public class StakeHolderMapper {
                 stakeholder.getLastName(), stakeholder.getSuffix()));
         userDetails.setDepartmentId(stakeholder.getDepartment().getId());
         userDetails.setDepartmentName(stakeholder.getDepartment().getName());
-        userDetails.setProgramId(stakeholder.getProgram().getId());
-        userDetails.setProgramName(stakeholder.getProgram().getName());
+        userDetails.setProgramId(stakeholder.getProgram().getProgram_id());
+        userDetails.setProgramName(stakeholder.getProgram().getDescription());
         userDetails.setEmailAdd(stakeholder.getEmailAdd());
         userDetails.setContactNum(stakeholder.getContactNum());
         return userDetails;

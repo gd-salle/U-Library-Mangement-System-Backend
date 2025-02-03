@@ -5,7 +5,7 @@ import java.util.List;
 import com.university.librarymanagementsystem.dto.catalog.AccessionDTO;
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
 import com.university.librarymanagementsystem.dto.catalog.WeedInfoDTO;
-import com.university.librarymanagementsystem.dto.circulation.BookLoanDetails;
+import com.university.librarymanagementsystem.dto.circulation.BookLoanDetailsDTO;
 
 public interface BookService {
 
@@ -15,7 +15,7 @@ public interface BookService {
 
     String getLastAccessionNumber(String locationPrefix);
 
-    BookLoanDetails getBookByAccessionNo(String accessionNo);
+    BookLoanDetailsDTO getBookByAccessionNo(String accessionNo);
 
     String getLatestAccessionNo(String title, String isbn10, String isbn13, String locationPrefix);
 

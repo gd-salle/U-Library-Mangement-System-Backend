@@ -27,12 +27,8 @@ public class UserManagementService {
     public ReqRes register(ReqRes registrationRequest) {
         ReqRes resp = new ReqRes();
         try {
-            System.out.println("Attempting to register user with data: " + registrationRequest); // Log the request
-                                                                                                 // details
-
             Users ourUser = new Users();
-            ourUser.setLibraryCardNumber(registrationRequest.getUncIdNumber());
-            ourUser.setSchoolId(registrationRequest.getSchoolId());
+            ourUser.getStakeholder().setId(registrationRequest.getSchoolId());
             ourUser.setRole(registrationRequest.getRole());
             ourUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
 
@@ -46,7 +42,6 @@ public class UserManagementService {
                 resp.setStatusCode(500);
             }
         } catch (Exception e) {
-            System.err.println("Error while saving user: " + e.getMessage()); // Log error details
             resp.setStatusCode(500);
             resp.setError(e.getMessage());
         }

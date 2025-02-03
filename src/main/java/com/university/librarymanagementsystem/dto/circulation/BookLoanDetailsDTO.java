@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookLoanDetails {
+public class BookLoanDetailsDTO {
 
     private String title;
     private String callNumber;

@@ -13,7 +13,7 @@ public class UserDetailsDto {
 
     private String id;
     private String fullName;
-    private int departmentId;
+    private String departmentId;
     private String departmentName;
     private int programId;
     private String programName;

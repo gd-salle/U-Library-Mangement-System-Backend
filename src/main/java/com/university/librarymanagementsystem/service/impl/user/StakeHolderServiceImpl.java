@@ -31,13 +31,11 @@ public class StakeHolderServiceImpl implements StakeHolderService {
         return StakeHolderMapper.mapToStakeHoldersDto(stakeHolders);
     }
 
+    // SendingEmail
     @Override
-    public StakeholdersDto getStudentWithDepartmentAndCourse(String studentId) {
-        StakeHolders stakeHolders = stakeHolderRepository.findStakeholderById(studentId);
-
-        if (stakeHolders == null) {
-            throw new ResourceNotFoundException("Not Found: " + studentId);
-        }
+    public StakeholdersDto geStakeHolder(String studentId) {
+        StakeHolders stakeHolders = stakeHolderRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("UNC ID Number NOT FOUND"));
 
         return StakeHolderMapper.mapToStakeHoldersDto(stakeHolders);
     }

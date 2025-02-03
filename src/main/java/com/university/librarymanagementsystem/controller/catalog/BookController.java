@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.university.librarymanagementsystem.dto.catalog.AccessionDTO;
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
 import com.university.librarymanagementsystem.dto.catalog.BookSearchRequest;
-import com.university.librarymanagementsystem.dto.circulation.BookLoanDetails;
+import com.university.librarymanagementsystem.dto.circulation.BookLoanDetailsDTO;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.mapper.catalog.BookMapper;
 import com.university.librarymanagementsystem.repository.catalog.BookRepository;
-import com.university.librarymanagementsystem.repository.catalog.BookRepositoryCustom;
 import com.university.librarymanagementsystem.service.catalog.BookService;
 
 import java.util.List;
@@ -79,9 +78,9 @@ public class BookController {
     }
 
     @GetMapping("/accessionNo/{accessionNo}")
-    public ResponseEntity<BookLoanDetails> getBookByAccessionNo(@PathVariable String accessionNo) {
+    public ResponseEntity<BookLoanDetailsDTO> getBookByAccessionNo(@PathVariable String accessionNo) {
         try {
-            BookLoanDetails book = bookService.getBookByAccessionNo(accessionNo);
+            BookLoanDetailsDTO book = bookService.getBookByAccessionNo(accessionNo);
             return ResponseEntity.ok(book);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

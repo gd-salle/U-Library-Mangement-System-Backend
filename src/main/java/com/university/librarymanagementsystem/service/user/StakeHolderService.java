@@ -7,7 +7,7 @@ public interface StakeHolderService {
 
     StakeholdersDto getStakeholderById(String id);
 
-    StakeholdersDto getStudentWithDepartmentAndCourse(String studentId);
+    StakeholdersDto geStakeHolder(String studentId);
 
     UserDetailsDto getUserDetails(String uncIdNumber);
 }
