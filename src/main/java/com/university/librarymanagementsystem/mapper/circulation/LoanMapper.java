@@ -40,6 +40,7 @@ public class LoanMapper {
         return null; // Return null if the object is not a Timestamp (fallback)
     }
 
+
     public static LoanDto mapToLoanDto(Loans loan) {
         LoanDto dto = new LoanDto();
         dto.setLoanId(loan.getLoanId());
@@ -85,3 +86,4 @@ public class LoanMapper {
     }
 
 }
+

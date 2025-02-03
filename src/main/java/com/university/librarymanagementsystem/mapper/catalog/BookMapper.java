@@ -49,10 +49,11 @@ public class BookMapper {
         return accessionDTO;
     }
 
+
     public static BookLoanDetailsDTO mapToBookLoanDetails(Book book) {
         BookLoanDetailsDTO bookLoanDetails = new BookLoanDetailsDTO();
         bookLoanDetails.setTitle(book.getTitle());
-
+      
         List<String> authorsList = book.getAuthors().stream()
                 .map(Author::getName)
                 .toList();

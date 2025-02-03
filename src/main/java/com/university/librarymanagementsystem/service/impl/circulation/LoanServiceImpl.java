@@ -3,7 +3,6 @@ package com.university.librarymanagementsystem.service.impl.circulation;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +27,7 @@ import com.university.librarymanagementsystem.repository.circulation.Reservation
 import com.university.librarymanagementsystem.repository.user.StakeHolderRepository;
 import com.university.librarymanagementsystem.repository.user.UserRepo;
 import com.university.librarymanagementsystem.service.circulation.LoanService;
+import com.university.librarymanagementsystem.service.impl.user.StakeHolderServiceImpl;
 
 @Service
 public class LoanServiceImpl implements LoanService {
