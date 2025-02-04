@@ -82,7 +82,7 @@ public class ReservationServiceImpl implements ReservationService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "No user found with Id: " + dto.getUncIdNumber()));
 
-        book.setStatus(dto.getReservationStatus());
+        // book.setStatus(dto.getReservationStatus());
 
         Reservation reservation = new Reservation();
         reservation.setBook(book);
