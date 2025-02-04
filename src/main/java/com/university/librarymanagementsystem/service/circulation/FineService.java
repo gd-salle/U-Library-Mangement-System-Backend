@@ -12,4 +12,6 @@ public interface FineService {
     List<FineDto> getAllFines();
 
     List<FineDto> getAllFinesDetails();
+
+    void updateFineStatus(Long fineId);
 }
