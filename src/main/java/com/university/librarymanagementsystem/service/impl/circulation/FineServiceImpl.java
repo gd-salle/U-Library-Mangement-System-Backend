@@ -66,7 +66,7 @@ public class FineServiceImpl implements FineService {
             fine.setReturnDate(loan.getReturnDate()); // Set current time as return date for record
             fine.setLoan(loan);
             fine.setUser(loan.getUser());
-            fine.setPaid(false);
+            fine.setPaid(0);
 
             fines.add(fine);
         }
@@ -139,7 +139,7 @@ public class FineServiceImpl implements FineService {
                         fine.getDueDate(),
                         fine.getReturnDate(),
                         fine.getFineAmount(),
-                        fine.isPaid()))
+                        fine.getPaid()))
                 .toList();
     }
 
