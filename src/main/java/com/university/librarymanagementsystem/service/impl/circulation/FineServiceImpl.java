@@ -148,4 +148,9 @@ public class FineServiceImpl implements FineService {
         List<Object[]> result = fineRepository.findAllFineDetails();
         return result.stream().map(FineMapper::toFineDto).toList();
     }
+
+    @Override
+    public void updateFineStatus(Long fineId) {
+        fineRepository.updateFineStatus(fineId);
+    }
 }

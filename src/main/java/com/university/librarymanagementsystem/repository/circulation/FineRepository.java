@@ -3,10 +3,14 @@ package com.university.librarymanagementsystem.repository.circulation;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.university.librarymanagementsystem.entity.circulation.Fine;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface FineRepository extends JpaRepository<Fine, Long> {
@@ -30,4 +34,9 @@ public interface FineRepository extends JpaRepository<Fine, Long> {
             "JOIN stakeholders s ON u.school_id = s.id " +
             "WHERE f.paid = 0", nativeQuery = true)
     List<Object[]> findAllFineDetails();
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE fine SET paid = 1 WHERE fine_id = :id", nativeQuery = true)
+    void updateFineStatus(@Param("id") Long fineId);
 }
