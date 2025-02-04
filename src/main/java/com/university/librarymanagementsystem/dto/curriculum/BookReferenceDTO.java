@@ -20,10 +20,12 @@ public class BookReferenceDTO {
     private String course_name;
 
     // @JsonProperty("books_id")
-    // private Long book_id;
+    private Long book_id;
     private String book_name;
+    private String isbn10;
+    private String isbn13;
+    private String language;
+    private String location;
 
     private int status;
-
-    private String urlPath;
 }

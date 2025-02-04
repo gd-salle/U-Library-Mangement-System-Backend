@@ -2,15 +2,19 @@ package com.university.librarymanagementsystem.service.curriculum;
 
 import java.util.List;
 
+import com.university.librarymanagementsystem.dto.catalog.BookDto;
 import com.university.librarymanagementsystem.dto.curriculum.BookReferenceDTO;
 
 public interface BookReferenceService {
     BookReferenceDTO addBookReference(BookReferenceDTO bookRefDTO);
 
-    // List<BookReferenceDTO> getAllBookReference();
+    List<BookReferenceDTO> addMultipleBookRef(List<BookReferenceDTO> bookReferenceDTOs);
 
-    // List<BookReferenceDTO> getAllBookRefBySubject(Integer subjectId);
+    List<BookReferenceDTO> getAllBookReference();
 
-    // BookReferenceDTO updateBookRef(Integer bookRefId, BookReferenceDTO
-    // updatedBookRef);
+    List<BookReferenceDTO> getAllBookRefByCourse(Integer courseId);
+
+    List<BookDto> getAllUniqueBooks();
+
+    List<BookDto> getAllBooksNotReferenced(Integer courseId);
 }

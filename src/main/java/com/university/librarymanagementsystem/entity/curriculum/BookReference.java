@@ -2,6 +2,7 @@ package com.university.librarymanagementsystem.entity.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 // import com.university.librarymanagementsystem.entity.Book;
+import com.university.librarymanagementsystem.entity.catalog.Book;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +18,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -35,16 +37,13 @@ public class BookReference {
     @JsonIgnore
     private Course course;
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "books_id", nullable = false)
-    // @JsonIgnore
-    // @ToString.Exclude
-    @Column(name = "book_name", nullable = false)
-    private String book_name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "books_id", nullable = false)
+    @JsonIgnore
+    @ToString.Exclude
+    // @Column(name = "book_id", nullable = false)
+    private Book book;
 
     @Column(name = "status", nullable = false)
     private int status;
-
-    @Column(name = "urlPath", nullable = false)
-    private String urlPath;
 }

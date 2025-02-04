@@ -5,12 +5,16 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.university.librarymanagementsystem.dto.catalog.BookDto;
 import com.university.librarymanagementsystem.dto.curriculum.BookReferenceDTO;
+import com.university.librarymanagementsystem.entity.catalog.Book;
 // import com.university.librarymanagementsystem.entity.Book;
 import com.university.librarymanagementsystem.entity.curriculum.BookReference;
 import com.university.librarymanagementsystem.entity.curriculum.Course;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
+import com.university.librarymanagementsystem.mapper.catalog.BookMapper;
 import com.university.librarymanagementsystem.mapper.curriculum.BookReferenceMapper;
+import com.university.librarymanagementsystem.repository.catalog.BookRepository;
 // import com.university.librarymanagementsystem.repository.BookRepository;
 import com.university.librarymanagementsystem.repository.curriculum.BookReferenceRepository;
 import com.university.librarymanagementsystem.repository.curriculum.CourseRepository;
@@ -25,6 +29,7 @@ public class BookReferenceServiceImpl implements BookReferenceService {
     // private BookRepository bookRepository;
     private CourseRepository subjectRepository;
     private BookReferenceRepository bookRefRepository;
+    private BookRepository bookRepository;
 
     @Override
     public BookReferenceDTO addBookReference(BookReferenceDTO bookRefDTO) {
@@ -32,13 +37,9 @@ public class BookReferenceServiceImpl implements BookReferenceService {
         Course subject = subjectRepository.findById(bookRefDTO.getCourse_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Subject not found!"));
 
-        // Book book = bookRepository.findById(bookRefDTO.getBook_id())
-        // .orElseThrow(() -> new ResourceNotFoundException("Book not found!"));
-
         BookReference bookRef = BookReferenceMapper.mapTBookRef(bookRefDTO);
 
         bookRef.setCourse(subject);
-        // bookRef.setBook(book);
 
         BookReference savedBookRef = bookRefRepository.save(bookRef);
 
@@ -46,44 +47,51 @@ public class BookReferenceServiceImpl implements BookReferenceService {
         return BookReferenceMapper.mapToBookRefDTO(savedBookRef);
     }
 
-    // @Override
-    // public List<BookReferenceDTO> getAllBookReference() {
-    // List<BookReference> bookReferences = bookRefRepository.findAll();
+    @Override
+    public List<BookReferenceDTO> addMultipleBookRef(List<BookReferenceDTO> bookReferenceDTOs) {
+        List<BookReference> bookReferences = bookReferenceDTOs.stream().map(bookRefDTO -> {
+            Course subject = subjectRepository.findById(bookRefDTO.getCourse_id())
+                    .orElseThrow(() -> new ResourceNotFoundException("Subject not found!"));
 
-    // return bookReferences.stream().map((bookRef) ->
-    // BookReferenceMapper.mapToBookRefDTO(bookRef))
-    // .collect(Collectors.toList());
-    // }
+            BookReference bookRef = BookReferenceMapper.mapTBookRef(bookRefDTO);
+            bookRef.setCourse(subject);
+            return bookRef;
+        }).collect(Collectors.toList());
 
-    // @Override
-    // public List<BookReferenceDTO> getAllBookRefBySubject(Integer subjectId) {
-    // List<BookReference> bookReferences =
-    // bookRefRepository.findAllBookReferenceBySubject(subjectId);
+        List<BookReference> savedBookReferences = bookRefRepository.saveAll(bookReferences);
 
-    // return bookReferences.stream().map((bookRef) ->
-    // BookReferenceMapper.mapToBookRefDTO(bookRef))
-    // .collect(Collectors.toList());
-    // }
+        return savedBookReferences.stream()
+                .map(BookReferenceMapper::mapToBookRefDTO)
+                .collect(Collectors.toList());
+    }
 
-    // @Override
-    // public BookReferenceDTO updateBookRef(Integer bookRefId, BookReferenceDTO
-    // updatedBookRef) {
-    // BookReference bookRef = bookRefRepository.findById(bookRefId)
-    // .orElseThrow(() -> new ResourceNotFoundException("Book Reference doesnt
-    // exist"));
+    @Override
+    public List<BookReferenceDTO> getAllBookReference() {
+        List<BookReference> bookReferences = bookRefRepository.findAll();
 
-    // Course subject = subjectRepository.findById(updatedBookRef.getCourse_id())
-    // .orElseThrow(() -> new ResourceNotFoundException("Subject not found!"));
+        return bookReferences.stream().map((bookRef) -> BookReferenceMapper.mapToBookRefDTO(bookRef))
+                .collect(Collectors.toList());
+    }
 
-    // // Book book = bookRepository.findById(updatedBookRef.getBook_id())
-    // // .orElseThrow(() -> new ResourceNotFoundException("Book not found!"));
+    @Override
+    public List<BookReferenceDTO> getAllBookRefByCourse(Integer courseId) {
+        List<BookReference> bookReferences = bookRefRepository.findAllBookReferenceByCourse(courseId);
 
-    // // bookRef.setBook(book);
-    // bookRef.setCourse(subject);
-    // bookRef.setStatus(updatedBookRef.getStatus());
+        return bookReferences.stream().map((bookRef) -> BookReferenceMapper.mapToBookRefDTO(bookRef))
+                .collect(Collectors.toList());
+    }
 
-    // BookReference updatedEntity = bookRefRepository.save(bookRef);
+    @Override
+    public List<BookDto> getAllUniqueBooks() {
+        List<Book> uniqueBooks = bookRepository.findAllBooksUniqueOnly();
 
-    // return BookReferenceMapper.mapToBookRefDTO(updatedEntity);
-    // }
+        return uniqueBooks.stream().map((book) -> BookMapper.toDto(book)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookDto> getAllBooksNotReferenced(Integer courseId) {
+        List<Book> bookNotReferenced = bookRepository.findUniqueBooksNotInReference(courseId);
+
+        return bookNotReferenced.stream().map((book) -> BookMapper.toDto(book)).collect(Collectors.toList());
+    }
 }
