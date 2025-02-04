@@ -27,6 +27,7 @@ public interface FineRepository extends JpaRepository<Fine, Long> {
             "f.paid AS paid " +
             "FROM fine f " +
             "JOIN users u ON f.user_id = u.user_id " +
-            "JOIN stakeholders s ON u.school_id = s.id", nativeQuery = true)
+            "JOIN stakeholders s ON u.school_id = s.id " +
+            "WHERE f.paid = 0", nativeQuery = true)
     List<Object[]> findAllFineDetails();
 }
