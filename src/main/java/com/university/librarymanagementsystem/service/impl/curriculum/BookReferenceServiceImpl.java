@@ -94,4 +94,13 @@ public class BookReferenceServiceImpl implements BookReferenceService {
 
         return bookNotReferenced.stream().map((book) -> BookMapper.toDto(book)).collect(Collectors.toList());
     }
+
+    @Override
+    public void removeBookRef(Integer bookRefId) {
+        if (bookRefRepository.existsById(bookRefId)) {
+            bookRefRepository.deleteById(bookRefId);
+        } else {
+            throw new RuntimeException("Book reference not found with ID: " + bookRefId);
+        }
+    }
 }

@@ -17,4 +17,6 @@ public interface BookReferenceService {
     List<BookDto> getAllUniqueBooks();
 
     List<BookDto> getAllBooksNotReferenced(Integer courseId);
+
+    void removeBookRef(Integer bookRefId);
 }
