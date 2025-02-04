@@ -28,7 +28,7 @@ public class UserManagementService {
         ReqRes resp = new ReqRes();
         try {
             Users ourUser = new Users();
-            ourUser.getStakeholder().setId(registrationRequest.getSchoolId());
+            ourUser.setSchoolId(registrationRequest.getSchoolId());
             ourUser.setRole(registrationRequest.getRole());
             ourUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
 
@@ -48,13 +48,17 @@ public class UserManagementService {
         return resp;
     }
 
+    public Boolean isActivated(String schoolId) {
+        return userRepo.existsBySchoolId(schoolId);
+    }
+
     public ReqRes login(ReqRes loginRequest) {
         ReqRes response = new ReqRes();
         try {
             authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUncIdNumber(),
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getSchoolId(),
                             loginRequest.getPassword()));
-            var user = userRepo.findBySchoolId(loginRequest.getUncIdNumber()).orElseThrow();
+            var user = userRepo.findBySchoolId(loginRequest.getSchoolId()).orElseThrow();
             var jwt = jwtUtils.generateToken(user);
             var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
             response.setStatusCode(200);

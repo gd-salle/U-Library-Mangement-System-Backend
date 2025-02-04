@@ -34,9 +34,6 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    // @Column(name = "library_card_number", nullable = false, unique = true)
-    // private String libraryCardNumber;
-
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -48,7 +45,7 @@ public class Users implements UserDetails {
 
     @ManyToOne
     @JoinColumn(name = "stakeholders", referencedColumnName = "id")
-    private StakeHolders stakeholder;
+    private transient StakeHolders stakeholder;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
