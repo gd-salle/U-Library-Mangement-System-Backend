@@ -11,4 +11,6 @@ import com.university.librarymanagementsystem.entity.user.Users;
 public interface UserRepo extends JpaRepository<Users, Long> {
     Optional<Users> findBySchoolId(String schoolId);
 
+    Boolean existsBySchoolId(String schoolId);
+
 }
