@@ -24,7 +24,7 @@ import lombok.Setter;
 public class Course {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int course_id;
 
     @ManyToOne

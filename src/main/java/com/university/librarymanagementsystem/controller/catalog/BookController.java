@@ -7,11 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.university.librarymanagementsystem.dto.catalog.AccessionDTO;
 import com.university.librarymanagementsystem.dto.catalog.BookDto;
 import com.university.librarymanagementsystem.dto.catalog.BookSearchRequest;
-<<<<<<< updates-backend
 import com.university.librarymanagementsystem.dto.circulation.BookLoanDetailsDTO;
-=======
 import com.university.librarymanagementsystem.dto.circulation.BookLoanDetails;
->>>>>>> main
 import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.mapper.catalog.BookMapper;
