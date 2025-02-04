@@ -1,8 +1,6 @@
 package com.university.librarymanagementsystem.controller.circulation;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.university.librarymanagementsystem.dto.circulation.BorrowerDetailsDto;
 import com.university.librarymanagementsystem.dto.circulation.LoanDetailsDTO;
 import com.university.librarymanagementsystem.dto.circulation.LoanDto;
-import com.university.librarymanagementsystem.dto.circulation.ReservationDetailsDTO;
 import com.university.librarymanagementsystem.dto.circulation.UserCirculationDetailsDTO;
 import com.university.librarymanagementsystem.entity.circulation.Loans;
 import com.university.librarymanagementsystem.service.circulation.LoanService;

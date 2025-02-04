@@ -3,7 +3,6 @@ package com.university.librarymanagementsystem.service.impl.circulation;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,7 @@ import com.university.librarymanagementsystem.dto.circulation.UserCirculationDet
 import com.university.librarymanagementsystem.entity.catalog.Author;
 import com.university.librarymanagementsystem.entity.catalog.Book;
 import com.university.librarymanagementsystem.entity.circulation.Loans;
+import com.university.librarymanagementsystem.entity.circulation.Reservation;
 import com.university.librarymanagementsystem.entity.user.StakeHolders;
 import com.university.librarymanagementsystem.entity.user.Users;
 import com.university.librarymanagementsystem.enums.ReservationStatus;
@@ -28,6 +28,7 @@ import com.university.librarymanagementsystem.repository.circulation.Reservation
 import com.university.librarymanagementsystem.repository.user.StakeHolderRepository;
 import com.university.librarymanagementsystem.repository.user.UserRepo;
 import com.university.librarymanagementsystem.service.circulation.LoanService;
+import com.university.librarymanagementsystem.service.user.EmailService;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -54,6 +55,12 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private StakeHolderRepository stakeHolderRepository;
+
+    private final EmailService emailService;
+
+    public LoanServiceImpl(EmailService emailService) {
+        this.emailService = emailService;
+    }
 
     @Override
     public List<LoanDetailsDTO> getAllLoanDetails() {
@@ -143,6 +150,8 @@ public class LoanServiceImpl implements LoanService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "No user found with Id: " + loanDetailsDTO.getUncIdNumber()));
 
+        StakeHolders stakeHolders = stakeHolderRepository.findById(user.getSchoolId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         // Update book status to Loaned Out
         book.setStatus("Loaned Out");
         bookRepository.save(book);
@@ -161,7 +170,7 @@ public class LoanServiceImpl implements LoanService {
         loan.setDueDate(newDueDate);
 
         loan.setStatus("Borrowed");
-
+        emailService.sendEmail(stakeHolders.getEmailAdd(), "Borrowed", book.getTitle(), loan.getDueDate().toString());
         // Save the loan record
         return loanRepository.save(loan);
     }
@@ -181,6 +190,9 @@ public class LoanServiceImpl implements LoanService {
 
         // Find the associated book by the loaned book's accession number
         Book book = loan.getBook();
+        Users loanUser = loan.getUser();
+        StakeHolders loanStakeHolders = stakeHolderRepository.findById(loanUser.getSchoolId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         // Handle "Returned" status updates
         if ("Returned".equals(loanDto.getStatus())) {
             // Update the return date to the current date if not provided
@@ -189,6 +201,19 @@ public class LoanServiceImpl implements LoanService {
             // Update the book status to "Available"
             book.setStatus("Available");
             bookRepository.save(book); // Save the updated book
+
+            // Get the reservation
+            Reservation reserves = reservationRepository.findFirstByBookAndReservationStatusOrderByReservationDateAsc(
+                    book,
+                    ReservationStatus.PENDING);
+            if (reserves != null) {
+                StakeHolders stakeHolders = stakeHolderRepository.findById(reserves.getUser().getSchoolId())
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                // Send an email to the user
+                emailService.sendEmail(stakeHolders.getEmailAdd(), "Reservation Available", book.getTitle(), "");
+            }
+            // Email for returning
+            emailService.sendEmail(loanStakeHolders.getEmailAdd(), "Returned", book.getTitle(), "");
         }
         // Handle "Renewed" status updates
         if ("Renewed".equals(action)) {
@@ -203,6 +228,8 @@ public class LoanServiceImpl implements LoanService {
             // Update the book's status to "Loaned Out"
             book.setStatus("Loaned Out");
             bookRepository.save(book); // Save the updated book
+            emailService.sendEmail(loanStakeHolders.getEmailAdd(), "Renewed", book.getTitle(),
+                    loan.getDueDate().toString());
         }
 
         // Update the loan status in all cases

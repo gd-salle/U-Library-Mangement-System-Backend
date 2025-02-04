@@ -43,7 +43,7 @@ public class StakeHolderController {
         otpService.storeOTP(stakeholdersDto.getEmailAdd(), otp);
 
         // Send OTP via email and/or SMS
-        otpService.sendEmail(stakeholdersDto.getEmailAdd(), otp);
+        otpService.sendOTPEmail(stakeholdersDto.getEmailAdd(), otp);
 
         return ResponseEntity.ok(stakeholdersDto);
     }
