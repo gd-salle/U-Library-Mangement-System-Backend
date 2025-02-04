@@ -21,13 +21,6 @@ public class BookWeedingStatusServiceImpl implements BookWeedingStatusService {
     private BookWeedingStatusRepository bookWeedingStatusRepository;
 
     @Override
-    public BookWeedingStatusDTO createBookWeedingStatus(BookWeedingStatusDTO bookWeedingStatusDTO) {
-        BookWeedingStatus status = BookWeedingStatusMapper.mapToEntity(bookWeedingStatusDTO);
-        status = bookWeedingStatusRepository.save(status);
-        return BookWeedingStatusMapper.mapToDTO(status);
-    }
-
-    @Override
     public void updateBookWeedingStatus(WeedInfoDTO weedInfoDTO) {
         BookWeedingStatus toUpdateBookWeedStatus = bookWeedingStatusRepository.findById(weedInfoDTO.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Book Weeding Status not found for id: " + weedInfoDTO

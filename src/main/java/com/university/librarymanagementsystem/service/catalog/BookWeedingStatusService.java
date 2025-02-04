@@ -7,10 +7,6 @@ import com.university.librarymanagementsystem.dto.catalog.WeedInfoDTO;
 
 public interface BookWeedingStatusService {
 
-    BookWeedingStatusDTO createBookWeedingStatus(BookWeedingStatusDTO bookWeedingStatusDTO);
-
-    // BookWeedingStatusDTO updateBookWeedingStatus(Long id, BookWeedingStatusDTO
-    // bookWeedingStatusDTO);
     void updateBookWeedingStatus(WeedInfoDTO weedInfoDTO);
 
     void deleteBookWeedingStatus(Long id);

@@ -9,19 +9,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
-
 @Service
 public class OTPService {
 
     @Autowired
     private JavaMailSender mailSender;
-
-    // Twilio Configuration (Use your Twilio credentials)
-    private static final String TWILIO_PHONE_NUMBER = "+639093334396"; // Your Twilio phone number
-    private static final String ACCOUNT_SID = "AC09be47a5701c996bea8d665d1daba7be";
-    private static final String AUTH_TOKEN = "99a785bd755c8784ea75c1691b155e03";
 
     Random random = new Random();
     private Map<String, String> otpStorage = new HashMap<>();
@@ -42,19 +34,32 @@ public class OTPService {
         if (storedOtp == null) {
             return false; // No OTP stored for this email
         }
-        boolean result = otp.equals(storedOtp);
-        return result;
+        return otp.equals(storedOtp);
     }
 
-    public void sendEmail(String to, String otp) {
+    public void sendEmail(String emailAdd, String otp) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject("Your OTP Code");
-        message.setText("Your OTP code is: " + otp);
+        message.setTo(emailAdd);
+        message.setSubject("University Library Management System - OTP Verification");
+        message.setText(
+                "Dear User,\n\n" +
+                        "Here is your One-Time Password (OTP) for secure access to your account:\n\n" +
+                        "OTP: " + otp + "\n\n" +
+                        "Please enter this code to ACTIVATE your account. This OTP is valid for a limited time for security purposes.\n\n"
+                        +
+                        "If you did not request this OTP, please contact our support team immediately.\n\n" +
+                        "Best regards,\n" +
+                        "University Library Management System\n" +
+                        "University of Nueva Caceres\n\n" +
+                        "Note: This email is sent from a no-reply address. Do not reply to this email. For support, please visit our website or call our support team.\n\n"
+                        +
+                        "You received this email because you are activating your account with University Library Management System at University of Nueva Caceres.");
+
         mailSender.send(message);
     }
 
-    public void sendSMS(String to, String otp) {
-        Message.creator(new PhoneNumber(to), new PhoneNumber(TWILIO_PHONE_NUMBER), "Your OTP code is: " + otp).create();
-    }
+    // public void sendSMS(String to, String otp) {
+    // Message.creator(new PhoneNumber(to), new PhoneNumber(TWILIO_PHONE_NUMBER),
+    // "Your OTP code is: " + otp).create();
+    // }
 }

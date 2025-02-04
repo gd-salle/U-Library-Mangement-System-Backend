@@ -5,16 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BorrowerDetailsDto {
+public class UserCirculationDetailsDTO {
 
-    private String idNumber;
-    private String department;
-    private boolean hasCurrentBorrowedBook;
-    private int reservationCount;
-    private boolean registered;
+    private int checkoutCount;
+    private int reserveCount;
+    private int fine;
 
 }

@@ -1,5 +1,7 @@
 package com.university.librarymanagementsystem.dto.circulation;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +11,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BorrowerDetailsDto {
+public class BookLoanDetailsDTO {
 
-    private String idNumber;
-    private String department;
-    private boolean hasCurrentBorrowedBook;
-    private int reservationCount;
-    private boolean registered;
-
+    private String title;
+    private String callNumber;
+    private List<String> authors;
+    private String bookStatus;
 }

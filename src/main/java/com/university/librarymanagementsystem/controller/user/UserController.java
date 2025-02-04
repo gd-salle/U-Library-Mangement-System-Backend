@@ -23,7 +23,6 @@ public class UserController {
 
     @PostMapping("/auth/register")
     public ResponseEntity<ReqRes> register(@RequestBody ReqRes reg) {
-        System.out.println("Received registration request: " + reg); // Log incoming request
         ReqRes response = usersManagementService.register(reg);
 
         if (response.getStatusCode() == 200) {
