@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.university.librarymanagementsystem.dto.circulation.BookLoanDetailsDTO;
 import com.university.librarymanagementsystem.dto.circulation.ReservationDetailsDTO;
-import com.university.librarymanagementsystem.entity.circulation.Reservation;
 import com.university.librarymanagementsystem.exception.ResourceNotFoundException;
 import com.university.librarymanagementsystem.service.circulation.ReservationService;
 
