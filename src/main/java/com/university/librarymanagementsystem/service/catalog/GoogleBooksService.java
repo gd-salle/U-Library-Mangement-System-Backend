@@ -128,17 +128,13 @@ public class GoogleBooksService {
         // Handle authors
         List<Author> authors = (bookDto.getAuthors() != null ? bookDto.getAuthors() : new ArrayList<AuthorDto>())
                 .stream()
-                .map(authorDto -> {
-                    // Make sure that authorDto is of type AuthorDto
-                    Author author = authorRepository.findByName(authorDto.getName())
-                            .orElseGet(() -> {
-                                Author newAuthor = new Author();
-                                newAuthor.setName(authorDto.getName());
-                                return newAuthor;
-                            });
-                    author.getBooks().add(book);
-                    return author;
-                }).toList();
+                .map(authorDto -> authorRepository.findByName(authorDto.getName())
+                        .orElseGet(() -> {
+                            Author newAuthor = new Author();
+                            newAuthor.setName(authorDto.getName());
+                            return newAuthor;
+                        }))
+                .toList();
         book.setAuthors(authors);
         Book savedBook = googleBooksRepository.save(book);
 
@@ -146,7 +142,6 @@ public class GoogleBooksService {
         if (bookDto.getBookCondition() != null) {
             bookRepository.saveBookCondition(savedBook.getId(), bookDto.getBookCondition());
         }
-
         return savedBook;
     }
 

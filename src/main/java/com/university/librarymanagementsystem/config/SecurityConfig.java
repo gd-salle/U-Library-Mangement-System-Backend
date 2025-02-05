@@ -36,8 +36,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers("/auth/**", "/verify/**", "/public/**",
-                                        "/adminuser/**")
+                                .requestMatchers("/auth/**", "/verify/**", "/public/**")
                                 .permitAll()
                                 .requestMatchers("/admin/**", "/sru/**").hasAnyAuthority("LIBRARIAN", "ADMIN")
                                 .requestMatchers("/user/**").hasAnyAuthority("STUDENT")
